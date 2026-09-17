@@ -428,6 +428,35 @@ body {
   overflow: hidden;
 }
 
+/* ---- Ambient glow layer for the student workspace (mirrors the
+   landing/login crystal-bg treatment, scoped to the main pane) ---- */
+.stu-crystal-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.stu-crystal {
+  position: absolute;
+  border-radius: 42% 58% 56% 44% / 46% 40% 60% 54%;
+  filter: blur(70px);
+  opacity: 0.22;
+  mix-blend-mode: multiply;
+  animation: crystalDrift 18s ease-in-out infinite;
+}
+.stu-crystal.sc1 { width: 320px; height: 320px; top: -90px; left: -60px; background: radial-gradient(circle at 30% 30%, var(--cr-green-lt), var(--cr-green) 72%); animation-delay: 0s; }
+.stu-crystal.sc2 { width: 300px; height: 300px; top: 10%; right: -100px; background: radial-gradient(circle at 60% 40%, var(--cr-gold-lt), var(--cr-gold) 72%); animation-delay: 4s; }
+.stu-crystal.sc3 { width: 340px; height: 340px; bottom: -80px; left: 30%; background: radial-gradient(circle at 40% 60%, var(--cr-terra-lt), var(--cr-terra) 72%); animation-delay: 8s; }
+
+/* ---- Entrance animations shared across the student workspace ---- */
+@keyframes stuFadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes stuSlideIn {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes stuFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 
 .stu-sidebar {
   width: 220px;
@@ -438,9 +467,12 @@ body {
   padding: 0;
   position: sticky;
   top: 0;
+  left: 0;
   flex-shrink: 0;
   overflow-y: auto;
   box-shadow: 4px 0 16px rgba(46,64,83,0.3);
+  z-index: 20;
+  animation: stuSlideIn 0.45s ease both;
 }
 
 .stu-sidebar-brand {
@@ -588,6 +620,10 @@ body {
   justify-content: center;
 }
 
+.stu-nav-link { animation: stuFadeUp 0.4s ease both; animation-delay: 0.15s; }
+.stu-avatar-area { animation: stuFadeUp 0.4s ease both; animation-delay: 0.05s; }
+.stu-exp-bar { animation: stuFadeUp 0.4s ease both; animation-delay: 0.1s; }
+
 .stu-nav-link:hover {
   background: rgba(255,255,255,0.06);
   color: rgba(255,255,255,0.9);
@@ -643,13 +679,11 @@ body {
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
+  position: relative;
   background-color: var(--parchment);
   background-image:
-    radial-gradient(ellipse at 15% 10%, rgba(196,150,10,0.05) 0%, transparent 55%),
-    radial-gradient(ellipse at 85% 80%, rgba(58,107,74,0.05) 0%, transparent 55%),
     radial-gradient(rgba(42,33,24,0.055) 1px, transparent 1px);
-  background-size: auto, auto, 28px 28px;
-  background-attachment: local, local, local;
+  background-size: 28px 28px;
   display: flex;
   flex-direction: column;
 }
@@ -665,7 +699,37 @@ body {
   top: 0;
   z-index: 10;
   box-shadow: 0 2px 8px rgba(46,64,83,0.1);
+  animation: stuFadeUp 0.4s ease both;
 }
+
+.stu-hamburger {
+  display: none;
+  width: 30px;
+  height: 24px;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-right: 14px;
+  background: none;
+  border: none;
+  padding: 0;
+}
+.stu-hamburger span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background: var(--indigo);
+  border-radius: 1px;
+}
+.stu-sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(42,33,24,0.45);
+  z-index: 15;
+}
+.stu-sidebar-backdrop.open { display: block; }
 
 .topbar-title {
   font-family: 'Press Start 2P', monospace;
@@ -701,15 +765,18 @@ body {
 .stu-content {
   padding: 28px;
   flex: 1;
+  position: relative;
+  z-index: 1;
 }
 
 
 .stu-view { display: none; }
-.stu-view.active { display: block; }
+.stu-view.active { display: block; animation: stuFadeIn 0.3s ease both; }
 
 
 .section-header {
   margin-bottom: 24px;
+  animation: stuFadeUp 0.4s ease both;
 }
 
 .section-title {
@@ -735,6 +802,12 @@ body {
   gap: 16px;
   margin-bottom: 28px;
 }
+.card-grid > * { animation: stuFadeUp 0.35s ease both; }
+.card-grid > *:nth-child(1) { animation-delay: 0.05s; }
+.card-grid > *:nth-child(2) { animation-delay: 0.10s; }
+.card-grid > *:nth-child(3) { animation-delay: 0.15s; }
+.card-grid > *:nth-child(4) { animation-delay: 0.20s; }
+.card-grid > *:nth-child(n+5) { animation-delay: 0.25s; }
 
 .pixel-card {
   background: #FAFAF0;
@@ -838,6 +911,11 @@ body {
   gap: 12px;
   margin-bottom: 28px;
 }
+.stats-row .stat-block { animation: stuFadeUp 0.4s ease both; }
+.stats-row .stat-block:nth-child(1) { animation-delay: 0.05s; }
+.stats-row .stat-block:nth-child(2) { animation-delay: 0.10s; }
+.stats-row .stat-block:nth-child(3) { animation-delay: 0.15s; }
+.stats-row .stat-block:nth-child(4) { animation-delay: 0.20s; }
 
 .stat-block {
   background: #FAFAF0;
@@ -863,6 +941,13 @@ body {
 
 
 .quest-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.quest-list > * { animation: stuFadeUp 0.35s ease both; }
+.quest-list > *:nth-child(1) { animation-delay: 0.04s; }
+.quest-list > *:nth-child(2) { animation-delay: 0.08s; }
+.quest-list > *:nth-child(3) { animation-delay: 0.12s; }
+.quest-list > *:nth-child(4) { animation-delay: 0.16s; }
+.quest-list > *:nth-child(5) { animation-delay: 0.20s; }
+.quest-list > *:nth-child(n+6) { animation-delay: 0.24s; }
 
 .quest-item {
   background: #FAFAF0;
@@ -2071,7 +2156,18 @@ body {
 }
 
 @media (max-width: 768px) {
-  .stu-sidebar, .adm-sidebar { display: none; }
+  .stu-hamburger { display: flex; }
+  .stu-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    z-index: 30;
+    animation: none;
+  }
+  .stu-sidebar.open { transform: translateX(0); }
+  .adm-sidebar { display: none; }
   .adm-two-col { grid-template-columns: 1fr; }
 }
 
@@ -3493,8 +3589,10 @@ body {
      PAGE: STUDENT
 ============================================================ -->
 <div id="page-student" class="page">
-  
-  <aside class="stu-sidebar">
+
+  <div class="stu-sidebar-backdrop" id="stu-sidebar-backdrop" onclick="toggleStuSidebar(false)"></div>
+
+  <aside class="stu-sidebar" id="stu-sidebar">
     <div class="stu-sidebar-brand">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
         <svg width="32" height="32" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -3553,7 +3651,15 @@ body {
 
   
   <main class="stu-main">
+    <div class="stu-crystal-bg">
+      <div class="stu-crystal sc1"></div>
+      <div class="stu-crystal sc2"></div>
+      <div class="stu-crystal sc3"></div>
+    </div>
     <div class="stu-topbar">
+      <button class="stu-hamburger" id="stu-hamburger" onclick="toggleStuSidebar()" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
       <span class="topbar-title" id="stu-page-title">DASHBOARD</span>
       <div class="topbar-stats">
         <div class="stat-chip">
@@ -4729,15 +4835,17 @@ function updateUserUI() {
   if (topbarXp) topbarXp.textContent = studentState.xp.toLocaleString() + ' XP';
   if (topbarStreak) topbarStreak.textContent = studentState.streak + '-DAY STREAK';
 
-  const avgScore = studentState.quizzesTaken > 0 ? Math.round(studentState.totalScore / studentState.quizzesTaken) + '%' : '—%';
+  const safeQuizzes = studentState.quizzesTaken || 0;
+  const safeTotal = studentState.totalScore || 0;
+  const avgScore = safeQuizzes > 0 ? Math.round(safeTotal / safeQuizzes) + '%' : '—%';
   const dashClasses = document.getElementById('dash-classes');
   const dashQuizzes = document.getElementById('dash-quizzes');
   const dashAvg = document.getElementById('dash-avg');
   const dashNotes = document.getElementById('dash-notes');
-  if (dashClasses) dashClasses.textContent = studentState.classesJoined;
-  if (dashQuizzes) dashQuizzes.textContent = studentState.quizzesTaken;
+  if (dashClasses) dashClasses.textContent = studentState.classesJoined || 0;
+  if (dashQuizzes) dashQuizzes.textContent = safeQuizzes;
   if (dashAvg) dashAvg.textContent = avgScore;
-  if (dashNotes) dashNotes.textContent = studentState.notesShared;
+  if (dashNotes) dashNotes.textContent = studentState.notesShared || 0;
 
   const hour = new Date().getHours();
   const greeting = hour < 12 ? 'GOOD MORNING' : hour < 18 ? 'GOOD AFTERNOON' : 'GOOD EVENING';
@@ -5506,11 +5614,27 @@ async function submitUploadNote() {
 ============================================================ */
 const stuTitles = { dashboard:'DASHBOARD', classes:'MY CLASSES', quizzes:'QUIZZES', 'quiz-take':'TAKE QUIZ', notes:'NOTES & REVIEWERS', leaderboard:'LEADERBOARD', quests:'QUESTS', 'class-detail':'CLASS DETAIL' };
 
+function toggleStuSidebar(force) {
+  const sb = document.getElementById('stu-sidebar');
+  const bd = document.getElementById('stu-sidebar-backdrop');
+  if (!sb) return;
+  const open = typeof force === 'boolean' ? force : !sb.classList.contains('open');
+  sb.classList.toggle('open', open);
+  if (bd) bd.classList.toggle('open', open);
+}
+
 function switchStuView(view) {
   document.querySelectorAll('.stu-view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.stu-nav-link').forEach(l => l.classList.remove('active'));
   const el = document.getElementById('stu-' + view);
-  if (el) el.classList.add('active');
+  if (el) {
+    // restart the fade-in animation even if this view was already the active one before
+    el.style.animation = 'none';
+    el.classList.add('active');
+    void el.offsetWidth;
+    el.style.animation = '';
+  }
+  toggleStuSidebar(false);
   document.querySelectorAll('.stu-nav-link').forEach(link => {
     const fn = link.getAttribute('onclick') || '';
     if (fn.includes("'" + view + "'") || fn.includes('"' + view + '"')) link.classList.add('active');
