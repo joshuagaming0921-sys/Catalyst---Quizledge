@@ -581,10 +581,11 @@ body {
 }
 
 .stu-nav-link .nav-icon {
-  font-size: 14px;
   width: 20px;
-  text-align: center;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .stu-nav-link:hover {
@@ -642,7 +643,13 @@ body {
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
-  background: var(--parchment);
+  background-color: var(--parchment);
+  background-image:
+    radial-gradient(ellipse at 15% 10%, rgba(196,150,10,0.05) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 80%, rgba(58,107,74,0.05) 0%, transparent 55%),
+    radial-gradient(rgba(42,33,24,0.055) 1px, transparent 1px);
+  background-size: auto, auto, 28px 28px;
+  background-attachment: local, local, local;
   display: flex;
   flex-direction: column;
 }
@@ -684,7 +691,7 @@ body {
   border-radius: 2px;
 }
 
-.stat-chip .chip-icon { font-size: 12px; }
+.stat-chip .chip-icon { display: flex; align-items: center; }
 .stat-chip .chip-val {
   font-family: 'Press Start 2P', monospace;
   font-size: 8px;
@@ -2227,7 +2234,12 @@ body {
   background: rgba(46,64,83,0.04);
   border: 2px dashed rgba(46,64,83,0.15);
 }
-.empty-state-icon { font-size: 28px; display: block; margin-bottom: 10px; opacity: 0.4; }
+.empty-state-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+  opacity: 0.35;
+}
 .empty-state-text {
   font-family: 'Press Start 2P', monospace;
   font-size: 7px;
@@ -3513,24 +3525,24 @@ body {
     <nav class="stu-nav">
       <div class="nav-section-label">MAIN</div>
       <a class="stu-nav-link active" onclick="switchStuView('dashboard')">
-        <span class="nav-icon">⌂</span> Dashboard
+        <span class="nav-icon"><svg class="px-icon" viewBox="0 0 10 9" width="16" height="14" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="4" y="0" width="2" height="1"/><rect x="3" y="1" width="4" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="1" y="3" width="8" height="1"/><rect x="0" y="4" width="10" height="1"/><rect x="1" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="1" y="6" width="1" height="1"/><rect x="3" y="6" width="4" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="1" y="7" width="1" height="1"/><rect x="3" y="7" width="1" height="1"/><rect x="6" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="1" y="8" width="1" height="1"/><rect x="3" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/></g></svg></span> Dashboard
       </a>
       <a class="stu-nav-link" onclick="switchStuView('classes')">
-        <span class="nav-icon">▦</span> My Classes
+        <span class="nav-icon"><svg class="px-icon" viewBox="0 0 10 9" width="16" height="14" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="5" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="10" height="1"/><rect x="3" y="7" width="4" height="1"/><rect x="2" y="8" width="6" height="1"/></g></svg></span> My Classes
       </a>
       <a class="stu-nav-link" onclick="switchStuView('quizzes')">
-        <span class="nav-icon">?</span> Quizzes
+        <span class="nav-icon"><svg class="px-icon" viewBox="0 0 9 11" width="16" height="20" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="9" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="3" y="2" width="3" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="6" y="3" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="5" y="5" width="2" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="4" y="6" width="2" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="0" y="10" width="9" height="1"/></g></svg></span> Quizzes
         <span class="nav-badge" id="stu-quizzes-nav-badge" style="display:none;"></span>
       </a>
       <a class="stu-nav-link" onclick="switchStuView('notes')">
-        <span class="nav-icon">▤</span> Notes
+        <span class="nav-icon"><svg class="px-icon" viewBox="0 0 10 11" width="16" height="18" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="6" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="2" y="6" width="6" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="2" y="8" width="4" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="9" y="9" width="1" height="1"/><rect x="0" y="10" width="10" height="1"/></g></svg></span> Notes
       </a>
       <div class="nav-section-label">PROGRESS</div>
       <a class="stu-nav-link" onclick="switchStuView('leaderboard')">
-        <span class="nav-icon">▲</span> Leaderboard
+        <span class="nav-icon"><svg class="px-icon" viewBox="0 0 11 9" width="16" height="13" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="8" y="0" width="3" height="1"/><rect x="8" y="1" width="3" height="1"/><rect x="4" y="2" width="3" height="1"/><rect x="8" y="2" width="3" height="1"/><rect x="4" y="3" width="3" height="1"/><rect x="8" y="3" width="3" height="1"/><rect x="4" y="4" width="3" height="1"/><rect x="8" y="4" width="3" height="1"/><rect x="0" y="5" width="3" height="1"/><rect x="4" y="5" width="3" height="1"/><rect x="8" y="5" width="3" height="1"/><rect x="0" y="6" width="3" height="1"/><rect x="4" y="6" width="3" height="1"/><rect x="8" y="6" width="3" height="1"/><rect x="0" y="7" width="3" height="1"/><rect x="4" y="7" width="3" height="1"/><rect x="8" y="7" width="3" height="1"/><rect x="0" y="8" width="11" height="1"/></g></svg></span> Leaderboard
       </a>
       <a class="stu-nav-link" onclick="switchStuView('quests')">
-        <span class="nav-icon">◆</span> Quests
+        <span class="nav-icon"><svg class="px-icon" viewBox="0 0 10 9" width="16" height="14" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="4" y="0" width="2" height="1"/><rect x="3" y="1" width="4" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="1" y="3" width="8" height="1"/><rect x="0" y="4" width="10" height="1"/><rect x="1" y="5" width="8" height="1"/><rect x="2" y="6" width="6" height="1"/><rect x="3" y="7" width="4" height="1"/><rect x="4" y="8" width="2" height="1"/></g></svg></span> Quests
         <span class="nav-badge" id="stu-quests-nav-badge" style="display:none;"></span>
       </a>
     </nav>
@@ -3545,11 +3557,11 @@ body {
       <span class="topbar-title" id="stu-page-title">DASHBOARD</span>
       <div class="topbar-stats">
         <div class="stat-chip">
-          <span class="chip-icon">★</span>
+          <span class="chip-icon"><svg class="px-icon" viewBox="0 0 10 9" width="12" height="11" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="4" y="0" width="2" height="1"/><rect x="3" y="1" width="4" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="0" y="3" width="10" height="1"/><rect x="1" y="4" width="8" height="1"/><rect x="2" y="5" width="6" height="1"/><rect x="2" y="6" width="6" height="1"/><rect x="1" y="7" width="2" height="1"/><rect x="7" y="7" width="2" height="1"/><rect x="0" y="8" width="2" height="1"/><rect x="8" y="8" width="2" height="1"/></g></svg></span>
           <span class="chip-val" id="topbar-xp">0 XP</span>
         </div>
         <div class="stat-chip" style="box-shadow: 2px 2px 0px var(--terracotta-dark); background: var(--terracotta); border-color: var(--terracotta);">
-          <span class="chip-icon">◆</span>
+          <span class="chip-icon"><svg class="px-icon" viewBox="0 0 8 8" width="12" height="12" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="3" y="0" width="2" height="1"/><rect x="2" y="1" width="4" height="1"/><rect x="2" y="2" width="4" height="1"/><rect x="1" y="3" width="6" height="1"/><rect x="0" y="4" width="3" height="1"/><rect x="5" y="4" width="3" height="1"/><rect x="0" y="5" width="2" height="1"/><rect x="6" y="5" width="2" height="1"/><rect x="0" y="6" width="2" height="1"/><rect x="3" y="6" width="2" height="1"/><rect x="6" y="6" width="2" height="1"/><rect x="1" y="7" width="6" height="1"/></g></svg></span>
           <span class="chip-val" id="topbar-streak">0-DAY STREAK</span>
         </div>
       </div>
@@ -3560,7 +3572,7 @@ body {
       
       <div id="stu-dashboard" class="stu-view active">
         <div class="section-header">
-          <span class="section-title">GOOD MORNING, MARK</span>
+          <span class="section-title">WELCOME BACK</span>
           <span class="section-sub">&gt; Here's your learning progress for today</span>
         </div>
 
@@ -3589,7 +3601,7 @@ body {
 
         <div id="dash-active-quizzes" class="card-grid">
           <div class="empty-state" style="grid-column:1/-1;">
-            <span class="empty-state-icon">?</span>
+            <span class="empty-state-icon"><svg class="px-icon" viewBox="0 0 9 11" width="30" height="37" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="9" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="3" y="2" width="3" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="6" y="3" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="5" y="5" width="2" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="4" y="6" width="2" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="0" y="10" width="9" height="1"/></g></svg></span>
             <span class="empty-state-text">NO ACTIVE QUIZZES YET<br><span style="font-size:8px; opacity:0.6; font-family:'Lato',sans-serif; font-weight:400;">Quizzes posted by your teacher will appear here</span></span>
           </div>
         </div>
@@ -3600,7 +3612,7 @@ body {
 
         <div id="dash-recent-activity" class="quest-list">
           <div class="empty-state">
-            <span class="empty-state-icon">▦</span>
+            <span class="empty-state-icon"><svg class="px-icon" viewBox="0 0 10 9" width="30" height="27" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="5" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="10" height="1"/><rect x="3" y="7" width="4" height="1"/><rect x="2" y="8" width="6" height="1"/></g></svg></span>
             <span class="empty-state-text">NO ACTIVITY YET<br><span style="font-size:8px; opacity:0.6; font-family:'Lato',sans-serif; font-weight:400;">Your quiz results and actions will show here</span></span>
           </div>
         </div>
@@ -3626,7 +3638,7 @@ body {
 
         <div class="class-list" id="stu-class-list">
           <div class="empty-state">
-            <span class="empty-state-icon">▦</span>
+            <span class="empty-state-icon"><svg class="px-icon" viewBox="0 0 10 9" width="30" height="27" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="5" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="10" height="1"/><rect x="3" y="7" width="4" height="1"/><rect x="2" y="8" width="6" height="1"/></g></svg></span>
             <span class="empty-state-text">NO CLASSES YET<br><span style="font-size:8px; opacity:0.6; font-family:'Lato',sans-serif; font-weight:400;">Enter a class code above to join your first class</span></span>
           </div>
         </div>
@@ -3640,7 +3652,7 @@ body {
         </div>
         <div class="card-grid" id="stu-quizzes-grid">
           <div class="empty-state" style="grid-column:1/-1;">
-            <span class="empty-state-icon">?</span>
+            <span class="empty-state-icon"><svg class="px-icon" viewBox="0 0 9 11" width="30" height="37" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="9" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="3" y="2" width="3" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="6" y="3" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="5" y="5" width="2" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="4" y="6" width="2" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="0" y="10" width="9" height="1"/></g></svg></span>
             <span class="empty-state-text">NO QUIZZES AVAILABLE<br><span style="font-size:8px; opacity:0.6; font-family:'Lato',sans-serif; font-weight:400;">Join a class and your teacher's quizzes will appear here</span></span>
           </div>
         </div>
@@ -3650,10 +3662,10 @@ body {
       <div id="stu-quiz-take" class="stu-view">
         <div class="quiz-header">
           <div>
-            <div class="quiz-title" id="qt-quiz-title">MIDTERM: DATA STRUCTURES</div>
-            <div style="font-family:'VT323',monospace; font-size:16px; color:rgba(255,255,255,0.6); margin-top:4px;" id="qt-progress-label">Question 1 of 5 &nbsp;·&nbsp; CS101</div>
+            <div class="quiz-title" id="qt-quiz-title">—</div>
+            <div style="font-family:'VT323',monospace; font-size:16px; color:rgba(255,255,255,0.6); margin-top:4px;" id="qt-progress-label">—</div>
           </div>
-          <div class="quiz-timer" id="quiz-timer">30:00</div>
+          <div class="quiz-timer" id="quiz-timer">00:00</div>
         </div>
 
         <!-- question navigation dots -->
@@ -3772,14 +3784,14 @@ body {
         <!-- Tab: Quizzes -->
         <div id="cd-panel-quizzes">
           <div class="card-grid" id="cd-quizzes-grid">
-            <div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon">?</span><span class="empty-state-text">NO QUIZZES YET</span></div>
+            <div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon"><svg class="px-icon" viewBox="0 0 9 11" width="30" height="37" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="9" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="3" y="2" width="3" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="6" y="3" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="5" y="5" width="2" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="4" y="6" width="2" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="0" y="10" width="9" height="1"/></g></svg></span><span class="empty-state-text">NO QUIZZES YET</span></div>
           </div>
         </div>
 
         <!-- Tab: Notes -->
         <div id="cd-panel-notes" style="display:none;">
           <div class="notes-grid" id="cd-notes-grid"></div>
-          <div id="cd-notes-empty" class="empty-state" style="display:none;"><span class="empty-state-icon">▤</span><span class="empty-state-text">NO APPROVED NOTES FOR THIS CLASS</span></div>
+          <div id="cd-notes-empty" class="empty-state" style="display:none;"><span class="empty-state-icon"><svg class="px-icon" viewBox="0 0 10 11" width="30" height="33" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="6" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="2" y="6" width="6" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="2" y="8" width="4" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="9" y="9" width="1" height="1"/><rect x="0" y="10" width="10" height="1"/></g></svg></span><span class="empty-state-text">NO APPROVED NOTES FOR THIS CLASS</span></div>
         </div>
 
         <!-- Tab: Members -->
@@ -3796,8 +3808,8 @@ body {
 <div class="score-overlay" id="score-overlay">
   <div class="score-box">
     <span class="score-title">QUEST COMPLETE!</span>
-    <span class="score-num">90%</span>
-    <span class="score-label">9 / 10 Correct</span>
+    <span class="score-num">0%</span>
+    <span class="score-label">0 / 0 Correct</span>
     <div style="font-family:'Press Start 2P',monospace; font-size:10px; color:var(--moss); margin-bottom:20px;">+120 XP EARNED</div>
     <button class="btn-pixel" onclick="closeScore()">CONTINUE &gt;&gt;</button>
   </div>
@@ -3828,29 +3840,29 @@ body {
     <nav class="adm-nav">
       <div class="adm-nav-section">Overview</div>
       <a class="adm-nav-link active" onclick="switchAdmView('dashboard')">
-        <span class="adm-icon">⊞</span> Dashboard
+        <span class="adm-icon"><svg class="px-icon" viewBox="0 0 10 9" width="16" height="14" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="4" y="0" width="2" height="1"/><rect x="3" y="1" width="4" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="1" y="3" width="8" height="1"/><rect x="0" y="4" width="10" height="1"/><rect x="1" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="1" y="6" width="1" height="1"/><rect x="3" y="6" width="4" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="1" y="7" width="1" height="1"/><rect x="3" y="7" width="1" height="1"/><rect x="6" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="1" y="8" width="1" height="1"/><rect x="3" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/></g></svg></span> Dashboard
       </a>
       <div class="adm-nav-section">Management</div>
       <a class="adm-nav-link" onclick="switchAdmView('classes')">
-        <span class="adm-icon">▦</span> Classrooms
+        <span class="adm-icon"><svg class="px-icon" viewBox="0 0 10 9" width="16" height="14" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="5" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="10" height="1"/><rect x="3" y="7" width="4" height="1"/><rect x="2" y="8" width="6" height="1"/></g></svg></span> Classrooms
       </a>
       <a class="adm-nav-link" onclick="switchAdmView('students')">
-        <span class="adm-icon">⊛</span> Students
+        <span class="adm-icon"><svg class="px-icon" viewBox="0 0 10 6" width="16" height="10" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="1" y="0" width="2" height="1"/><rect x="7" y="0" width="2" height="1"/><rect x="1" y="1" width="2" height="1"/><rect x="7" y="1" width="2" height="1"/><rect x="0" y="3" width="4" height="1"/><rect x="6" y="3" width="4" height="1"/><rect x="0" y="4" width="4" height="1"/><rect x="6" y="4" width="4" height="1"/><rect x="0" y="5" width="4" height="1"/><rect x="6" y="5" width="4" height="1"/></g></svg></span> Students
         <span class="adm-nav-badge" id="adm-students-nav-badge">0</span>
       </a>
       <a class="adm-nav-link" onclick="switchAdmView('quizzes')">
-        <span class="adm-icon">▦</span> Quizzes
+        <span class="adm-icon"><svg class="px-icon" viewBox="0 0 9 11" width="16" height="20" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="9" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="3" y="2" width="3" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="6" y="3" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="5" y="5" width="2" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="4" y="6" width="2" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="0" y="10" width="9" height="1"/></g></svg></span> Quizzes
       </a>
       <a class="adm-nav-link" onclick="switchAdmView('notes')">
-        <span class="adm-icon">⊡</span> Notes
+        <span class="adm-icon"><svg class="px-icon" viewBox="0 0 10 11" width="16" height="18" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="6" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="2" y="6" width="6" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="2" y="8" width="4" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="9" y="9" width="1" height="1"/><rect x="0" y="10" width="10" height="1"/></g></svg></span> Notes
         <span class="adm-notes-badge-live" id="adm-notes-nav-badge"></span>
       </a>
       <div class="adm-nav-section">Reports</div>
       <a class="adm-nav-link" onclick="switchAdmView('scores')">
-        <span class="adm-icon">▲</span> Scores
+        <span class="adm-icon"><svg class="px-icon" viewBox="0 0 11 9" width="16" height="13" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="8" y="0" width="3" height="1"/><rect x="8" y="1" width="3" height="1"/><rect x="4" y="2" width="3" height="1"/><rect x="8" y="2" width="3" height="1"/><rect x="4" y="3" width="3" height="1"/><rect x="8" y="3" width="3" height="1"/><rect x="4" y="4" width="3" height="1"/><rect x="8" y="4" width="3" height="1"/><rect x="0" y="5" width="3" height="1"/><rect x="4" y="5" width="3" height="1"/><rect x="8" y="5" width="3" height="1"/><rect x="0" y="6" width="3" height="1"/><rect x="4" y="6" width="3" height="1"/><rect x="8" y="6" width="3" height="1"/><rect x="0" y="7" width="3" height="1"/><rect x="4" y="7" width="3" height="1"/><rect x="8" y="7" width="3" height="1"/><rect x="0" y="8" width="11" height="1"/></g></svg></span> Scores
       </a>
       <a class="adm-nav-link" onclick="switchAdmView('settings')">
-        <span class="adm-icon">▣</span> Settings
+        <span class="adm-icon"><svg class="px-icon" viewBox="0 0 10 9" width="16" height="14" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="4" y="0" width="2" height="1"/><rect x="3" y="1" width="4" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="1" y="3" width="8" height="1"/><rect x="0" y="4" width="10" height="1"/><rect x="1" y="5" width="8" height="1"/><rect x="2" y="6" width="6" height="1"/><rect x="3" y="7" width="4" height="1"/><rect x="4" y="8" width="2" height="1"/></g></svg></span> Settings
       </a>
     </nav>
     <div class="adm-sidebar-footer">
@@ -3884,25 +3896,25 @@ body {
       <div id="adm-dashboard" class="adm-view active">
         <div class="adm-metrics">
           <div class="metric-card">
-            <div class="metric-icon">⊛</div>
+            <div class="metric-icon"><svg class="px-icon" viewBox="0 0 10 6" width="20" height="12" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="1" y="0" width="2" height="1"/><rect x="7" y="0" width="2" height="1"/><rect x="1" y="1" width="2" height="1"/><rect x="7" y="1" width="2" height="1"/><rect x="0" y="3" width="4" height="1"/><rect x="6" y="3" width="4" height="1"/><rect x="0" y="4" width="4" height="1"/><rect x="6" y="4" width="4" height="1"/><rect x="0" y="5" width="4" height="1"/><rect x="6" y="5" width="4" height="1"/></g></svg></div>
             <div class="metric-label">Total Students</div>
             <span class="metric-value" id="adm-metric-students">0</span>
             <span class="metric-change" id="adm-metric-students-sub">No students yet</span>
           </div>
           <div class="metric-card">
-            <div class="metric-icon">▦</div>
+            <div class="metric-icon"><svg class="px-icon" viewBox="0 0 10 9" width="20" height="18" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="5" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="10" height="1"/><rect x="3" y="7" width="4" height="1"/><rect x="2" y="8" width="6" height="1"/></g></svg></div>
             <div class="metric-label">Active Classes</div>
             <span class="metric-value" id="adm-metric-classes">0</span>
             <span class="metric-change" id="adm-metric-classes-sub">No classes created</span>
           </div>
           <div class="metric-card">
-            <div class="metric-icon">▦</div>
+            <div class="metric-icon"><svg class="px-icon" viewBox="0 0 9 11" width="20" height="24" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="9" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="3" y="2" width="3" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="6" y="3" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="5" y="5" width="2" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="4" y="6" width="2" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="0" y="10" width="9" height="1"/></g></svg></div>
             <div class="metric-label">Quizzes Created</div>
             <span class="metric-value" id="adm-metric-quizzes">0</span>
             <span class="metric-change" id="adm-metric-quizzes-sub">No quizzes yet</span>
           </div>
           <div class="metric-card">
-            <div class="metric-icon">▲</div>
+            <div class="metric-icon"><svg class="px-icon" viewBox="0 0 11 9" width="20" height="16" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="8" y="0" width="3" height="1"/><rect x="8" y="1" width="3" height="1"/><rect x="4" y="2" width="3" height="1"/><rect x="8" y="2" width="3" height="1"/><rect x="4" y="3" width="3" height="1"/><rect x="8" y="3" width="3" height="1"/><rect x="4" y="4" width="3" height="1"/><rect x="8" y="4" width="3" height="1"/><rect x="0" y="5" width="3" height="1"/><rect x="4" y="5" width="3" height="1"/><rect x="8" y="5" width="3" height="1"/><rect x="0" y="6" width="3" height="1"/><rect x="4" y="6" width="3" height="1"/><rect x="8" y="6" width="3" height="1"/><rect x="0" y="7" width="3" height="1"/><rect x="4" y="7" width="3" height="1"/><rect x="8" y="7" width="3" height="1"/><rect x="0" y="8" width="11" height="1"/></g></svg></div>
             <div class="metric-label">Avg. Score</div>
             <span class="metric-value" id="adm-metric-avg">—%</span>
             <span class="metric-change" id="adm-metric-avg-sub">No scores recorded</span>
@@ -4943,7 +4955,7 @@ async function renderStudentDashboard() {
   const activityDiv = document.getElementById('dash-recent-activity');
 
   if (classIds.length === 0) {
-    if (activeDiv) activeDiv.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon">?</span><span class="empty-state-text">NO ACTIVE QUIZZES YET<br><span style="font-size:8px;opacity:0.6;font-family:'Lato',sans-serif;font-weight:400;">Join a class to see quizzes</span></span></div>`;
+    if (activeDiv) activeDiv.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon"><svg class="px-icon" viewBox="0 0 9 11" width="30" height="37" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="9" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="3" y="2" width="3" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="6" y="3" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="5" y="5" width="2" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="4" y="6" width="2" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="0" y="10" width="9" height="1"/></g></svg></span><span class="empty-state-text">NO ACTIVE QUIZZES YET<br><span style="font-size:8px;opacity:0.6;font-family:'Lato',sans-serif;font-weight:400;">Join a class to see quizzes</span></span></div>`;
     return;
   }
 
@@ -4957,7 +4969,7 @@ async function renderStudentDashboard() {
   if (activeDiv) {
     const pending = (quizzes || []).filter(q => !submittedIds.has(q.id));
     if (pending.length === 0) {
-      activeDiv.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon">▣</span><span class="empty-state-text">ALL CAUGHT UP!<br><span style="font-size:8px;opacity:0.6;font-family:'Lato',sans-serif;font-weight:400;">No pending quizzes</span></span></div>`;
+      activeDiv.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon"><svg class="px-icon" viewBox="0 0 10 7" width="30" height="21" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="8" y="0" width="2" height="1"/><rect x="7" y="1" width="2" height="1"/><rect x="6" y="2" width="2" height="1"/><rect x="5" y="3" width="2" height="1"/><rect x="0" y="4" width="2" height="1"/><rect x="4" y="4" width="2" height="1"/><rect x="1" y="5" width="4" height="1"/><rect x="2" y="6" width="2" height="1"/></g></svg></span><span class="empty-state-text">ALL CAUGHT UP!<br><span style="font-size:8px;opacity:0.6;font-family:'Lato',sans-serif;font-weight:400;">No pending quizzes</span></span></div>`;
     } else {
       activeDiv.innerHTML = pending.map(q => `
         <div class="pixel-card terracotta-accent" onclick="startQuizFromDB('${q.id}')" style="cursor:pointer;">
@@ -4987,7 +4999,7 @@ async function renderStudentDashboard() {
 
     activityDiv.innerHTML = submissions.slice(0, 5).map(s => `
       <div class="quest-item">
-        <div class="quest-icon" style="background:${s.score >= 75 ? 'var(--moss)' : 'var(--terracotta)'};color:#FFF;font-size:10px;display:flex;align-items:center;justify-content:center;">▤</div>
+        <div class="quest-icon" style="background:${s.score >= 75 ? 'var(--moss)' : 'var(--terracotta)'};color:#FFF;font-size:10px;display:flex;align-items:center;justify-content:center;"><svg class="px-icon" viewBox="0 0 10 11" width="14" height="15" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="6" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="2" y="6" width="6" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="2" y="8" width="4" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="9" y="9" width="1" height="1"/><rect x="0" y="10" width="10" height="1"/></g></svg></div>
         <div class="quest-info">
           <span class="quest-name">${allQuizTitles[s.quiz_id] || 'Quiz'}</span>
           <span class="quest-desc">Score: ${s.score}%</span>
@@ -5012,7 +5024,7 @@ async function renderStudentClasses() {
     .eq('student_id', currentUser.id);
 
   if (!enrollments || enrollments.length === 0) {
-    listEl.innerHTML = `<div class="empty-state"><span class="empty-state-icon">▦</span><span class="empty-state-text">NO CLASSES YET<br><span style="font-size:8px;opacity:0.6;font-family:'Lato',sans-serif;font-weight:400;">Enter a class code above to join your first class</span></span></div>`;
+    listEl.innerHTML = `<div class="empty-state"><span class="empty-state-icon"><svg class="px-icon" viewBox="0 0 10 9" width="30" height="27" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="5" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="10" height="1"/><rect x="3" y="7" width="4" height="1"/><rect x="2" y="8" width="6" height="1"/></g></svg></span><span class="empty-state-text">NO CLASSES YET<br><span style="font-size:8px;opacity:0.6;font-family:'Lato',sans-serif;font-weight:400;">Enter a class code above to join your first class</span></span></div>`;
     return;
   }
 
@@ -5071,7 +5083,7 @@ async function renderStudentQuizzes() {
   const classIds = (enrollments || []).map(e => e.classroom_id);
 
   if (classIds.length === 0) {
-    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon">?</span><span class="empty-state-text">NO QUIZZES AVAILABLE<br><span style="font-size:8px;opacity:0.6;font-family:'Lato',sans-serif;font-weight:400;">Join a class to see quizzes</span></span></div>`;
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon"><svg class="px-icon" viewBox="0 0 9 11" width="30" height="37" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="9" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="3" y="2" width="3" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="6" y="3" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="5" y="5" width="2" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="4" y="6" width="2" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="0" y="10" width="9" height="1"/></g></svg></span><span class="empty-state-text">NO QUIZZES AVAILABLE<br><span style="font-size:8px;opacity:0.6;font-family:'Lato',sans-serif;font-weight:400;">Join a class to see quizzes</span></span></div>`;
     return;
   }
 
@@ -5089,7 +5101,7 @@ async function renderStudentQuizzes() {
   }
 
   if (!quizzes || quizzes.length === 0) {
-    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon">?</span><span class="empty-state-text">NO QUIZZES YET<br><span style="font-size:8px;opacity:0.6;font-family:'Lato',sans-serif;font-weight:400;">Your teacher hasn't posted any quizzes</span></span></div>`;
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon"><svg class="px-icon" viewBox="0 0 9 11" width="30" height="37" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="9" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="3" y="2" width="3" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="6" y="3" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="5" y="5" width="2" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="4" y="6" width="2" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="0" y="10" width="9" height="1"/></g></svg></span><span class="empty-state-text">NO QUIZZES YET<br><span style="font-size:8px;opacity:0.6;font-family:'Lato',sans-serif;font-weight:400;">Your teacher hasn't posted any quizzes</span></span></div>`;
     return;
   }
 
@@ -5384,7 +5396,7 @@ async function renderStudentNotes() {
   if (grid) {
     const approved = notesStore.filter(n => n.status === 'approved');
     if (approved.length === 0) {
-      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon">▤</span><span class="empty-state-text">NO APPROVED NOTES YET</span></div>`;
+      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon"><svg class="px-icon" viewBox="0 0 10 11" width="30" height="33" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="6" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="2" y="6" width="6" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="2" y="8" width="4" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="9" y="9" width="1" height="1"/><rect x="0" y="10" width="10" height="1"/></g></svg></span><span class="empty-state-text">NO APPROVED NOTES YET</span></div>`;
     } else {
       grid.innerHTML = approved.map(n => `
         <div class="note-card" onclick="openNoteView('${n.id}')">
@@ -5407,7 +5419,7 @@ function renderMySubmissions() {
   if (!list || !currentUser) return;
   const mine = notesStore.filter(n => n.authorId === currentUser.id);
   if (mine.length === 0) {
-    list.innerHTML = `<div class="empty-state"><span class="empty-state-icon">▤</span><span class="empty-state-text">YOU HAVEN'T UPLOADED ANY NOTES YET</span></div>`;
+    list.innerHTML = `<div class="empty-state"><span class="empty-state-icon"><svg class="px-icon" viewBox="0 0 10 11" width="30" height="33" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="6" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="2" y="6" width="6" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="2" y="8" width="4" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="9" y="9" width="1" height="1"/><rect x="0" y="10" width="10" height="1"/></g></svg></span><span class="empty-state-text">YOU HAVEN'T UPLOADED ANY NOTES YET</span></div>`;
     return;
   }
   list.innerHTML = mine.map(n => {
@@ -6019,7 +6031,7 @@ function cdSwitchTab(tab) {
 async function renderClassDetailQuizzes() {
   const grid = document.getElementById('cd-quizzes-grid');
   if (!grid || !currentClassDetailId) return;
-  grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon">▦</span><span class="empty-state-text" style="font-size:8px;">Loading...</span></div>`;
+  grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon"><svg class="px-icon" viewBox="0 0 10 9" width="30" height="27" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="5" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="10" height="1"/><rect x="3" y="7" width="4" height="1"/><rect x="2" y="8" width="6" height="1"/></g></svg></span><span class="empty-state-text" style="font-size:8px;">Loading...</span></div>`;
 
   const { data: quizzes } = await _supabase
     .from('quizzes')
@@ -6036,7 +6048,7 @@ async function renderClassDetailQuizzes() {
   (submissions || []).forEach(s => { submittedMap[s.quiz_id] = s.score; });
 
   if (!quizzes || quizzes.length === 0) {
-    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon">?</span><span class="empty-state-text">NO QUIZZES POSTED YET<br><span style="font-size:8px;opacity:0.6;font-family:'Lato',sans-serif;font-weight:400;">Your teacher hasn't posted any quizzes for this class</span></span></div>`;
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon"><svg class="px-icon" viewBox="0 0 9 11" width="30" height="37" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="9" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="3" y="2" width="3" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="6" y="3" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="5" y="5" width="2" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="4" y="6" width="2" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="0" y="10" width="9" height="1"/></g></svg></span><span class="empty-state-text">NO QUIZZES POSTED YET<br><span style="font-size:8px;opacity:0.6;font-family:'Lato',sans-serif;font-weight:400;">Your teacher hasn't posted any quizzes for this class</span></span></div>`;
     return;
   }
 
@@ -6113,7 +6125,7 @@ async function renderClassDetailMembers() {
     .eq('classroom_id', currentClassDetailId);
 
   if (!enrollments || enrollments.length === 0) {
-    listEl.innerHTML = `<div class="empty-state"><span class="empty-state-icon">⊛</span><span class="empty-state-text">NO STUDENTS ENROLLED YET</span></div>`;
+    listEl.innerHTML = `<div class="empty-state"><span class="empty-state-icon"><svg class="px-icon" viewBox="0 0 10 6" width="30" height="18" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="1" y="0" width="2" height="1"/><rect x="7" y="0" width="2" height="1"/><rect x="1" y="1" width="2" height="1"/><rect x="7" y="1" width="2" height="1"/><rect x="0" y="3" width="4" height="1"/><rect x="6" y="3" width="4" height="1"/><rect x="0" y="4" width="4" height="1"/><rect x="6" y="4" width="4" height="1"/><rect x="0" y="5" width="4" height="1"/><rect x="6" y="5" width="4" height="1"/></g></svg></span><span class="empty-state-text">NO STUDENTS ENROLLED YET</span></div>`;
     return;
   }
 
