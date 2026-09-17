@@ -71,32 +71,85 @@ body {
    LOGIN PAGE
 ============================================================ */
 #page-login {
-  background: #F0EDE4;
+  background: var(--cr-bg, #F5F0E8);
   align-items: center;
   justify-content: center;
   position: relative;
   overflow-y: auto;
 }
 
+/* Warm linen texture + pixel-dot grid (same as landing page) */
 #page-login::before {
   content: '';
-  position: absolute;
+  position: fixed;
   inset: 0;
-  background: 
-    radial-gradient(ellipse at 20% 50%, rgba(138,154,91,0.08) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 30%, rgba(226,114,91,0.07) 0%, transparent 50%);
+  background-image:
+    radial-gradient(ellipse at 15% 20%, rgba(196,150,10,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 75%, rgba(58,107,74,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 50%, rgba(184,92,66,0.04) 0%, transparent 70%);
   pointer-events: none;
+  z-index: 0;
 }
-
 
 #page-login::after {
   content: '';
-  position: absolute;
+  position: fixed;
   inset: 0;
-  background-image: 
-    linear-gradient(rgba(46,64,83,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(46,64,83,0.04) 1px, transparent 1px);
-  background-size: 32px 32px;
+  background-image: radial-gradient(var(--cr-ink, #2A2118) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Email field with locked @gordoncollege.edu.ph suffix */
+.email-field {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  background: #FFFFFF;
+  border: 2px solid var(--indigo);
+  border-radius: 2px;
+  box-shadow: 2px 2px 0px rgba(46,64,83,0.15);
+  transition: box-shadow 0.2s, border-color 0.2s;
+  overflow: hidden;
+}
+.email-field:focus-within {
+  border-color: var(--moss);
+  box-shadow: 2px 2px 0px var(--moss), 0 0 0 3px rgba(138,154,91,0.1);
+}
+.form-group .email-field input {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+.form-group .email-field input:focus {
+  border: none;
+  box-shadow: none;
+}
+.role-hint {
+  display: block;
+  margin-top: 7px;
+  color: rgba(46,64,83,0.45);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 6px;
+  letter-spacing: 0.5px;
+  line-height: 1.6;
+}
+.email-domain {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  background: rgba(46,64,83,0.07);
+  border-left: 2px solid var(--indigo);
+  font-family: 'Lato', sans-serif;
+  font-size: 13px;
+  color: rgba(46,64,83,0.75);
+  white-space: nowrap;
+  user-select: none;
   pointer-events: none;
 }
 
@@ -223,6 +276,32 @@ body {
 }
 
 .login-tab:hover { opacity: 0.7; }
+
+.role-toggle { display: flex; gap: 8px; margin-bottom: 18px; }
+.role-pill {
+  flex: 1;
+  padding: 10px 8px;
+  background: #FAFAF2;
+  border: 2px solid var(--indigo);
+  box-shadow: 2px 2px 0px rgba(46,64,83,0.2);
+  border-radius: 2px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--indigo);
+  opacity: 0.55;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s, box-shadow 0.1s, background 0.15s, color 0.15s;
+}
+.role-pill:hover { opacity: 0.85; }
+.role-pill.active {
+  opacity: 1;
+  background: var(--indigo);
+  color: #fff;
+  box-shadow: 2px 2px 0px var(--moss-dark);
+  transform: translate(-1px,-1px);
+}
 
 .form-group {
   margin-bottom: 18px;
@@ -2206,15 +2285,7 @@ body {
   color: var(--cr-ink);
 }
 
-/* ---- HERO WRAPPER (full-width background strip) ---- */
-.lp-hero-wrapper {
-  width: 100%;
-  background: var(--cr-bg);
-  position: relative;
-  z-index: 1;
-}
-
-/* Warm linen texture via subtle noise pattern */
+/* Warm linen texture + pixel-dot grid */
 #page-landing::before {
   content: '';
   position: fixed;
@@ -2222,9 +2293,58 @@ body {
   background-image:
     radial-gradient(ellipse at 15% 20%, rgba(196,150,10,0.06) 0%, transparent 55%),
     radial-gradient(ellipse at 85% 75%, rgba(58,107,74,0.07) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 50%, rgba(184,92,66,0.04) 0%, transparent 70%);
+    radial-gradient(ellipse at 50% 50%, rgba(184,92,66,0.04) 0%, transparent 70%),
+    radial-gradient(var(--cr-ink) 1px, transparent 1px);
+  background-size: auto, auto, auto, 28px 28px;
+  background-position: 0 0, 0 0, 0 0, 0 0;
+  opacity: 1;
   pointer-events: none;
   z-index: 0;
+}
+#page-landing::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(var(--cr-ink) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---- CRYSTAL GLOW LAYER (sits over the pixel grid) ---- */
+.lp-crystal-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.lp-crystal {
+  position: absolute;
+  border-radius: 42% 58% 56% 44% / 46% 40% 60% 54%;
+  filter: blur(75px);
+  opacity: 0.4;
+  mix-blend-mode: multiply;
+  animation: crystalDrift 16s ease-in-out infinite;
+}
+.lp-crystal.c1 { width: 420px; height: 420px; top: -110px; left: -110px; background: radial-gradient(circle at 30% 30%, var(--cr-green-lt), var(--cr-green) 72%); animation-delay: 0s; }
+.lp-crystal.c2 { width: 380px; height: 380px; top: 8%; right: -140px; background: radial-gradient(circle at 60% 40%, var(--cr-gold-lt), var(--cr-gold) 72%); animation-delay: 3.5s; }
+.lp-crystal.c3 { width: 460px; height: 460px; bottom: 4%; left: 8%; background: radial-gradient(circle at 40% 60%, var(--cr-terra-lt), var(--cr-terra) 72%); animation-delay: 7s; }
+.lp-crystal.c4 { width: 320px; height: 320px; bottom: -110px; right: 12%; background: radial-gradient(circle at 50% 50%, #fff, var(--cr-gold-lt) 75%); opacity: 0.5; animation-delay: 2s; }
+.lp-crystal.c5 { width: 260px; height: 260px; top: 46%; left: 46%; background: radial-gradient(circle at 50% 50%, #fff, var(--cr-green-lt) 75%); opacity: 0.25; animation-delay: 5s; }
+@keyframes crystalDrift {
+  0%, 100% { transform: translate(0,0) scale(1) rotate(0deg); }
+  33%      { transform: translate(30px,-26px) scale(1.08) rotate(6deg); }
+  66%      { transform: translate(-22px,22px) scale(0.94) rotate(-5deg); }
+}
+
+/* ---- FLOATING PIXEL SPRITES ---- */
+.lp-sprite {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  image-rendering: pixelated;
+  animation: spriteFloat 5s ease-in-out infinite;
+}
+.lp-sprite svg { display: block; filter: drop-shadow(3px 3px 0 rgba(42,33,24,0.18)); }
+@keyframes spriteFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(6deg); }
 }
 
 /* ---- NAV ---- */
@@ -2239,7 +2359,7 @@ body {
   height: 68px;
   background: rgba(245,240,232,0.95);
   backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--cr-border);
+  border-bottom: 2px solid var(--cr-ink);
   animation: navDrop 0.5s ease both;
 }
 @keyframes navDrop {
@@ -2261,16 +2381,9 @@ body {
     0 6px 18px rgba(42,33,24,0.12);
 }
 .lp-nav-brand::after,
-.lp-nav-brand::before {
-  display: none !important;
-  content: none !important;
-}
+.lp-nav-brand::before { display: none !important; content: none !important; }
 
-.lp-nav-links {
-  display: flex;
-  gap: 40px;
-  align-items: center;
-}
+.lp-nav-links { display: flex; gap: 40px; align-items: center; }
 
 .lp-nav-link {
   font-family: 'Lato', sans-serif;
@@ -2291,49 +2404,96 @@ body {
   content: '';
   position: absolute;
   bottom: -2px; left: 0;
-  width: 0%; height: 1px;
+  width: 0%; height: 2px;
   background: var(--cr-green);
   transition: width 0.25s ease;
 }
 .lp-nav-link:hover { color: var(--cr-ink); }
 .lp-nav-link:hover::after { width: 100%; }
 
-.lp-nav-cta {
+/* ---- PIXEL BUTTONS (bevel + hard offset shadow) ---- */
+.lp-nav-cta,
+.btn-lp-primary,
+.btn-lp-outline {
   font-family: 'Press Start 2P', monospace;
-  font-size: 7px;
-  color: #fff;
-  background: var(--cr-green);
-  border: none;
-  padding: 11px 22px;
   cursor: pointer;
   letter-spacing: 1px;
   text-transform: uppercase;
-  transition: background 0.2s, transform 0.15s, box-shadow 0.15s;
-  box-shadow: 0 3px 12px rgba(58,107,74,0.35), inset 0 1px 0 rgba(255,255,255,0.15);
-  border-radius: 2px;
+  border-radius: 6px;
+  border: 2px solid var(--cr-ink);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.2s, color 0.2s;
+  position: relative;
 }
-.lp-nav-cta:hover {
-  background: var(--cr-green2);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(58,107,74,0.4);
+
+.lp-nav-cta {
+  font-size: 8px;
+  color: #fff;
+  background: var(--cr-green);
+  padding: 10px 20px;
+  box-shadow: 3px 3px 0 var(--cr-ink);
 }
-.lp-nav-cta:active { transform: translateY(0); }
+.lp-nav-cta:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--cr-ink); background: var(--cr-green2); }
+.lp-nav-cta:active { transform: translate(0,0); box-shadow: 1px 1px 0 var(--cr-ink); }
+
+.btn-lp-primary {
+  font-size: 9px;
+  color: #fff;
+  background: var(--cr-green);
+  padding: 16px 26px;
+  box-shadow: 4px 4px 0 var(--cr-ink);
+  overflow: hidden;
+}
+.btn-lp-primary::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -80%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  transition: left 0.5s;
+}
+.btn-lp-primary:hover::after { left: 130%; }
+.btn-lp-primary:hover { transform: translate(-3px,-3px); box-shadow: 7px 7px 0 var(--cr-ink); background: var(--cr-green2); }
+.btn-lp-primary:active { transform: translate(0,0); box-shadow: 2px 2px 0 var(--cr-ink); }
+.btn-lp-primary.gold { background: var(--cr-gold); }
+.btn-lp-primary.gold:hover { background: #A87D08; }
+
+.btn-lp-outline {
+  font-size: 9px;
+  color: var(--cr-ink2);
+  background: var(--cr-surface);
+  padding: 15px 24px;
+  box-shadow: 4px 4px 0 var(--cr-border);
+}
+.btn-lp-outline:hover {
+  transform: translate(-3px,-3px);
+  box-shadow: 7px 7px 0 var(--cr-border);
+  border-color: var(--cr-terra);
+  color: var(--cr-terra);
+}
+.btn-lp-outline:active { transform: translate(0,0); box-shadow: 1px 1px 0 var(--cr-border); }
+.lp-cta-banner .btn-lp-outline {
+  color: rgba(255,255,255,0.8);
+  background: transparent;
+  border-color: rgba(255,255,255,0.4);
+  box-shadow: 4px 4px 0 rgba(255,255,255,0.15);
+}
+.lp-cta-banner .btn-lp-outline:hover { border-color: var(--cr-gold); color: var(--cr-gold); box-shadow: 7px 7px 0 rgba(255,255,255,0.15); }
 
 /* ---- HERO ---- */
 .lp-hero {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.05fr 0.95fr;
   align-items: center;
   gap: 60px;
-  padding: 90px 64px 80px;
+  padding: 84px 64px 70px;
   max-width: 1160px;
   margin: 0 auto;
   width: 100%;
 }
 
-.lp-hero-left { display: flex; flex-direction: column; gap: 0; }
+.lp-hero-left { display: flex; flex-direction: column; gap: 0; position: relative; }
 
 .lp-hero-eyebrow {
   font-family: 'Lato', sans-serif;
@@ -2343,188 +2503,158 @@ body {
   text-transform: uppercase;
   color: var(--cr-green);
   margin-bottom: 20px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 10px;
+  background: var(--cr-green-lt);
+  border: 1.5px solid var(--cr-green);
+  border-radius: 20px;
+  padding: 6px 14px 6px 10px;
+  width: fit-content;
   animation: fadeUp 0.6s ease 0.1s both;
 }
-.lp-hero-eyebrow::before {
-  content: '';
-  width: 28px; height: 2px;
-  background: var(--cr-green);
-}
+.lp-hero-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cr-green); animation: dotPulse 1.6s ease-in-out infinite; }
+@keyframes dotPulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
 
 .lp-hero-title {
   font-family: 'Press Start 2P', monospace;
-  font-size: clamp(16px, 2.2vw, 28px);
+  font-size: clamp(17px, 2.3vw, 29px);
   color: var(--cr-ink);
-  line-height: 1.65;
+  line-height: 1.7;
   letter-spacing: 1px;
-  margin-bottom: 28px;
+  margin-bottom: 26px;
   animation: fadeUp 0.6s ease 0.2s both;
 }
-.lp-hero-title .accent { color: var(--cr-green); }
+.lp-hero-title .accent { color: var(--cr-green); position: relative; }
 
 .lp-hero-sub {
   font-size: 16px;
   color: var(--cr-ink2);
   line-height: 1.8;
-  margin-bottom: 40px;
+  margin-bottom: 36px;
   font-weight: 400;
-  max-width: 440px;
+  max-width: 460px;
   animation: fadeUp 0.6s ease 0.3s both;
 }
 
-.lp-hero-btns {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  animation: fadeUp 0.6s ease 0.4s both;
-}
+.lp-hero-btns { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 34px; animation: fadeUp 0.6s ease 0.4s both; }
 
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(20px); }
-  to   { opacity:1; transform:translateY(0); }
-}
-
-/* Hero right — decorative stat card cluster */
-.lp-hero-right {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  animation: fadeUp 0.7s ease 0.3s both;
-}
-
-.lp-hero-stat {
-  background: var(--cr-surface);
-  border: 1px solid var(--cr-border);
-  border-radius: 6px;
-  padding: 24px 20px;
-  box-shadow: 0 4px 24px var(--cr-shadow);
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-.lp-hero-stat::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: var(--cr-green);
-}
-.lp-hero-stat.terra::before { background: var(--cr-terra); }
-.lp-hero-stat.gold::before  { background: var(--cr-gold); }
-.lp-hero-stat.wide {
-  grid-column: 1 / -1;
+.lp-hero-players {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 20px 24px;
+  gap: 12px;
+  animation: fadeUp 0.6s ease 0.5s both;
 }
+.lp-hero-players .stack { display: flex; }
+.lp-hero-players .stack span {
+  width: 26px; height: 26px; border-radius: 50%;
+  border: 2px solid var(--cr-bg);
+  margin-left: -8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: #fff; font-weight: 700;
+}
+.lp-hero-players .stack span:first-child { margin-left: 0; }
+.lp-hero-players small { font-size: 12px; color: var(--cr-ink3); font-weight: 600; }
+.lp-hero-players strong { color: var(--cr-ink); }
 
-.lp-hero-stat-num {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 14px;
-  color: var(--cr-ink);
-  display: block;
-  margin-bottom: 6px;
-  line-height: 1;
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+/* ---- HERO WINDOW MOCKUP ---- */
+.lp-hero-right { position: relative; animation: fadeUp 0.7s ease 0.3s both; }
+
+.lp-window {
+  background: var(--cr-surface);
+  border: 2px solid var(--cr-ink);
+  border-radius: 10px;
+  box-shadow: 8px 8px 0 var(--cr-ink);
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
 }
-.lp-hero-stat-label {
+.lp-window-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 14px;
+  background: var(--cr-bg2);
+  border-bottom: 2px solid var(--cr-ink);
+}
+.lp-window-bar .wdot { width: 10px; height: 10px; border-radius: 50%; }
+.lp-window-bar .wdot.terra { background: var(--cr-terra); }
+.lp-window-bar .wdot.gold  { background: var(--cr-gold); }
+.lp-window-bar .wdot.green { background: var(--cr-green); }
+.lp-window-bar span.wtitle {
+  margin-left: 8px;
+  font-family: 'Source Code Pro', monospace;
   font-size: 11px;
   color: var(--cr-ink3);
   font-weight: 600;
-  letter-spacing: 0.5px;
-  line-height: 1.4;
 }
-.lp-hero-stat-icon-svg {
-  width: 40px;
-  height: 40px;
-  border-radius: 6px;
-  background: var(--cr-green-lt);
+
+.lp-quiz-mock { padding: 34px 30px; background: var(--cr-green-lt); text-align: center; position: relative; }
+.lp-quiz-mock-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 15px;
+  color: var(--cr-green2);
+  letter-spacing: 1px;
+  line-height: 1.7;
+  margin-bottom: 6px;
+  text-shadow: 2px 2px 0 rgba(255,255,255,0.5);
+}
+.lp-quiz-mock-sub { font-size: 11px; color: var(--cr-green2); opacity: 0.75; font-weight: 600; letter-spacing: 1px; margin-bottom: 22px; }
+.lp-quiz-mock-badge {
+  width: 84px; height: 84px;
+  margin: 0 auto 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff, var(--cr-gold) 70%);
+  border: 3px solid var(--cr-ink);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  color: var(--cr-ink);
+  box-shadow: 3px 3px 0 rgba(42,33,24,0.25);
+  animation: badgeSpin 6s ease-in-out infinite;
+}
+@keyframes badgeSpin { 0%,100%{ transform: rotate(-4deg);} 50%{ transform: rotate(4deg);} }
+.lp-quiz-mock-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.lp-pixel-chip {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  padding: 10px 16px;
+  border: 2px solid var(--cr-ink);
+  border-radius: 5px;
+  background: #fff;
+  color: var(--cr-ink);
+  box-shadow: 2px 2px 0 var(--cr-ink);
+}
+.lp-pixel-chip.filled { background: var(--cr-terra); color: #fff; }
+
+.lp-window-foot {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 14px;
-  flex-shrink: 0;
-}
-.lp-hero-stat-icon-svg.terra-icon { background: var(--cr-terra-lt); }
-.lp-hero-stat-icon-svg.terra-icon svg { stroke: var(--cr-terra); }
-.lp-hero-stat-icon-svg.gold-icon { background: var(--cr-gold-lt); }
-.lp-hero-stat-icon-svg.gold-icon svg { stroke: var(--cr-gold); }
-
-/* Buttons */
-.btn-lp-primary {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 8px;
-  color: #fff;
-  background: var(--cr-green);
-  border: none;
-  border-radius: 2px;
-  box-shadow: 0 4px 16px rgba(58,107,74,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
-  padding: 16px 28px;
-  cursor: pointer;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  position: relative;
-  overflow: hidden;
-  transition: background 0.2s, transform 0.15s, box-shadow 0.15s;
-}
-.btn-lp-primary::after {
-  content: '';
-  position: absolute;
-  top: 0; left: -80%;
-  width: 60%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  transition: left 0.5s;
-}
-.btn-lp-primary:hover::after { left: 130%; }
-.btn-lp-primary:hover {
-  background: var(--cr-green2);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(58,107,74,0.45);
-}
-.btn-lp-primary:active { transform: translateY(0); }
-
-.btn-lp-outline {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 8px;
+  padding: 14px 20px;
+  border-top: 2px solid var(--cr-ink);
+  background: var(--cr-surface);
+  font-family: 'VT323', monospace;
+  font-size: 18px;
   color: var(--cr-ink2);
-  background: transparent;
-  border: 1.5px solid var(--cr-border);
-  border-radius: 2px;
-  padding: 15px 24px;
-  cursor: pointer;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
 }
-.btn-lp-outline:hover {
-  border-color: var(--cr-terra);
-  color: var(--cr-terra);
-  background: var(--cr-terra-lt);
-}
+.lp-window-foot .xp { color: var(--cr-gold); font-weight: 700; }
+
+.lp-hero-right .lp-sprite:nth-child(2) { top: -18px; right: 24px; animation-delay: .4s; }
+.lp-hero-right .lp-sprite:nth-child(3) { bottom: -16px; left: -20px; animation-delay: 1.2s; }
+.lp-hero-right .lp-sprite:nth-child(4) { top: 40%; right: -26px; animation-delay: .8s; }
 
 /* ---- DIVIDER ---- */
-.lp-divider {
-  height: 1px;
-  background: var(--cr-border);
-  margin: 0 64px;
-  position: relative;
-  z-index: 1;
+.lp-divider { height: 2px; background: var(--cr-border); margin: 0 64px; position: relative; z-index: 1; }
+.lp-divider::before {
+  content: '◆'; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+  background: var(--cr-bg); color: var(--cr-border); font-size: 10px; padding: 0 10px;
 }
 
 /* ---- SECTION WRAPPER ---- */
-.lp-section {
-  position: relative;
-  z-index: 1;
-  padding: 80px 64px;
-  max-width: 1160px;
-  margin: 0 auto;
-  width: 100%;
-}
+.lp-section { position: relative; z-index: 1; padding: 76px 64px; max-width: 1160px; margin: 0 auto; width: 100%; }
 
 .lp-section-label {
   font-family: 'Lato', sans-serif;
@@ -2538,173 +2668,282 @@ body {
   align-items: center;
   gap: 10px;
 }
-.lp-section-label::before {
-  content: '';
-  width: 20px; height: 2px;
-  background: var(--cr-green);
-  flex-shrink: 0;
-}
+.lp-section-label::before { content: ''; width: 20px; height: 2px; background: var(--cr-green); flex-shrink: 0; }
 
 .lp-section-title {
   font-family: 'Press Start 2P', monospace;
-  font-size: clamp(12px, 1.5vw, 17px);
+  font-size: clamp(13px, 1.6vw, 18px);
   color: var(--cr-ink);
-  line-height: 1.7;
-  margin-bottom: 52px;
-  max-width: 600px;
+  line-height: 1.8;
+  margin-bottom: 44px;
+  max-width: 620px;
 }
 
-/* ---- FEATURES GRID ---- */
-.lp-features-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
+/* ---- CATEGORY PILL BAR ---- */
+.lp-pill-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+  margin-top: -20px;
 }
+.lp-pill-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 2px solid var(--cr-ink);
+  border-radius: 20px;
+  padding: 8px 16px;
+  background: var(--cr-surface);
+  font-size: 12px;
+  color: var(--cr-ink3);
+  box-shadow: 2px 2px 0 var(--cr-ink);
+}
+.lp-pill {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--cr-ink2);
+  background: var(--cr-surface);
+  border: 1.5px solid var(--cr-border);
+  border-radius: 20px;
+  padding: 9px 17px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+}
+.lp-pill:hover { border-color: var(--cr-green); color: var(--cr-green); }
+.lp-pill.active { background: var(--cr-green); border-color: var(--cr-green); color: #fff; box-shadow: 2px 2px 0 var(--cr-ink); }
+
+/* ---- FEATURES / "COURSE CARD" GRID ---- */
+.lp-features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
 
 .lp-feat-card {
   background: var(--cr-surface);
-  border: 1px solid var(--cr-border);
-  border-radius: 6px;
-  padding: 30px 26px;
-  box-shadow: 0 2px 12px var(--cr-shadow);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s;
+  border: 2px solid var(--cr-ink);
+  border-radius: 10px;
+  box-shadow: 5px 5px 0 var(--cr-border);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
   position: relative;
   overflow: hidden;
 }
-.lp-feat-card::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 2px;
-  background: var(--cr-green);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
-}
-.lp-feat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px var(--cr-shadow);
-  border-color: rgba(58,107,74,0.35);
-}
-.lp-feat-card:hover::after { transform: scaleX(1); }
+.lp-feat-card:hover { transform: translate(-3px,-3px); box-shadow: 8px 8px 0 var(--cr-border); }
+.lp-feat-card.hidden-card { display: none; }
 
-.lp-feat-icon-box {
-  width: 44px; height: 44px;
-  background: var(--cr-green-lt);
-  border-radius: 4px;
+.lp-feat-banner {
+  height: 84px;
+  position: relative;
+  border-bottom: 2px solid var(--cr-ink);
+  background:
+    repeating-linear-gradient(135deg, rgba(255,255,255,0.08) 0 6px, transparent 6px 12px),
+    linear-gradient(120deg, var(--b1), var(--b2));
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
-  font-size: 20px;
+}
+.lp-feat-card:nth-child(6n+1) .lp-feat-banner { --b1: var(--cr-green-lt); --b2: var(--cr-green); }
+.lp-feat-card:nth-child(6n+2) .lp-feat-banner { --b1: var(--cr-terra-lt); --b2: var(--cr-terra); }
+.lp-feat-card:nth-child(6n+3) .lp-feat-banner { --b1: var(--cr-gold-lt); --b2: var(--cr-gold); }
+.lp-feat-card:nth-child(6n+4) .lp-feat-banner { --b1: var(--cr-gold-lt); --b2: var(--cr-terra); }
+.lp-feat-card:nth-child(6n+5) .lp-feat-banner { --b1: var(--cr-green-lt); --b2: var(--cr-gold); }
+.lp-feat-card:nth-child(6n+6) .lp-feat-banner { --b1: var(--cr-terra-lt); --b2: var(--cr-green); }
+
+.lp-feat-icon-box {
+  width: 46px; height: 46px;
+  background: #fff;
+  border: 2px solid var(--cr-ink);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 3px 3px 0 rgba(42,33,24,0.25);
+}
+
+.lp-feat-body { padding: 22px 22px 26px; }
+
+.lp-feat-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cr-ink3);
+  border: 1.5px solid var(--cr-border);
+  border-radius: 20px;
+  padding: 3px 10px;
+  margin-bottom: 12px;
 }
 
 .lp-feat-name {
   font-family: 'Press Start 2P', monospace;
-  font-size: 8px;
+  font-size: 9px;
   color: var(--cr-ink);
   letter-spacing: 0.5px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   line-height: 1.8;
 }
 
-.lp-feat-desc {
-  font-size: 13px;
-  color: var(--cr-ink2);
-  line-height: 1.75;
-}
+.lp-feat-desc { font-size: 13px; color: var(--cr-ink2); line-height: 1.75; }
 
-/* ---- HOW IT WORKS ---- */
+/* ---- STATS BAND ---- */
+.lp-stats-band {
+  position: relative;
+  z-index: 1;
+  border-top: 2px solid var(--cr-border);
+  border-bottom: 2px solid var(--cr-border);
+  background: var(--cr-bg2);
+  padding: 44px 64px;
+}
+.lp-stats-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.lp-stat {
+  text-align: center;
+  padding: 6px 10px;
+  border-right: 2px dashed var(--cr-border);
+}
+.lp-stat:last-child { border-right: none; }
+.lp-stat-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  margin-bottom: 10px;
+}
+.px-icon { display: block; image-rendering: pixelated; }
+.lp-stat:nth-child(1) .lp-stat-num { color: var(--cr-green); }
+.lp-stat:nth-child(2) .lp-stat-num { color: var(--cr-terra); }
+.lp-stat:nth-child(3) .lp-stat-num { color: var(--cr-gold); }
+.lp-stat:nth-child(4) .lp-stat-num { color: var(--cr-ink); }
+.lp-stat-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--cr-ink3); }
+
+/* ---- HOW IT WORKS: STEP STRIP ---- */
 .lp-steps {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0;
   background: var(--cr-surface);
-  border: 1px solid var(--cr-border);
-  border-radius: 8px;
+  border: 2px solid var(--cr-ink);
+  border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 24px var(--cr-shadow);
+  box-shadow: 6px 6px 0 var(--cr-border);
+  margin-bottom: 60px;
 }
 
-.lp-step {
-  padding: 36px 28px;
-  border-right: 1px solid var(--cr-border);
-  position: relative;
-  transition: background 0.2s;
-}
+.lp-step { padding: 32px 26px; border-right: 2px solid var(--cr-border); position: relative; transition: background 0.2s; }
 .lp-step:last-child { border-right: none; }
-.lp-step:hover { background: rgba(58,107,74,0.04); }
+.lp-step:hover { background: rgba(58,107,74,0.05); }
 
 .lp-step-num {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 28px;
+  font-family: 'VT323', monospace;
+  font-size: 40px;
   color: var(--cr-green-lt);
+  -webkit-text-stroke: 1.5px var(--cr-green);
   display: block;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   line-height: 1;
 }
 
-.lp-step-title {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 7px;
-  color: var(--cr-ink);
-  letter-spacing: 0.5px;
-  line-height: 1.8;
-  margin-bottom: 12px;
-}
-
-.lp-step-desc {
-  font-size: 13px;
-  color: var(--cr-ink2);
-  line-height: 1.75;
-}
-
+.lp-step-title { font-family: 'Press Start 2P', monospace; font-size: 7.5px; color: var(--cr-ink); letter-spacing: 0.5px; line-height: 1.8; margin-bottom: 12px; }
+.lp-step-desc { font-size: 13px; color: var(--cr-ink2); line-height: 1.75; }
 .lp-step-connector {
-  position: absolute;
-  top: 38px; right: -11px;
-  width: 20px; height: 20px;
+  position: absolute; top: 34px; right: -13px;
+  width: 22px; height: 22px;
   background: var(--cr-green);
+  border: 2px solid var(--cr-ink);
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 9px;
-  color: #fff;
-  z-index: 2;
-  box-shadow: 0 2px 8px rgba(58,107,74,0.4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; color: #fff; z-index: 2;
 }
 
-/* ---- ROLES ---- */
-.lp-roles {
+/* ---- QUIZ PREVIEW SPLIT ---- */
+.lp-split {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 56px;
+  align-items: center;
 }
+.lp-split-copy .lp-section-label,
+.lp-split-copy .lp-section-title { margin-bottom: 20px; }
+.lp-split-copy .lp-section-title { margin-bottom: 20px; }
+.lp-split-copy p { font-size: 14.5px; color: var(--cr-ink2); line-height: 1.85; max-width: 440px; }
+
+.lp-quiz-card {
+  background: var(--cr-gold-lt);
+  border: 2px solid var(--cr-ink);
+  border-radius: 10px;
+  box-shadow: 7px 7px 0 var(--cr-gold);
+  padding: 26px 26px 24px;
+  position: relative;
+}
+.lp-quiz-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.lp-quiz-card-head .qname { font-family: 'Press Start 2P', monospace; font-size: 10px; color: var(--cr-ink); }
+.lp-quiz-card-head .qxp { font-family: 'VT323', monospace; font-size: 18px; color: var(--cr-gold); font-weight: 700; }
+.lp-quiz-diff {
+  display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 1px;
+  color: var(--cr-terra); background: var(--cr-terra-lt); border-radius: 20px;
+  padding: 4px 12px; margin-bottom: 14px; text-transform: uppercase;
+}
+.lp-quiz-instr { font-size: 13px; color: var(--cr-ink2); line-height: 1.7; margin-bottom: 14px; }
+.lp-quiz-code {
+  background: var(--cr-ink);
+  border-radius: 6px;
+  padding: 14px 16px;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12.5px;
+  color: #E9E2D4;
+  line-height: 1.7;
+  margin-bottom: 6px;
+}
+.lp-quiz-code .q { color: var(--cr-gold); }
+.lp-quiz-code .a { color: #9FCBA8; }
+
+/* ---- ROLES BANNER + CARDS ---- */
+.lp-roles-banner {
+  position: relative;
+  border: 2px solid var(--cr-ink);
+  border-radius: 12px;
+  padding: 46px 50px;
+  margin-bottom: 40px;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--cr-green-lt), var(--cr-gold-lt) 55%, var(--cr-terra-lt));
+  text-align: center;
+}
+.lp-roles-banner::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(var(--cr-ink) 1px, transparent 1px);
+  background-size: 18px 18px;
+  opacity: 0.06;
+}
+.lp-roles-banner h3 {
+  position: relative; z-index: 1;
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(12px,1.6vw,17px);
+  color: var(--cr-ink);
+  line-height: 1.9;
+  max-width: 640px;
+  margin: 0 auto 22px;
+}
+.lp-roles-banner .lp-sprite { z-index: 1; }
+
+.lp-roles { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 
 .lp-role-card {
   background: var(--cr-surface);
-  border: 1px solid var(--cr-border);
-  border-radius: 8px;
-  padding: 40px 36px;
-  box-shadow: 0 4px 20px var(--cr-shadow);
+  border: 2px solid var(--cr-ink);
+  border-radius: 10px;
+  padding: 38px 34px;
+  box-shadow: 6px 6px 0 var(--cr-border);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   position: relative;
   overflow: hidden;
 }
-.lp-role-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 4px; height: 100%;
-  background: var(--cr-green);
-  transition: width 0.3s ease;
-}
+.lp-role-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: var(--cr-green); }
 .lp-role-card:nth-child(2)::before { background: var(--cr-terra); }
-.lp-role-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 40px var(--cr-shadow);
-}
-.lp-role-card:hover::before { width: 6px; }
+.lp-role-card:hover { transform: translate(-3px,-3px); box-shadow: 9px 9px 0 var(--cr-border); }
 
 .lp-role-tag {
   font-family: 'Lato', sans-serif;
@@ -2715,45 +2954,18 @@ body {
   text-transform: uppercase;
   display: inline-block;
   background: var(--cr-green-lt);
+  border: 1.5px solid var(--cr-green);
   padding: 4px 12px;
-  border-radius: 2px;
+  border-radius: 20px;
   margin-bottom: 18px;
 }
-.lp-role-card:nth-child(2) .lp-role-tag {
-  color: var(--cr-terra);
-  background: var(--cr-terra-lt);
-}
+.lp-role-card:nth-child(2) .lp-role-tag { color: var(--cr-terra); background: var(--cr-terra-lt); border-color: var(--cr-terra); }
 
-.lp-role-title {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 10px;
-  color: var(--cr-ink);
-  letter-spacing: 0.5px;
-  margin-bottom: 24px;
-  line-height: 1.7;
-}
+.lp-role-title { font-family: 'Press Start 2P', monospace; font-size: 11px; color: var(--cr-ink); letter-spacing: 0.5px; margin-bottom: 22px; line-height: 1.7; }
 
-.lp-role-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.lp-role-list li {
-  font-size: 14px;
-  color: var(--cr-ink2);
-  padding-left: 22px;
-  position: relative;
-  line-height: 1.5;
-}
-.lp-role-list li::before {
-  content: '▸';
-  position: absolute;
-  left: 0;
-  color: var(--cr-green);
-  font-size: 12px;
-}
+.lp-role-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.lp-role-list li { font-size: 14px; color: var(--cr-ink2); padding-left: 22px; position: relative; line-height: 1.5; }
+.lp-role-list li::before { content: '▸'; position: absolute; left: 0; color: var(--cr-green); font-size: 12px; }
 .lp-role-card:nth-child(2) .lp-role-list li::before { color: var(--cr-terra); }
 
 /* ---- CTA BANNER ---- */
@@ -2762,8 +2974,9 @@ body {
   z-index: 1;
   margin: 0 64px 72px;
   background: var(--cr-ink);
-  border-radius: 10px;
-  padding: 56px 64px;
+  border: 2px solid var(--cr-ink);
+  border-radius: 12px;
+  padding: 54px 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2773,80 +2986,43 @@ body {
 }
 .lp-cta-banner::before {
   content: '';
-  position: absolute;
-  top: -60px; right: -40px;
-  width: 280px; height: 280px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(58,107,74,0.25) 0%, transparent 70%);
+  position: absolute; top: -60px; right: -40px;
+  width: 280px; height: 280px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(58,107,74,0.3) 0%, transparent 70%);
   pointer-events: none;
 }
 .lp-cta-banner::after {
   content: '';
-  position: absolute;
-  bottom: -80px; left: 30%;
-  width: 200px; height: 200px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(196,150,10,0.12) 0%, transparent 70%);
+  position: absolute; bottom: -80px; left: 30%;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(196,150,10,0.14) 0%, transparent 70%);
   pointer-events: none;
 }
-
-.lp-cta-text-title {
-  font-family: 'Press Start 2P', monospace;
-  font-size: clamp(11px, 1.3vw, 15px);
-  color: #fff;
-  line-height: 1.75;
-  margin-bottom: 8px;
-}
-.lp-cta-sub {
-  font-size: 14px;
-  color: rgba(255,255,255,0.55);
-  line-height: 1.6;
-}
-
-/* Override buttons inside dark CTA */
-.lp-cta-banner .btn-lp-outline {
-  color: rgba(255,255,255,0.75);
-  border-color: rgba(255,255,255,0.25);
-  background: transparent;
-}
-.lp-cta-banner .btn-lp-outline:hover {
-  border-color: var(--cr-green);
-  color: var(--cr-green);
-  background: rgba(58,107,74,0.15);
-}
+.lp-cta-text-title { font-family: 'Press Start 2P', monospace; font-size: clamp(11px, 1.3vw, 15px); color: #fff; line-height: 1.85; margin-bottom: 10px; }
+.lp-cta-sub { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+.lp-cta-actions { display: flex; gap: 14px; flex-wrap: wrap; position: relative; z-index: 1; }
 
 /* ---- FOOTER ---- */
 .lp-footer {
-  position: relative;
-  z-index: 1;
-  border-top: 1px solid var(--cr-border);
+  position: relative; z-index: 1;
+  border-top: 2px solid var(--cr-border);
   padding: 24px 64px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex; align-items: center; justify-content: space-between;
   background: var(--cr-bg2);
 }
-
-.lp-footer-brand {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 9px;
-  color: var(--cr-ink3);
-  letter-spacing: 1px;
-}
-
-.lp-footer-copy {
-  font-size: 12px;
-  color: var(--cr-ink3);
-  letter-spacing: 0.5px;
-}
+.lp-footer-brand { font-family: 'Press Start 2P', monospace; font-size: 9px; color: var(--cr-ink3); letter-spacing: 1px; }
+.lp-footer-copy { font-size: 12px; color: var(--cr-ink3); letter-spacing: 0.5px; }
 
 /* ---- SCROLL REVEAL ---- */
-.lp-reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
+.lp-reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
 .lp-reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 880px) {
+  .lp-hero, .lp-split { grid-template-columns: 1fr; }
+  .lp-features-grid { grid-template-columns: 1fr 1fr; }
+  .lp-steps, .lp-stats-inner { grid-template-columns: 1fr 1fr; }
+  .lp-roles { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -2887,6 +3063,15 @@ body {
 ============================================================ -->
 <div id="page-landing" class="page active">
 
+  <!-- CRYSTAL GLOW LAYER -->
+  <div class="lp-crystal-bg">
+    <div class="lp-crystal c1"></div>
+    <div class="lp-crystal c2"></div>
+    <div class="lp-crystal c3"></div>
+    <div class="lp-crystal c4"></div>
+    <div class="lp-crystal c5"></div>
+  </div>
+
   <!-- NAV -->
   <nav class="lp-nav">
     <span class="lp-nav-brand">QuizLedge</span>
@@ -2901,7 +3086,7 @@ body {
   <!-- HERO -->
   <section class="lp-hero">
     <div class="lp-hero-left">
-      <div class="lp-hero-eyebrow">Gamified Quiz Learning Platform</div>
+      <div class="lp-hero-eyebrow"><span class="dot"></span>Gamified Quiz Learning Platform</div>
       <h1 class="lp-hero-title">
         The <span class="accent">Gamified Quiz</span><br>Platform That<br>Plays to Win
       </h1>
@@ -2913,83 +3098,111 @@ body {
         <button class="btn-lp-outline" onclick="document.getElementById('lp-how').scrollIntoView({behavior:'smooth'})">See How It Works</button>
       </div>
     </div>
+
     <div class="lp-hero-right">
-      <div class="lp-hero-stat">
-        <span class="lp-hero-stat-num">XP</span>
-        <span class="lp-hero-stat-label">Earn Points Every Quiz</span>
+      <div class="lp-sprite" style="top:-18px; right:24px; width:34px;">
+        <svg viewBox="0 0 24 24" width="34" height="34"><rect x="10" y="0" width="4" height="4" fill="var(--cr-gold)"/><rect x="6" y="4" width="4" height="4" fill="var(--cr-gold)"/><rect x="14" y="4" width="4" height="4" fill="var(--cr-gold)"/><rect x="2" y="8" width="4" height="4" fill="var(--cr-gold)"/><rect x="10" y="8" width="4" height="4" fill="var(--cr-gold)"/><rect x="18" y="8" width="4" height="4" fill="var(--cr-gold)"/><rect x="6" y="12" width="4" height="4" fill="var(--cr-gold)"/><rect x="14" y="12" width="4" height="4" fill="var(--cr-gold)"/><rect x="10" y="16" width="4" height="4" fill="var(--cr-gold)"/></svg>
       </div>
-      <div class="lp-hero-stat terra">
-        <div class="lp-hero-stat-icon-svg terra-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
-        </div>
-        <span class="lp-hero-stat-num">Top Ranks</span>
-        <span class="lp-hero-stat-label">Live Leaderboard</span>
+      <div class="lp-sprite" style="bottom:-16px; left:-20px; width:30px;">
+        <svg viewBox="0 0 20 20" width="30" height="30"><rect width="20" height="20" fill="var(--cr-terra)" rx="3"/><rect x="4" y="4" width="4" height="4" fill="#fff"/><rect x="12" y="4" width="4" height="4" fill="#fff"/><rect x="4" y="12" width="4" height="4" fill="#fff"/><rect x="12" y="12" width="4" height="4" fill="#fff"/></svg>
       </div>
-      <div class="lp-hero-stat gold">
-        <div class="lp-hero-stat-icon-svg gold-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-        </div>
-        <span class="lp-hero-stat-num">Notes</span>
-        <span class="lp-hero-stat-label">Shared Notes</span>
+      <div class="lp-sprite" style="top:42%; right:-26px; width:24px;">
+        <svg viewBox="0 0 16 16" width="24" height="24"><circle cx="8" cy="8" r="7" fill="var(--cr-green)"/><path d="M8 4 L8 12 M4 8 L12 8" stroke="#fff" stroke-width="2"/></svg>
       </div>
-      <div class="lp-hero-stat">
-        <div class="lp-hero-stat-icon-svg">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+
+      <div class="lp-window">
+        <div class="lp-window-bar">
+          <span class="wdot terra"></span><span class="wdot gold"></span><span class="wdot green"></span>
+          <span class="wtitle">quizledge.app/play</span>
         </div>
-        <span class="lp-hero-stat-num">Timed</span>
-        <span class="lp-hero-stat-label">Timed Assessments</span>
+        <div class="lp-quiz-mock">
+          <div class="lp-quiz-mock-title">CHAPTER 05</div>
+          <div class="lp-quiz-mock-sub">World Capitals · 12 Questions</div>
+          <div class="lp-quiz-mock-badge">+40<br>XP</div>
+          <div class="lp-quiz-mock-btns">
+            <span class="lp-pixel-chip filled">PLAY</span>
+            <span class="lp-pixel-chip">RANKS</span>
+            <span class="lp-pixel-chip">NOTES</span>
+          </div>
+        </div>
+        <div class="lp-window-foot">
+          <span>Sample quiz preview</span>
+          <span class="xp">Earn XP as you play</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <div class="lp-divider"></div>
+  <!-- HIGHLIGHTS BAND -->
+  <div class="lp-stats-band">
+    <div class="lp-stats-inner">
+      <div class="lp-stat"><span class="lp-stat-num"><svg class="px-icon" viewBox="0 0 13 11" width="34" height="28" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g transform="translate(1,1)" fill="rgba(42,33,24,0.22)"><rect x="0" y="0" width="12" height="1"/><rect x="1" y="1" width="10" height="1"/><rect x="1" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/><rect x="1" y="3" width="1" height="1"/><rect x="10" y="3" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="3" y="5" width="6" height="1"/><rect x="5" y="6" width="2" height="1"/><rect x="5" y="7" width="2" height="1"/><rect x="3" y="8" width="6" height="1"/><rect x="2" y="9" width="8" height="1"/></g><g fill="currentColor"><rect x="0" y="0" width="12" height="1"/><rect x="1" y="1" width="10" height="1"/><rect x="1" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/><rect x="1" y="3" width="1" height="1"/><rect x="10" y="3" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="3" y="5" width="6" height="1"/><rect x="5" y="6" width="2" height="1"/><rect x="5" y="7" width="2" height="1"/><rect x="3" y="8" width="6" height="1"/><rect x="2" y="9" width="8" height="1"/></g></svg></span><span class="lp-stat-label">Live Leaderboards</span></div>
+      <div class="lp-stat"><span class="lp-stat-num"><svg class="px-icon" viewBox="0 0 11 11" width="34" height="34" shape-rendering="crispEdges" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g transform="translate(1,1)" fill="rgba(42,33,24,0.22)"><rect x="6" y="0" width="3" height="1"/><rect x="5" y="1" width="3" height="1"/><rect x="4" y="2" width="3" height="1"/><rect x="3" y="3" width="3" height="1"/><rect x="2" y="4" width="8" height="1"/><rect x="7" y="5" width="3" height="1"/><rect x="6" y="6" width="3" height="1"/><rect x="5" y="7" width="3" height="1"/><rect x="4" y="8" width="3" height="1"/><rect x="3" y="9" width="3" height="1"/></g><g fill="currentColor"><rect x="6" y="0" width="3" height="1"/><rect x="5" y="1" width="3" height="1"/><rect x="4" y="2" width="3" height="1"/><rect x="3" y="3" width="3" height="1"/><rect x="2" y="4" width="8" height="1"/><rect x="7" y="5" width="3" height="1"/><rect x="6" y="6" width="3" height="1"/><rect x="5" y="7" width="3" height="1"/><rect x="4" y="8" width="3" height="1"/><rect x="3" y="9" width="3" height="1"/></g></svg></span><span class="lp-stat-label">XP &amp; Levels</span></div>
+      <div class="lp-stat"><span class="lp-stat-num"><svg class="px-icon" viewBox="0 0 11 12" width="34" height="37" shape-rendering="crispEdges" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g transform="translate(1,1)" fill="rgba(42,33,24,0.22)"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="6" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="2" y="6" width="6" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="2" y="8" width="4" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="9" y="9" width="1" height="1"/><rect x="0" y="10" width="10" height="1"/></g><g fill="currentColor"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="6" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="2" y="6" width="6" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="2" y="8" width="4" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="9" y="9" width="1" height="1"/><rect x="0" y="10" width="10" height="1"/></g></svg></span><span class="lp-stat-label">Shared Notes</span></div>
+      <div class="lp-stat"><span class="lp-stat-num"><svg class="px-icon" viewBox="0 0 11 11" width="34" height="34" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g transform="translate(1,1)" fill="rgba(42,33,24,0.22)"><rect x="2" y="0" width="6" height="1"/><rect x="1" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="3" y="2" width="4" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="7" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="4" y="4" width="2" height="1"/><rect x="7" y="4" width="1" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="4" y="5" width="2" height="1"/><rect x="7" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="2" y="6" width="1" height="1"/><rect x="7" y="6" width="1" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="3" y="7" width="4" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="1" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="2" y="9" width="6" height="1"/></g><g fill="currentColor"><rect x="2" y="0" width="6" height="1"/><rect x="1" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="3" y="2" width="4" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="7" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="4" y="4" width="2" height="1"/><rect x="7" y="4" width="1" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="4" y="5" width="2" height="1"/><rect x="7" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="2" y="6" width="1" height="1"/><rect x="7" y="6" width="1" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="3" y="7" width="4" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="1" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="2" y="9" width="6" height="1"/></g></svg></span><span class="lp-stat-label">Role-based Access</span></div>
+    </div>
+  </div>
 
   <!-- FEATURES -->
   <section class="lp-section" id="lp-features">
     <span class="lp-section-label">Features</span>
     <h2 class="lp-section-title">Everything You Need to Teach Smarter</h2>
+
+    <div class="lp-pill-bar">
+      <span class="lp-pill active" data-filter="all" onclick="lpFilterFeatures(this,'all')">Popular</span>
+      <span class="lp-pill" data-filter="teach" onclick="lpFilterFeatures(this,'teach')">For Teachers</span>
+      <span class="lp-pill" data-filter="learn" onclick="lpFilterFeatures(this,'learn')">For Students</span>
+      <span class="lp-pill" data-filter="admin" onclick="lpFilterFeatures(this,'admin')">Admin Tools</span>
+    </div>
+
     <div class="lp-features-grid">
-      <div class="lp-feat-card">
-        <div class="lp-feat-icon-box">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A6B4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <div class="lp-feat-card" data-cat="learn">
+        <div class="lp-feat-banner"><div class="lp-feat-icon-box"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--cr-ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div></div>
+        <div class="lp-feat-body">
+          <span class="lp-feat-badge">Live</span>
+          <div class="lp-feat-name">Live Scoreboards</div>
+          <div class="lp-feat-desc">Real-time rankings update as students complete quizzes. Keep the class engaged with competitive, transparent scoring.</div>
         </div>
-        <div class="lp-feat-name">Live Scoreboards</div>
-        <div class="lp-feat-desc">Real-time rankings update as students complete quizzes. Keep the class engaged with competitive, transparent scoring.</div>
       </div>
-      <div class="lp-feat-card">
-        <div class="lp-feat-icon-box">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A6B4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <div class="lp-feat-card" data-cat="learn">
+        <div class="lp-feat-banner"><div class="lp-feat-icon-box"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--cr-ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div></div>
+        <div class="lp-feat-body">
+          <span class="lp-feat-badge">Rewards</span>
+          <div class="lp-feat-name">XP and Achievements</div>
+          <div class="lp-feat-desc">Students earn experience points for every quiz completed. Unlock badges and level up to stay motivated throughout the course.</div>
         </div>
-        <div class="lp-feat-name">XP and Achievements</div>
-        <div class="lp-feat-desc">Students earn experience points for every quiz completed. Unlock badges and level up to stay motivated throughout the course.</div>
       </div>
-      <div class="lp-feat-card">
-        <div class="lp-feat-icon-box">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A6B4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <div class="lp-feat-card" data-cat="learn">
+        <div class="lp-feat-banner"><div class="lp-feat-icon-box"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--cr-ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div></div>
+        <div class="lp-feat-body">
+          <span class="lp-feat-badge">Shared</span>
+          <div class="lp-feat-name">Shared Notes</div>
+          <div class="lp-feat-desc">Students upload and share study notes with classmates. Teachers review and approve content before it goes live.</div>
         </div>
-        <div class="lp-feat-name">Shared Notes</div>
-        <div class="lp-feat-desc">Students upload and share study notes with classmates. Teachers review and approve content before it goes live.</div>
       </div>
-      <div class="lp-feat-card">
-        <div class="lp-feat-icon-box">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A6B4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41"/><path d="M4.93 4.93l1.41 1.41"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M20 12h2"/><path d="M2 12h2"/><path d="M17.66 17.66l-1.41-1.41"/><path d="M6.34 6.34L4.93 4.93"/></svg>
+      <div class="lp-feat-card" data-cat="teach">
+        <div class="lp-feat-banner"><div class="lp-feat-icon-box"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--cr-ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41"/><path d="M4.93 4.93l1.41 1.41"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M20 12h2"/><path d="M2 12h2"/><path d="M17.66 17.66l-1.41-1.41"/><path d="M6.34 6.34L4.93 4.93"/></svg></div></div>
+        <div class="lp-feat-body">
+          <span class="lp-feat-badge">Builder</span>
+          <div class="lp-feat-name">Quiz Builder</div>
+          <div class="lp-feat-desc">Create multi-choice assessments in minutes. Set timers, assign to classes, and track results from your admin dashboard.</div>
         </div>
-        <div class="lp-feat-name">Quiz Builder</div>
-        <div class="lp-feat-desc">Create multi-choice assessments in minutes. Set timers, assign to classes, and track results from your admin dashboard.</div>
       </div>
-      <div class="lp-feat-card">
-        <div class="lp-feat-icon-box">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A6B4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <div class="lp-feat-card" data-cat="teach">
+        <div class="lp-feat-banner"><div class="lp-feat-icon-box"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--cr-ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div></div>
+        <div class="lp-feat-body">
+          <span class="lp-feat-badge">Classes</span>
+          <div class="lp-feat-name">Classroom Management</div>
+          <div class="lp-feat-desc">Organize students into classes, manage enrollment, and monitor activity — all from one streamlined admin panel.</div>
         </div>
-        <div class="lp-feat-name">Classroom Management</div>
-        <div class="lp-feat-desc">Organize students into classes, manage enrollment, and monitor activity — all from one streamlined admin panel.</div>
       </div>
-      <div class="lp-feat-card">
-        <div class="lp-feat-icon-box">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A6B4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <div class="lp-feat-card" data-cat="admin">
+        <div class="lp-feat-banner"><div class="lp-feat-icon-box"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--cr-ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+        <div class="lp-feat-body">
+          <span class="lp-feat-badge">Access</span>
+          <div class="lp-feat-name">Role-based Access</div>
+          <div class="lp-feat-desc">Separate dashboards for teachers and students. Each role sees exactly what they need — nothing more, nothing less.</div>
         </div>
-        <div class="lp-feat-name">Role-based Access</div>
-        <div class="lp-feat-desc">Separate dashboards for teachers and students. Each role sees exactly what they need — nothing more, nothing less.</div>
       </div>
     </div>
   </section>
@@ -3033,6 +3246,15 @@ body {
   <section class="lp-section" id="lp-roles">
     <span class="lp-section-label">Who It's For</span>
     <h2 class="lp-section-title">Built for Both Sides of the Classroom</h2>
+
+    <div class="lp-roles-banner">
+      <div class="lp-sprite" style="top:10px; left:6%; width:20px;"><svg viewBox="0 0 16 16" width="20" height="20"><circle cx="8" cy="8" r="7" fill="var(--cr-gold)"/></svg></div>
+      <div class="lp-sprite" style="bottom:14px; right:8%; width:26px; animation-delay:.6s;"><svg viewBox="0 0 20 20" width="26" height="26"><rect width="20" height="20" fill="var(--cr-green)" rx="4"/></svg></div>
+      <div class="lp-sprite" style="top:20px; right:14%; width:18px; animation-delay:1s;"><svg viewBox="0 0 16 16" width="18" height="18"><path d="M8 0 L10 6 L16 8 L10 10 L8 16 L6 10 L0 8 L6 6 Z" fill="var(--cr-terra)"/></svg></div>
+      <h3>Two dashboards, one classroom — built to work together</h3>
+      <button class="btn-lp-primary gold" onclick="goToRole()">Explore Both Roles</button>
+    </div>
+
     <div class="lp-roles">
       <div class="lp-role-card">
         <span class="lp-role-tag">For Teachers</span>
@@ -3079,68 +3301,21 @@ body {
 
 </div>
 
-<!-- ============================================================
-     PAGE: ROLE PICKER
-============================================================ -->
-<div id="page-role" class="page" style="background:#F0EDE4; align-items:center; justify-content:center; position:relative; overflow-y:auto;">
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(138,154,91,0.08) 0%,transparent 60%),radial-gradient(ellipse at 80% 30%,rgba(226,114,91,0.07) 0%,transparent 50%);pointer-events:none;"></div>
-  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(46,64,83,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(46,64,83,0.04) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;"></div>
-  <div style="position:relative;z-index:2;width:100%;max-width:480px;padding:20px;animation:loginFadeIn 0.6s ease forwards;">
-    <!-- Brand -->
-    <div class="login-brand" style="margin-bottom:32px;">
-      <div class="logo-mark">
-        <svg width="56" height="56" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M21 3 A18 18 0 0 1 39 21" fill="none" stroke="#2E4053" stroke-width="4" stroke-linecap="round"/>
-          <path d="M39 21 A18 18 0 0 1 21 39" fill="none" stroke="#8A9A5B" stroke-width="4" stroke-linecap="round"/>
-          <path d="M21 39 A18 18 0 0 1 3 21" fill="none" stroke="#E2725B" stroke-width="4" stroke-linecap="round"/>
-          <path d="M3 21 A18 18 0 0 1 21 3" fill="none" stroke="#B8860B" stroke-width="4" stroke-linecap="round"/>
-          <circle cx="21" cy="21" r="12" fill="#2E4053"/>
-          <rect x="14" y="20" width="4" height="7" rx="0.5" fill="#8A9A5B"/>
-          <rect x="19" y="16" width="4" height="11" rx="0.5" fill="#FFFFFF"/>
-          <rect x="24" y="23" width="4" height="4" rx="0.5" fill="#E2725B"/>
-          <rect x="14" y="27" width="14" height="1" fill="#FFFFFF" opacity="0.15"/>
-        </svg>
-      </div>
-      <span class="logo-text">QuizLedge</span>
-      <span class="logo-tagline">Gamified Quiz Learning Platform</span>
-    </div>
-    <!-- Role card -->
-    <div class="login-card" style="text-align:center;">
-      <div style="margin-bottom:28px;">
-        <span style="font-family:'Press Start 2P',monospace;font-size:9px;color:var(--indigo);letter-spacing:1px;display:block;margin-bottom:10px;">WHO ARE YOU?</span>
-        <span style="font-family:'Lato',sans-serif;font-size:13px;color:rgba(46,64,83,0.6);line-height:1.5;">Choose your role to continue</span>
-      </div>
-      <div style="display:flex;gap:16px;">
-        <!-- Student card -->
-        <button onclick="pickRole('student')" style="flex:1;padding:28px 16px;background:#FAFAF2;border:2px solid var(--indigo);box-shadow:3px 3px 0px var(--indigo);border-radius:2px;cursor:pointer;transition:transform 0.1s,box-shadow 0.1s,border-color 0.15s;text-align:center;"
-          onmouseover="this.style.borderColor='var(--moss)';this.style.boxShadow='3px 3px 0px var(--moss-dark)';this.style.transform='translate(-1px,-1px)'"
-          onmouseout="this.style.borderColor='var(--indigo)';this.style.boxShadow='3px 3px 0px var(--indigo)';this.style.transform='translate(0,0)'">
-          <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--indigo);letter-spacing:1px;margin-bottom:10px;">STUDENT</div>
-          <div style="font-family:'Lato',sans-serif;font-size:11px;color:rgba(46,64,83,0.55);line-height:1.5;">Take quizzes, earn XP &amp; climb the ranks</div>
-        </button>
-        <!-- Teacher card -->
-        <button onclick="pickRole('admin')" style="flex:1;padding:28px 16px;background:#FAFAF2;border:2px solid var(--indigo);box-shadow:3px 3px 0px var(--indigo);border-radius:2px;cursor:pointer;transition:transform 0.1s,box-shadow 0.1s,border-color 0.15s;text-align:center;"
-          onmouseover="this.style.borderColor='var(--terracotta)';this.style.boxShadow='3px 3px 0px var(--terracotta-dark)';this.style.transform='translate(-1px,-1px)'"
-          onmouseout="this.style.borderColor='var(--indigo)';this.style.boxShadow='3px 3px 0px var(--indigo)';this.style.transform='translate(0,0)'">
-          <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--indigo);letter-spacing:1px;margin-bottom:10px;">TEACHER</div>
-          <div style="font-family:'Lato',sans-serif;font-size:11px;color:rgba(46,64,83,0.55);line-height:1.5;">Create quizzes &amp; manage your class</div>
-        </button>
-      </div>
-      <div class="login-pixel-deco" style="margin-top:24px;">
-        <div class="pixel-dot"></div>
-        <div class="pixel-dot"></div>
-        <div class="pixel-dot"></div>
-        <div class="pixel-dot"></div>
-        <div class="pixel-dot"></div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- ============================================================
      PAGE: LOGIN
 ============================================================ -->
 <div id="page-login" class="page">
+
+  <!-- CRYSTAL GLOW LAYER (same as landing page) -->
+  <div class="lp-crystal-bg">
+    <div class="lp-crystal c1"></div>
+    <div class="lp-crystal c2"></div>
+    <div class="lp-crystal c3"></div>
+    <div class="lp-crystal c4"></div>
+    <div class="lp-crystal c5"></div>
+  </div>
+
   <div class="login-container">
     <div class="login-brand">
       <div class="logo-mark">
@@ -3174,16 +3349,15 @@ body {
       <div id="form-login" class="form-panel active">
         <div class="form-group">
           <label>Email Address</label>
-          <input type="email" id="login-email" placeholder="email@gordoncollege.edu.ph" autocomplete="email">
+          <div class="email-field">
+            <input type="text" id="login-email" class="email-local" placeholder="202312345" autocomplete="username" spellcheck="false" oninput="stripEmailDomain(this)">
+            <span class="email-domain">@gordoncollege.edu.ph</span>
+          </div>
+          <span id="login-email-role-hint" class="role-hint">ID NUMBER = STUDENT &nbsp;/&nbsp; NAME = TEACHER-ADMIN</span>
         </div>
         <div class="form-group">
           <label>Password</label>
           <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password">
-        </div>
-        <div id="login-role-badge" style="margin-bottom:18px;display:flex;align-items:center;gap:8px;">
-          <span style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--indigo);letter-spacing:1px;text-transform:uppercase;">Logging in as:</span>
-          <span id="login-role-label" style="font-family:'Press Start 2P',monospace;font-size:7px;padding:4px 10px;border-radius:2px;background:var(--indigo);color:#fff;letter-spacing:1px;"></span>
-          <button onclick="showPage('role')" style="background:none;border:none;cursor:pointer;font-family:'Press Start 2P',monospace;font-size:6px;color:var(--moss-dark);letter-spacing:0.5px;text-decoration:underline;padding:0;margin-left:auto;">CHANGE</button>
         </div>
         <div id="login-error-msg" style="display:none; background:rgba(220,38,38,0.08); border:1px solid rgba(220,38,38,0.3); color:#b91c1c; font-family:'Lato',sans-serif; font-size:12px; padding:9px 12px; border-radius:2px; margin-top:4px; line-height:1.4;"></div>
         <div style="display:flex; justify-content:flex-end; align-items:center; margin:6px 0 2px;">
@@ -3200,7 +3374,10 @@ body {
         </div>
         <div class="form-group">
           <label>Email Address</label>
-          <input type="email" id="forgot-email" placeholder="email@gordoncollege.edu.ph" autocomplete="email">
+          <div class="email-field">
+            <input type="text" id="forgot-email" class="email-local" placeholder="202312345" autocomplete="username" spellcheck="false" oninput="stripEmailDomain(this)">
+            <span class="email-domain">@gordoncollege.edu.ph</span>
+          </div>
         </div>
         <div id="forgot-error-msg" style="display:none; background:rgba(220,38,38,0.08); border:1px solid rgba(220,38,38,0.3); color:#b91c1c; font-family:'Lato',sans-serif; font-size:12px; padding:9px 12px; border-radius:2px; margin-top:4px; line-height:1.4;"></div>
         <div id="forgot-success-msg" style="display:none; background:rgba(22,163,74,0.08); border:1px solid rgba(22,163,74,0.3); color:#15803d; font-family:'Lato',sans-serif; font-size:12px; padding:9px 12px; border-radius:2px; margin-top:4px; line-height:1.5;"></div>
@@ -3218,7 +3395,11 @@ body {
         </div>
         <div class="form-group">
           <label>Email Address</label>
-          <input type="email" id="signup-email" placeholder="email@gordoncollege.edu.ph" autocomplete="email">
+          <div class="email-field">
+            <input type="text" id="signup-email" class="email-local" placeholder="202312345" autocomplete="username" spellcheck="false" oninput="stripEmailDomain(this)">
+            <span class="email-domain">@gordoncollege.edu.ph</span>
+          </div>
+          <span id="signup-email-role-hint" class="role-hint">ID NUMBER = STUDENT &nbsp;/&nbsp; NAME = TEACHER-ADMIN</span>
         </div>
         <div class="form-group">
           <label>Password</label>
@@ -3233,11 +3414,6 @@ body {
         <div class="form-group">
           <label>Confirm Password</label>
           <input type="password" id="signup-confirm" placeholder="Re-enter password" autocomplete="new-password">
-        </div>
-        <div id="signup-role-badge" style="margin-bottom:18px;display:flex;align-items:center;gap:8px;">
-          <span style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--indigo);letter-spacing:1px;text-transform:uppercase;">Signing up as:</span>
-          <span id="signup-role-label" style="font-family:'Press Start 2P',monospace;font-size:7px;padding:4px 10px;border-radius:2px;background:var(--indigo);color:#fff;letter-spacing:1px;"></span>
-          <button onclick="showPage('role')" style="background:none;border:none;cursor:pointer;font-family:'Press Start 2P',monospace;font-size:6px;color:var(--moss-dark);letter-spacing:0.5px;text-decoration:underline;padding:0;margin-left:auto;">CHANGE</button>
         </div>
         <div id="signup-error-msg" style="display:none; background:rgba(220,38,38,0.08); border:1px solid rgba(220,38,38,0.3); color:#b91c1c; font-family:'Lato',sans-serif; font-size:12px; padding:9px 12px; border-radius:2px; margin-top:4px; line-height:1.4;"></div>
         <div id="signup-success" style="display:none; background:rgba(22,163,74,0.08); border:1px solid rgba(22,163,74,0.3); color:#15803d; font-family:'Lato',sans-serif; font-size:12px; padding:9px 12px; border-radius:2px; margin-top:4px;"></div>
@@ -3347,7 +3523,7 @@ body {
         <span class="nav-badge" id="stu-quizzes-nav-badge" style="display:none;"></span>
       </a>
       <a class="stu-nav-link" onclick="switchStuView('notes')">
-        <span class="nav-icon">✎</span> Notes
+        <span class="nav-icon">▤</span> Notes
       </a>
       <div class="nav-section-label">PROGRESS</div>
       <a class="stu-nav-link" onclick="switchStuView('leaderboard')">
@@ -3373,7 +3549,7 @@ body {
           <span class="chip-val" id="topbar-xp">0 XP</span>
         </div>
         <div class="stat-chip" style="box-shadow: 2px 2px 0px var(--terracotta-dark); background: var(--terracotta); border-color: var(--terracotta);">
-          <span class="chip-icon">⚡</span>
+          <span class="chip-icon">◆</span>
           <span class="chip-val" id="topbar-streak">0-DAY STREAK</span>
         </div>
       </div>
@@ -3424,7 +3600,7 @@ body {
 
         <div id="dash-recent-activity" class="quest-list">
           <div class="empty-state">
-            <span class="empty-state-icon">⌛</span>
+            <span class="empty-state-icon">▦</span>
             <span class="empty-state-text">NO ACTIVITY YET<br><span style="font-size:8px; opacity:0.6; font-family:'Lato',sans-serif; font-weight:400;">Your quiz results and actions will show here</span></span>
           </div>
         </div>
@@ -3494,7 +3670,7 @@ body {
           <div style="display:flex;gap:10px;">
             <button class="btn-pixel" id="qt-prev-btn" onclick="quizPrev()" style="background:transparent; color:var(--indigo); border-color:var(--indigo); box-shadow:3px 3px 0px rgba(46,64,83,0.2); display:none;">&lt; PREV</button>
             <button class="btn-pixel" id="qt-next-btn" onclick="quizNext()">NEXT QUESTION &gt;&gt;</button>
-            <button class="btn-pixel" id="qt-submit-btn" onclick="submitQuiz()" style="display:none; background:var(--terracotta); border-color:var(--terracotta); box-shadow:3px 3px 0px var(--terracotta-dark);">SUBMIT QUIZ ✓</button>
+            <button class="btn-pixel" id="qt-submit-btn" onclick="submitQuiz()" style="display:none; background:var(--terracotta); border-color:var(--terracotta); box-shadow:3px 3px 0px var(--terracotta-dark);">SUBMIT QUIZ</button>
           </div>
         </div>
       </div>
@@ -3603,7 +3779,7 @@ body {
         <!-- Tab: Notes -->
         <div id="cd-panel-notes" style="display:none;">
           <div class="notes-grid" id="cd-notes-grid"></div>
-          <div id="cd-notes-empty" class="empty-state" style="display:none;"><span class="empty-state-icon">📄</span><span class="empty-state-text">NO APPROVED NOTES FOR THIS CLASS</span></div>
+          <div id="cd-notes-empty" class="empty-state" style="display:none;"><span class="empty-state-icon">▤</span><span class="empty-state-text">NO APPROVED NOTES FOR THIS CLASS</span></div>
         </div>
 
         <!-- Tab: Members -->
@@ -3663,7 +3839,7 @@ body {
         <span class="adm-nav-badge" id="adm-students-nav-badge">0</span>
       </a>
       <a class="adm-nav-link" onclick="switchAdmView('quizzes')">
-        <span class="adm-icon">✎</span> Quizzes
+        <span class="adm-icon">▦</span> Quizzes
       </a>
       <a class="adm-nav-link" onclick="switchAdmView('notes')">
         <span class="adm-icon">⊡</span> Notes
@@ -3674,7 +3850,7 @@ body {
         <span class="adm-icon">▲</span> Scores
       </a>
       <a class="adm-nav-link" onclick="switchAdmView('settings')">
-        <span class="adm-icon">⚙</span> Settings
+        <span class="adm-icon">▣</span> Settings
       </a>
     </nav>
     <div class="adm-sidebar-footer">
@@ -3720,7 +3896,7 @@ body {
             <span class="metric-change" id="adm-metric-classes-sub">No classes created</span>
           </div>
           <div class="metric-card">
-            <div class="metric-icon">✎</div>
+            <div class="metric-icon">▦</div>
             <div class="metric-label">Quizzes Created</div>
             <span class="metric-value" id="adm-metric-quizzes">0</span>
             <span class="metric-change" id="adm-metric-quizzes-sub">No quizzes yet</span>
@@ -3970,7 +4146,7 @@ body {
 
         <div style="display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; align-items:center;">
           <button class="btn-adm-secondary" onclick="addQuestion()">+ Add Question</button>
-          <button class="btn-adm-primary" onclick="publishQuiz('published')">✓ Publish Quiz</button>
+          <button class="btn-adm-primary" onclick="publishQuiz('published')">Publish Quiz</button>
           <button class="btn-adm-secondary" onclick="publishQuiz('draft')">Save as Draft</button>
         </div>
       </div>
@@ -4169,9 +4345,10 @@ _supabase.auth.onAuthStateChange((event, session) => {
     .from('profiles').select('name, role').eq('id', session.user.id).single();
   if (!profile) return;
 
-  currentUser = { id: session.user.id, email: session.user.email, name: profile.name, role: profile.role };
+  const restoredRole = detectRole(session.user.email) || profile.role || 'student';
+  currentUser = { id: session.user.id, email: session.user.email, name: profile.name, role: restoredRole };
 
-  if (profile.role === 'admin') {
+  if (restoredRole === 'admin') {
     await loadAdminDashboard();
     showPage('admin');
     switchAdmView('dashboard');
@@ -4191,27 +4368,76 @@ function showPage(id) {
   document.getElementById('page-' + id).classList.add('active');
 }
 
+/* Role is no longer chosen on the login/signup screen.
+   Sign-ups are always students; on login the role comes from the profile record. */
+const EMAIL_DOMAIN = '@gordoncollege.edu.ph';
+
+function stripEmailDomain(el) {
+  if (!el) return;
+  const start = el.selectionStart;
+  const cleaned = (el.value || '').toLowerCase().replace(/@.*$/, '').replace(/[\s@]/g, '');
+  if (cleaned !== el.value) {
+    el.value = cleaned;
+    if (typeof start === 'number') { try { el.setSelectionRange(start, start); } catch (e) {} }
+  }
+  updateRoleHint(el.id);
+}
+
+function getFullEmail(id) {
+  const el = document.getElementById(id);
+  if (!el) return '';
+  const local = (el.value || '').trim().toLowerCase().replace(/@.*$/, '').replace(/[\s@]/g, '');
+  return local ? local + EMAIL_DOMAIN : '';
+}
+
+function setEmailLocal(id, email) {
+  const el = document.getElementById(id);
+  if (el) el.value = String(email || '').split('@')[0];
+}
+
+/* ------------------------------------------------------------
+   ROLE DETECTION
+   Student  -> student-ID based local part (digits, may contain - or _)
+               e.g. 202312345@gordoncollege.edu.ph
+   Teacher  -> name based local part (contains letters)
+   /Admin      e.g. juan.delacruz@gordoncollege.edu.ph
+------------------------------------------------------------ */
+function detectRole(emailOrLocal) {
+  const local = String(emailOrLocal || '').split('@')[0].trim();
+  if (!local) return null;
+  // any letter anywhere -> name based -> teacher/admin
+  return /[a-z]/i.test(local) ? 'admin' : 'student';
+}
+
+function roleLabel(role) {
+  return role === 'admin' ? 'Teacher / Admin' : 'Student';
+}
+
+/* Live hint under the email fields so the user can see where they'll land */
+function updateRoleHint(inputId) {
+  const hint = document.getElementById(inputId + '-role-hint');
+  if (!hint) return;
+  const el = document.getElementById(inputId);
+  const role = detectRole(el ? el.value : '');
+  if (!role) {
+    hint.innerHTML = 'ID NUMBER = STUDENT &nbsp;/&nbsp; NAME = TEACHER-ADMIN';
+    hint.style.color = 'rgba(46,64,83,0.45)';
+    return;
+  }
+  hint.textContent = '\u25B8 ' + roleLabel(role).toUpperCase() + ' DASHBOARD';
+  hint.style.color = role === 'admin' ? 'var(--terracotta)' : 'var(--moss-dark)';
+}
+
 function pickRole(role) {
-  window.selectedRole = role;
-  const label = role === 'admin' ? 'TEACHER / ADMIN' : 'STUDENT';
-  const loginLbl = document.getElementById('login-role-label');
-  const signupLbl = document.getElementById('signup-role-label');
-  if (loginLbl) loginLbl.textContent = label;
-  if (signupLbl) signupLbl.textContent = label;
-  const placeholder = role === 'admin' ? 'email@gordoncollege.edu.ph' : 'studentid@gordoncollege.edu.ph';
-  ['login-email','signup-email','forgot-email'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.placeholder = placeholder;
-  });
-  showPage('login');
-  switchLoginTab('login', document.querySelector('.login-tab'));
+  window.selectedRole = role || 'student';
 }
 
 async function goToLogin() {
   await _supabase.auth.signOut(); // clears Supabase session from localStorage
   currentUser = null;
   stopQuizTimer();
-  showPage('role');
+  showPage('login');
+  switchLoginTab('login', document.querySelector('.login-tab'));
   ['login-email','login-pass'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
@@ -4222,7 +4448,8 @@ async function goToLogin() {
 async function goToRole() {
   await _supabase.auth.signOut();
   currentUser = null;
-  showPage('role');
+  showPage('login');
+  switchLoginTab('login', document.querySelector('.login-tab'));
 }
 
 function switchLoginTab(tab, btn) {
@@ -4324,7 +4551,7 @@ async function handleResetPassword() {
     showResetSuccess('');
     showResetError('Failed to update password: ' + error.message);
   } else {
-    showResetSuccess('✓ Password updated successfully!');
+    showResetSuccess('Password updated successfully!');
     document.getElementById('reset-new-pass').value = '';
     document.getElementById('reset-confirm-pass').value = '';
     setTimeout(async () => {
@@ -4340,13 +4567,11 @@ async function handleResetPassword() {
    LOGIN
 ============================================================ */
 async function handleLogin() {
-  const email = (document.getElementById('login-email').value || '').trim().toLowerCase();
+  const email = getFullEmail('login-email');
   const pass = document.getElementById('login-pass').value || '';
-  const role = window.selectedRole || 'student';
 
   if (!email) { showLoginError('Please enter your email address.'); return; }
   if (!pass) { showLoginError('Please enter your password.'); return; }
-  if (!/^[^@]+@[^@]+\.[^@]+$/.test(email)) { showLoginError('Please enter a valid email address.'); return; }
 
   showLoginError('Signing in...');
   const { data, error } = await _supabase.auth.signInWithPassword({ email, password: pass });
@@ -4361,16 +4586,25 @@ async function handleLogin() {
     return;
   }
 
+  // Role comes from the email format, not from a picker.
+  const role = detectRole(email) || profile.role || 'student';
+
+  // Keep the stored profile in sync if it drifted from the email format.
   if (profile.role !== role) {
-    showLoginError(`This account is registered as ${profile.role === 'admin' ? 'Teacher/Admin' : 'Student'}. Please select the correct role.`);
-    await _supabase.auth.signOut();
-    return;
+    await _supabase.from('profiles').update({ role }).eq('id', data.user.id);
+    if (role === 'student') {
+      const { data: existing } = await _supabase
+        .from('student_stats').select('student_id').eq('student_id', data.user.id).maybeSingle();
+      if (!existing) {
+        await _supabase.from('student_stats').insert({ student_id: data.user.id, xp:0, level:1, streak:0, quizzes_taken:0, total_score_pct:0, notes_shared:0, claimed_quests:[], last_login: new Date().toISOString().slice(0,10) });
+      }
+    }
   }
 
-  currentUser = { id: data.user.id, email, name: profile.name, role: profile.role };
+  currentUser = { id: data.user.id, email, name: profile.name, role };
   showLoginError('');
 
-  if (profile.role === 'admin') {
+  if (role === 'admin') {
     await loadAdminDashboard();
     showPage('admin');
     switchAdmView('dashboard');
@@ -4387,21 +4621,20 @@ async function handleLogin() {
 ============================================================ */
 async function handleSignup() {
   const name = (document.getElementById('signup-name').value || '').trim();
-  const email = (document.getElementById('signup-email').value || '').trim().toLowerCase();
+  const email = getFullEmail('signup-email');
   const pass = document.getElementById('signup-pass').value || '';
   const confirm = document.getElementById('signup-confirm').value || '';
-  const role = window.selectedRole || 'student';
+  const role = detectRole(email) || 'student';
 
   if (!name) { showSignupError('Please enter your full name.'); return; }
   if (!email) { showSignupError('Please enter your email address.'); return; }
-  if (!/^[^@]+@[^@]+\.[^@]+$/.test(email)) { showSignupError('Please enter a valid email address.'); return; }
   if (pass.length < 8) { showSignupError('Password must be at least 8 characters.'); return; }
   if (!/[A-Z]/.test(pass)) { showSignupError('Password must contain at least one uppercase letter.'); return; }
   if (!/[0-9]/.test(pass)) { showSignupError('Password must contain at least one number.'); return; }
   if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/.test(pass)) { showSignupError('Password must contain at least one special character.'); return; }
   if (pass !== confirm) { showSignupError('Passwords do not match.'); return; }
 
-  showSignupError('Creating account...');
+  showSignupError('Creating ' + roleLabel(role).toLowerCase() + ' account...');
   const { data, error } = await _supabase.auth.signUp({ email, password: pass, options: { data: { name, role } } });
   if (error) { showSignupError(error.message); return; }
 
@@ -4416,12 +4649,12 @@ async function handleSignup() {
   showSignupError('');
   const successEl = document.getElementById('signup-success');
   if (successEl) {
-    successEl.textContent = '✓ Account created! You can now log in.';
+    successEl.textContent = roleLabel(role) + ' account created! You can now log in.';
     successEl.style.display = 'block';
     setTimeout(() => {
       successEl.style.display = 'none';
       switchLoginTab('login', document.querySelector('.login-tab'));
-      document.getElementById('login-email').value = email;
+      setEmailLocal('login-email', email);
     }, 2000);
   }
 }
@@ -4430,9 +4663,8 @@ async function handleSignup() {
    FORGOT PASSWORD
 ============================================================ */
 async function handleForgotPassword() {
-  const email = (document.getElementById('forgot-email').value || '').trim().toLowerCase();
+  const email = getFullEmail('forgot-email');
   if (!email) { showForgotError('Please enter your email address.'); return; }
-  if (!/^[^@]+@[^@]+\.[^@]+$/.test(email)) { showForgotError('Please enter a valid email address.'); return; }
   showForgotError('');
   showForgotSuccess('Sending reset link...');
   const { error } = await _supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.href });
@@ -4440,7 +4672,7 @@ async function handleForgotPassword() {
     showForgotSuccess('');
     showForgotError('Failed to send reset email: ' + error.message);
   } else {
-    showForgotSuccess('✓ Reset link sent! Check your inbox (and spam folder).');
+    showForgotSuccess('Reset link sent! Check your inbox (and spam folder).');
     document.getElementById('forgot-email').value = '';
   }
 }
@@ -4536,7 +4768,7 @@ const QUESTS = [
     id: 'first_steps',
     name: 'FIRST STEPS',
     desc: 'Join your first classroom',
-    icon: '🏫',
+    icon: `<svg class="px-icon" viewBox="0 0 11 10" width="20" height="18" shape-rendering="crispEdges" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg"><g fill="#FFFFFF"><rect x="4" y="0" width="2" height="1"/><rect x="3" y="1" width="4" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="1" y="3" width="8" height="1"/><rect x="0" y="4" width="10" height="1"/><rect x="0" y="5" width="2" height="1"/><rect x="3" y="5" width="4" height="1"/><rect x="8" y="5" width="2" height="1"/><rect x="0" y="6" width="2" height="1"/><rect x="3" y="6" width="4" height="1"/><rect x="8" y="6" width="2" height="1"/><rect x="0" y="7" width="4" height="1"/><rect x="6" y="7" width="4" height="1"/><rect x="0" y="8" width="3" height="1"/><rect x="7" y="8" width="3" height="1"/></g></svg>`,
     xp: 30,
     check: (s) => ({ current: Math.min(s.classesJoined, 1), target: 1 })
   },
@@ -4544,7 +4776,7 @@ const QUESTS = [
     id: 'quiz_taker',
     name: 'QUIZ TAKER',
     desc: 'Complete your first quiz',
-    icon: '📝',
+    icon: `<svg class="px-icon" viewBox="0 0 11 10" width="20" height="18" shape-rendering="crispEdges" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg"><g fill="#FFFFFF"><rect x="0" y="0" width="8" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="7" y="1" width="2" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="4" height="1"/><rect x="8" y="2" width="2" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="6" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="2" y="6" width="6" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="0" y="8" width="10" height="1"/></g></svg>`,
     xp: 50,
     check: (s) => ({ current: Math.min(s.quizzesTaken, 1), target: 1 })
   },
@@ -4552,7 +4784,7 @@ const QUESTS = [
     id: 'quiz_champion',
     name: 'QUIZ CHAMPION',
     desc: 'Complete 5 quizzes',
-    icon: '🏆',
+    icon: `<svg class="px-icon" viewBox="0 0 13 11" width="20" height="16" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="#FFFFFF"><rect x="0" y="0" width="12" height="1"/><rect x="1" y="1" width="10" height="1"/><rect x="1" y="2" width="1" height="1"/><rect x="10" y="2" width="1" height="1"/><rect x="1" y="3" width="1" height="1"/><rect x="10" y="3" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="3" y="5" width="6" height="1"/><rect x="5" y="6" width="2" height="1"/><rect x="5" y="7" width="2" height="1"/><rect x="3" y="8" width="6" height="1"/><rect x="2" y="9" width="8" height="1"/></g></svg>`,
     xp: 200,
     check: (s) => ({ current: Math.min(s.quizzesTaken, 5), target: 5 })
   },
@@ -4560,7 +4792,7 @@ const QUESTS = [
     id: 'knowledge_sharer',
     name: 'KNOWLEDGE SHARER',
     desc: 'Upload 3 notes',
-    icon: '📚',
+    icon: `<svg class="px-icon" viewBox="0 0 11 10" width="20" height="18" shape-rendering="crispEdges" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg"><g fill="#FFFFFF"><rect x="0" y="0" width="2" height="1"/><rect x="3" y="0" width="4" height="1"/><rect x="8" y="0" width="2" height="1"/><rect x="0" y="1" width="2" height="1"/><rect x="3" y="1" width="4" height="1"/><rect x="8" y="1" width="2" height="1"/><rect x="0" y="2" width="2" height="1"/><rect x="3" y="2" width="4" height="1"/><rect x="8" y="2" width="2" height="1"/><rect x="0" y="3" width="2" height="1"/><rect x="3" y="3" width="4" height="1"/><rect x="8" y="3" width="2" height="1"/><rect x="0" y="4" width="2" height="1"/><rect x="3" y="4" width="4" height="1"/><rect x="8" y="4" width="2" height="1"/><rect x="0" y="5" width="2" height="1"/><rect x="3" y="5" width="4" height="1"/><rect x="8" y="5" width="2" height="1"/><rect x="0" y="6" width="2" height="1"/><rect x="3" y="6" width="4" height="1"/><rect x="8" y="6" width="2" height="1"/><rect x="0" y="7" width="10" height="1"/><rect x="0" y="8" width="10" height="1"/></g></svg>`,
     xp: 150,
     check: (s) => ({ current: Math.min(s.notesShared, 3), target: 3 })
   },
@@ -4568,7 +4800,7 @@ const QUESTS = [
     id: 'streak_starter',
     name: 'STREAK STARTER',
     desc: 'Log in 7 days in a row',
-    icon: '🔥',
+    icon: `<svg class="px-icon" viewBox="0 0 11 10" width="20" height="18" shape-rendering="crispEdges" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg"><g fill="#FFFFFF"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="0" y="2" width="10" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="2" height="1"/><rect x="5" y="4" width="2" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="2" y="6" width="2" height="1"/><rect x="5" y="6" width="2" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="0" y="8" width="10" height="1"/></g></svg>`,
     xp: 100,
     check: (s) => ({ current: Math.min(s.streak, 7), target: 7 })
   },
@@ -4576,7 +4808,7 @@ const QUESTS = [
     id: 'top_class',
     name: 'TOP OF THE CLASS',
     desc: 'Reach Rank #1 on the leaderboard',
-    icon: '⭐',
+    icon: `<svg class="px-icon" viewBox="0 0 11 10" width="20" height="18" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="#FFFFFF"><rect x="4" y="0" width="2" height="1"/><rect x="3" y="1" width="4" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="0" y="3" width="10" height="1"/><rect x="1" y="4" width="8" height="1"/><rect x="2" y="5" width="6" height="1"/><rect x="2" y="6" width="6" height="1"/><rect x="1" y="7" width="2" height="1"/><rect x="7" y="7" width="2" height="1"/><rect x="0" y="8" width="2" height="1"/><rect x="8" y="8" width="2" height="1"/></g></svg>`,
     xp: 500,
     check: (s) => ({ current: Math.min(s.rank1 || 0, 1), target: 1 })
   }
@@ -4609,7 +4841,7 @@ async function renderQuests() {
       : '';
 
     const rightSide = isClaimed
-      ? `<span class="quest-reward" style="color:#aaa;border-color:#ccc;background:#f5f5f5;">✓ CLAIMED</span>`
+      ? `<span class="quest-reward" style="color:#aaa;border-color:#ccc;background:#f5f5f5;">CLAIMED</span>`
       : isComplete
         ? `<button class="btn-claim-quest" onclick="claimQuest('${q.id}', ${q.xp})">CLAIM +${q.xp} XP</button>`
         : `<span class="quest-reward">+${q.xp} XP</span>`;
@@ -4725,7 +4957,7 @@ async function renderStudentDashboard() {
   if (activeDiv) {
     const pending = (quizzes || []).filter(q => !submittedIds.has(q.id));
     if (pending.length === 0) {
-      activeDiv.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon">✓</span><span class="empty-state-text">ALL CAUGHT UP!<br><span style="font-size:8px;opacity:0.6;font-family:'Lato',sans-serif;font-weight:400;">No pending quizzes</span></span></div>`;
+      activeDiv.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon">▣</span><span class="empty-state-text">ALL CAUGHT UP!<br><span style="font-size:8px;opacity:0.6;font-family:'Lato',sans-serif;font-weight:400;">No pending quizzes</span></span></div>`;
     } else {
       activeDiv.innerHTML = pending.map(q => `
         <div class="pixel-card terracotta-accent" onclick="startQuizFromDB('${q.id}')" style="cursor:pointer;">
@@ -4755,7 +4987,7 @@ async function renderStudentDashboard() {
 
     activityDiv.innerHTML = submissions.slice(0, 5).map(s => `
       <div class="quest-item">
-        <div class="quest-icon" style="background:${s.score >= 75 ? 'var(--moss)' : 'var(--terracotta)'};color:#FFF;font-size:10px;display:flex;align-items:center;justify-content:center;">✎</div>
+        <div class="quest-icon" style="background:${s.score >= 75 ? 'var(--moss)' : 'var(--terracotta)'};color:#FFF;font-size:10px;display:flex;align-items:center;justify-content:center;">▤</div>
         <div class="quest-info">
           <span class="quest-name">${allQuizTitles[s.quiz_id] || 'Quiz'}</span>
           <span class="quest-desc">Score: ${s.score}%</span>
@@ -4818,7 +5050,7 @@ async function joinClassByCode() {
   const { error: enrollError } = await _supabase.from('enrollments').insert({ student_id: currentUser.id, classroom_id: classroom.id });
   if (enrollError) { setFormMsg('join-class-msg', 'Failed to join class: ' + enrollError.message, true); return; }
 
-  setFormMsg('join-class-msg', `✓ Successfully joined "${classroom.name}"!`, false);
+  setFormMsg('join-class-msg', `Successfully joined "${classroom.name}"!`, false);
   document.getElementById('join-class-input').value = '';
   studentState.classesJoined++;
   updateUserUI();
@@ -5095,7 +5327,6 @@ async function renderLeaderboard() {
     level: s.student_id === currentUser.id ? studentState.level : (s.level || 1)
   })).sort((a, b) => b.xp - a.xp); // re-sort after substituting live values
 
-  const rankIcons = ['🥇','🥈','🥉'];
   const rankColors = ['#B8860B','#6B7280','#8B4513'];
 
   el.innerHTML = rows.map((r, i) => {
@@ -5104,7 +5335,7 @@ async function renderLeaderboard() {
     const fn = parts[0]; const ln = parts.length > 1 ? parts[parts.length-1] : '';
     const initials = (fn[0] + (ln ? ln[0] : '')).toUpperCase();
     const short = fn + (ln ? ' ' + ln[0] + '.' : '');
-    const rankDisplay = i < 3 ? rankIcons[i] : String(i+1).padStart(2,'0');
+    const rankDisplay = String(i+1).padStart(2,'0');
     return `
       <div class="lb-row ${isMe ? 'me' : ''}">
         <span class="lb-rank" style="color:${rankColors[i] || 'var(--indigo)'}; font-size:${i < 3 ? '18px' : ''};">${rankDisplay}</span>
@@ -5153,7 +5384,7 @@ async function renderStudentNotes() {
   if (grid) {
     const approved = notesStore.filter(n => n.status === 'approved');
     if (approved.length === 0) {
-      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon">📄</span><span class="empty-state-text">NO APPROVED NOTES YET</span></div>`;
+      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon">▤</span><span class="empty-state-text">NO APPROVED NOTES YET</span></div>`;
     } else {
       grid.innerHTML = approved.map(n => `
         <div class="note-card" onclick="openNoteView('${n.id}')">
@@ -5176,12 +5407,12 @@ function renderMySubmissions() {
   if (!list || !currentUser) return;
   const mine = notesStore.filter(n => n.authorId === currentUser.id);
   if (mine.length === 0) {
-    list.innerHTML = `<div class="empty-state"><span class="empty-state-icon">✎</span><span class="empty-state-text">YOU HAVEN'T UPLOADED ANY NOTES YET</span></div>`;
+    list.innerHTML = `<div class="empty-state"><span class="empty-state-icon">▤</span><span class="empty-state-text">YOU HAVEN'T UPLOADED ANY NOTES YET</span></div>`;
     return;
   }
   list.innerHTML = mine.map(n => {
     const statusClass = n.status === 'approved' ? 'note-status-approved' : n.status === 'rejected' ? 'note-status-rejected' : 'note-status-pending';
-    const statusLabel = n.status === 'approved' ? '✓ APPROVED' : n.status === 'rejected' ? '✕ REJECTED' : '⌛ PENDING';
+    const statusLabel = n.status === 'approved' ? 'APPROVED' : n.status === 'rejected' ? 'REJECTED' : 'PENDING';
     return `
       <div class="submission-row" onclick="openNoteView('${n.id}')">
         <div class="submission-info">
@@ -5254,7 +5485,7 @@ async function submitUploadNote() {
   await _supabase.from('student_stats').upsert({ student_id: currentUser.id, notes_shared: studentState.notesShared }, { onConflict: 'student_id' });
   updateUserUI();
 
-  showNoteMsg('✓ Note submitted! It will appear once approved by your teacher.', 'success');
+  showNoteMsg('Note submitted! It will appear once approved by your teacher.', 'success');
   setTimeout(async () => { closeNoteModal(); await renderStudentNotes(); }, 1800);
 }
 
@@ -5399,7 +5630,7 @@ async function createClassroom() {
     return;
   }
 
-  setFormMsg('create-class-msg', `✓ Classroom "${name}" created successfully! Code: ${code}`, false);
+  setFormMsg('create-class-msg', `Classroom "${name}" created successfully! Code: ${code}`, false);
   document.getElementById('new-class-name').value = '';
   document.getElementById('new-class-code').value = '';
   document.getElementById('new-class-desc').value = '';
@@ -5475,7 +5706,7 @@ async function inviteStudentToClass() {
   const { error } = await _supabase.from('enrollments').insert({ student_id: profile.id, classroom_id: classroomId });
   if (error) { setFormMsg('invite-msg', 'Failed to enroll student: ' + error.message, true); return; }
 
-  setFormMsg('invite-msg', `✓ ${profile.name} has been added to the class!`, false);
+  setFormMsg('invite-msg', `${profile.name} has been added to the class!`, false);
   document.getElementById('invite-email').value = '';
   showAdminToast(`${profile.name} enrolled successfully.`, 'success');
   await loadAdminDashboard();
@@ -5723,7 +5954,7 @@ async function publishQuiz(status) {
 
   if (error) { setFormMsg('quiz-create-msg', 'Failed to save quiz: ' + error.message, true); return; }
 
-  setFormMsg('quiz-create-msg', `✓ Quiz "${title}" ${status === 'published' ? 'published' : 'saved as draft'}!`, false);
+  setFormMsg('quiz-create-msg', `Quiz "${title}" ${status === 'published' ? 'published' : 'saved as draft'}!`, false);
   showAdminToast(`Quiz "${title}" ${status === 'published' ? 'published' : 'saved as draft'}!`, 'success');
   setTimeout(() => { switchAdmView('quizzes'); }, 1500);
 }
@@ -5788,7 +6019,7 @@ function cdSwitchTab(tab) {
 async function renderClassDetailQuizzes() {
   const grid = document.getElementById('cd-quizzes-grid');
   if (!grid || !currentClassDetailId) return;
-  grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon">⌛</span><span class="empty-state-text" style="font-size:8px;">Loading...</span></div>`;
+  grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon">▦</span><span class="empty-state-text" style="font-size:8px;">Loading...</span></div>`;
 
   const { data: quizzes } = await _supabase
     .from('quizzes')
@@ -5971,7 +6202,7 @@ async function renderAdminNotes() {
 
 async function adminApproveNote(id) {
   await _supabase.from('notes').update({ status: 'approved' }).eq('id', id);
-  showAdminToast('✓ Note approved and published.', 'success');
+  showAdminToast('Note approved and published.', 'success');
   await renderAdminNotes();
 }
 
@@ -6067,8 +6298,17 @@ document.getElementById('upload-note-modal').addEventListener('click', function(
 /* ============================================================
    LANDING PAGE SCROLL ANIMATIONS
 ============================================================ */
+function lpFilterFeatures(btn, cat) {
+  document.querySelectorAll('.lp-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.lp-feat-card').forEach(card => {
+    const show = cat === 'all' || card.getAttribute('data-cat') === cat;
+    card.classList.toggle('hidden-card', !show);
+  });
+}
+
 (function initLanding() {
-  const cards = document.querySelectorAll('.lp-feat-card, .lp-step, .lp-role-card, .lp-hero-stat');
+  const cards = document.querySelectorAll('.lp-feat-card, .lp-step, .lp-role-card, .lp-stat, .lp-quiz-card');
   const cardObs = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) { entry.target.style.opacity = '1'; entry.target.style.transform = 'translateY(0)'; cardObs.unobserve(entry.target); }
@@ -6087,6 +6327,7 @@ document.getElementById('upload-note-modal').addEventListener('click', function(
 })();
 
 // Initial renders on page load
+window.selectedRole = 'student';
 renderAdminNotes();
 </script>
 </body>
