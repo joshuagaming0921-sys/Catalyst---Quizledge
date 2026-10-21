@@ -3237,6 +3237,22 @@ body {
   .adm-search { display: none; }
   .adm-metrics { grid-template-columns: 1fr 1fr; }
 }
+/* ===== quiz types + attachments ===== */
+.q-toolbar{display:flex;gap:8px;align-items:center;margin-top:18px;margin-bottom:12px}
+.q-toolbar .adm-select{max-width:220px}
+.q-toolbar + .q-builder-input{margin-top:0}
+.q-hint{font-family:'Lato',sans-serif;font-size:11px;color:rgba(46,64,83,.6);margin:6px 0 10px;display:block}
+.mb-row{display:flex;gap:8px;margin-bottom:8px}.mb-row .adm-input{flex:1}
+.match-row{display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.match-left{flex:1 1 200px;font-family:'Lato',sans-serif;font-size:14px;color:var(--indigo);font-weight:600}
+.match-row .modal-select{flex:1 1 200px;margin-bottom:0}
+.attach-chip{display:flex;gap:10px;align-items:center;padding:8px 12px;border:2px dashed var(--indigo);margin-bottom:10px;font-family:'Source Code Pro',monospace;font-size:11px;color:var(--indigo)}
+.attach-name{flex:1;word-break:break-all}.attach-size{opacity:.6}
+.attach-actions{display:flex;gap:10px;margin-bottom:12px}
+.attach-frame{width:100%;height:50vh;border:2px solid var(--indigo);background:#fff}
+.attach-img{max-width:100%;border:2px solid var(--indigo)}
+.attach-tag{display:inline-block;margin-left:6px;font-family:'Press Start 2P',monospace;font-size:6px;color:var(--moss-dark);border:1px solid currentColor;padding:2px 5px}
+#note-view-modal .modal-box{max-width:min(760px,95vw)!important}
 </style>
 </head>
 <body>
@@ -3663,6 +3679,7 @@ body {
     </div>
     <div style="border-top:2px solid var(--indigo); margin-bottom:16px;"></div>
     <div class="note-view-modal-body">
+      <div id="nv-attach" style="display:none"></div>
       <div class="note-full-content" id="nv-content"></div>
     </div>
     <div style="margin-top:18px; text-align:right;">
@@ -3683,7 +3700,10 @@ body {
     <label class="modal-label">SUBJECT / CLASS</label>
     <input class="modal-input" id="note-subject-input" type="text" placeholder="e.g. Math, Science, Filipino...">
     <label class="modal-label">CONTENT / PREVIEW</label>
-    <textarea class="modal-textarea" id="note-content-input" placeholder="Write your notes here..."></textarea>
+    <textarea class="modal-textarea" id="note-content-input" placeholder="Write your notes here (optional if you attach a file)..."></textarea>
+    <label class="modal-label">ATTACHMENT (OPTIONAL)</label>
+    <input class="modal-input" id="note-file-input" type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" style="margin-bottom:4px;">
+    <span class="q-hint">PDF, DOC, DOCX, PNG or JPG &middot; max 10 MB</span>
     <div class="modal-actions">
       <button class="btn-pixel" onclick="submitUploadNote()">UPLOAD &gt;&gt;</button>
       <button class="btn-pixel" style="background:transparent; color:var(--indigo); border-color:var(--indigo); box-shadow:3px 3px 0px rgba(46,64,83,0.2);" onclick="closeNoteModal()">CANCEL</button>
@@ -4344,34 +4364,7 @@ body {
           </div>
         </div>
 
-        <div class="quiz-builder" id="question-list">
-          <div class="question-builder">
-            <div class="q-num-badge">Question 1</div>
-            <input class="q-builder-input" type="text" placeholder="Enter question text...">
-            <div class="choices-builder">
-              <div class="choice-builder">
-                <div class="choice-letter-badge">A</div>
-                <input type="text" placeholder="Choice A">
-                <div class="correct-marker" title="Mark as correct" onclick="toggleCorrect(this)"></div>
-              </div>
-              <div class="choice-builder">
-                <div class="choice-letter-badge">B</div>
-                <input type="text" placeholder="Choice B">
-                <div class="correct-marker" onclick="toggleCorrect(this)"></div>
-              </div>
-              <div class="choice-builder">
-                <div class="choice-letter-badge">C</div>
-                <input type="text" placeholder="Choice C">
-                <div class="correct-marker" onclick="toggleCorrect(this)"></div>
-              </div>
-              <div class="choice-builder">
-                <div class="choice-letter-badge">D</div>
-                <input type="text" placeholder="Choice D">
-                <div class="correct-marker" onclick="toggleCorrect(this)"></div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="quiz-builder" id="question-list"></div>
 
         <div style="display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; align-items:center;">
           <button class="btn-adm-secondary" onclick="addQuestion()">+ Add Question</button>
@@ -4552,6 +4545,8 @@ let currentQuizData = null;
 let currentQuestionIndex = 0;
 let quizAnswers = {};
 let questionCount = 1;
+let matchOrders = {};
+let quizSubmitting = false;
 
 /* ============================================================
    AUTH STATE CHANGE — handle password reset links
@@ -5193,7 +5188,7 @@ async function renderStudentDashboard() {
       activeDiv.innerHTML = pending.map(q => `
         <div class="pixel-card terracotta-accent" onclick="startQuizFromDB('${q.id}')" style="cursor:pointer;">
           <span class="card-tag tag-testing">QUIZ</span>
-          <span class="card-title">${q.title}</span>
+          <span class="card-title">${escHtml(q.title)}</span>
           <span class="card-meta">${q.time_limit_mins || 30} min &nbsp;·&nbsp; ${(q.questions||[]).length} questions</span>
           <div class="card-progress" style="margin-top:14px;">
             <button class="btn-pixel" style="font-size:7px;padding:8px 14px;width:100%;margin-top:8px;">START QUIZ &gt;&gt;</button>
@@ -5330,7 +5325,7 @@ async function renderStudentQuizzes() {
     return `
       <div class="pixel-card ${done ? 'moss-accent' : 'terracotta-accent'}" onclick="${done ? '' : `startQuizFromDB('${q.id}')`}" style="${done ? 'opacity:0.75;' : 'cursor:pointer;'}">
         <span class="card-tag ${done ? 'tag-notes' : 'tag-testing'}">${done ? 'COMPLETED' : 'PENDING'}</span>
-        <span class="card-title">${q.title}</span>
+        <span class="card-title">${escHtml(q.title)}</span>
         <span class="card-meta">${q.classrooms ? q.classrooms.code + ' — ' + q.classrooms.name : ''}</span>
         <span class="card-meta">${q.time_limit_mins || 30} min &nbsp;·&nbsp; ${(q.questions||[]).length} questions</span>
         ${done
@@ -5398,6 +5393,8 @@ function initQuiz(quizData) {
   currentQuizData = quizData;
   currentQuestionIndex = 0;
   quizAnswers = {};
+  matchOrders = {};
+  quizSubmitting = false;
   quizTimeLimitSeconds = (currentQuizData.timeLimitMins || 30) * 60;
   const titleEl = document.getElementById('qt-quiz-title');
   if (titleEl) titleEl.textContent = currentQuizData.title;
@@ -5411,18 +5408,11 @@ function renderQuizQuestion() {
   const progEl = document.getElementById('qt-progress-label');
   if (progEl) progEl.innerHTML = `Question ${currentQuestionIndex + 1} of ${total} &nbsp;·&nbsp; ${currentQuizData.class}`;
   const numEl = document.getElementById('qt-q-number');
-  if (numEl) numEl.textContent = `// QUESTION ${String(currentQuestionIndex + 1).padStart(2, '0')}`;
+  if (numEl) numEl.textContent = `// QUESTION ${String(currentQuestionIndex + 1).padStart(2, '0')} · ${(QTYPES[qType(q)] || '').toUpperCase()}`;
   const textEl = document.getElementById('qt-q-text');
   if (textEl) textEl.textContent = q.text;
   const choicesEl = document.getElementById('qt-q-choices');
-  if (choicesEl) {
-    const letters = ['A','B','C','D'];
-    choicesEl.innerHTML = q.choices.map((c, i) => `
-      <div class="q-choice ${quizAnswers[currentQuestionIndex] === i ? 'selected' : ''}" onclick="selectChoice(this, ${i})">
-        <div class="choice-letter">${letters[i]}</div>${c}
-      </div>
-    `).join('');
-  }
+  if (choicesEl) renderAnswerUI(q, choicesEl);
   renderNavDots();
   const prevBtn = document.getElementById('qt-prev-btn');
   const nextBtn = document.getElementById('qt-next-btn');
@@ -5438,17 +5428,58 @@ function renderNavDots() {
   dotsEl.innerHTML = currentQuizData.questions.map((_, i) => {
     let cls = 'q-dot';
     if (i === currentQuestionIndex) cls += ' current';
-    else if (quizAnswers[i] !== undefined) cls += ' answered';
+    else if (isAnswered(i)) cls += ' answered';
     return `<div class="${cls}" onclick="jumpToQuestion(${i})" title="Q${i+1}"></div>`;
   }).join('');
 }
 
-function selectChoice(el, choiceIndex) {
-  el.closest('.q-choices').querySelectorAll('.q-choice').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  quizAnswers[currentQuestionIndex] = choiceIndex;
-  renderNavDots();
+const QTYPES = { mcq:'Multiple Choice', tf:'True or False', identification:'Identification', enumeration:'Enumeration', matching:'Matching Type' };
+const qType = q => q.type || 'mcq';
+const norm = v => String(v == null ? '' : v).normalize('NFKC').toLowerCase().replace(/\s+/g, ' ').trim().replace(/[.!?]+$/, '');
+function qPoints(q) { const t = qType(q); return t === 'enumeration' ? (q.answers || []).length : t === 'matching' ? (q.pairs || []).length : 1; }
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function gradeQuestion(q, a) {
+  const t = qType(q);
+  if (t === 'mcq' || t === 'tf') return a === q.correct ? 1 : 0;
+  if (t === 'identification') { const g = norm(a); return g && [q.answer, ...(q.alternates || [])].some(x => norm(x) === g) ? 1 : 0; }
+  if (t === 'enumeration') {
+    const given = (Array.isArray(a) ? a : []).map(norm), key = q.answers.map(l => String(l).split('|').map(norm));
+    if (q.ordered) return key.reduce((s, alts, i) => s + (given[i] && alts.includes(given[i]) ? 1 : 0), 0);
+    const used = new Set(); let pts = 0;
+    given.forEach(g => { if (!g) return; const k = key.findIndex((alts, i) => !used.has(i) && alts.includes(g)); if (k > -1) { used.add(k); pts++; } });
+    return pts;
+  }
+  if (t === 'matching') { const sel = Array.isArray(a) ? a : []; return q.pairs.reduce((s, p, i) => s + (sel[i] != null && q.pairs[sel[i]] && norm(q.pairs[sel[i]].right) === norm(p.right) ? 1 : 0), 0); }
+  return 0;
 }
+function isAnswered(i) {
+  const a = quizAnswers[i];
+  if (a === undefined || a === null) return false;
+  if (Array.isArray(a)) return a.some(x => x !== null && x !== undefined && x !== '');
+  return typeof a === 'string' ? a.trim() !== '' : true;
+}
+function renderAnswerUI(q, el) {
+  const t = qType(q), a = quizAnswers[currentQuestionIndex], L = ['A','B','C','D'];
+  if (t === 'mcq') el.innerHTML = q.choices.map((c, i) => `<div class="q-choice ${a === i ? 'selected' : ''}" onclick="selectChoice(${i})"><div class="choice-letter">${L[i]}</div>${escHtml(c)}</div>`).join('');
+  else if (t === 'tf') el.innerHTML = [true, false].map(v => `<div class="q-choice ${a === v ? 'selected' : ''}" onclick="selectTF(${v})"><div class="choice-letter">${v ? 'T' : 'F'}</div>${v ? 'True' : 'False'}</div>`).join('');
+  else if (t === 'identification') el.innerHTML = `<input class="modal-input" type="text" autocomplete="off" placeholder="Type your answer..." value="${escHtml(a || '')}" oninput="setAnswer(this.value)">`;
+  else if (t === 'enumeration') {
+    const n = q.answers.length, arr = Array.isArray(a) ? a : [];
+    el.innerHTML = `<span class="q-hint">List ${n} item${n > 1 ? 's' : ''}${q.ordered ? ' in the correct order' : ' (any order)'}.</span>` + Array.from({ length: n }, (_, i) => `<input class="modal-input" type="text" autocomplete="off" placeholder="${i + 1}." value="${escHtml(arr[i] || '')}" oninput="setListAnswer(${i}, this.value)">`).join('');
+  } else if (t === 'matching') {
+    const order = matchOrders[currentQuestionIndex] || (matchOrders[currentQuestionIndex] = shuffle(q.pairs.map((_, i) => i))), sel = Array.isArray(a) ? a : [];
+    el.innerHTML = `<span class="q-hint">Match each item with its pair.</span>` + q.pairs.map((p, i) => `<div class="match-row"><div class="match-left">${i + 1}. ${escHtml(p.left)}</div><select class="modal-select" onchange="setMatch(${i}, this.value)"><option value="">— choose —</option>${order.map(k => `<option value="${k}" ${sel[i] === k ? 'selected' : ''}>${escHtml(q.pairs[k].right)}</option>`).join('')}</select></div>`).join('');
+  }
+}
+function selectChoice(i) { quizAnswers[currentQuestionIndex] = i; renderQuizQuestion(); }
+function selectTF(v) { quizAnswers[currentQuestionIndex] = v; renderQuizQuestion(); }
+function setAnswer(v) { quizAnswers[currentQuestionIndex] = v; renderNavDots(); }
+function setSlot(i, v, n, blank) {
+  const cur = quizAnswers[currentQuestionIndex], a = Array.isArray(cur) ? cur : Array(n).fill(blank);
+  a[i] = v; quizAnswers[currentQuestionIndex] = a; renderNavDots();
+}
+function setListAnswer(i, v) { setSlot(i, v, currentQuizData.questions[currentQuestionIndex].answers.length, ''); }
+function setMatch(i, v) { setSlot(i, v === '' ? null : parseInt(v, 10), currentQuizData.questions[currentQuestionIndex].pairs.length, null); }
 
 function quizNext() {
   if (!currentQuizData) return;
@@ -5465,12 +5496,12 @@ function jumpToQuestion(index) { currentQuestionIndex = index; renderQuizQuestio
    SUBMIT QUIZ — saves to database
 ============================================================ */
 async function submitQuiz() {
+  if (quizSubmitting) return;
+  quizSubmitting = true;
   stopQuizTimer();
-  let correct = 0;
-  if (currentQuizData) {
-    currentQuizData.questions.forEach((q, i) => { if (quizAnswers[i] === q.correct) correct++; });
-  }
-  const total = currentQuizData ? currentQuizData.questions.length : 1;
+  let correct = 0, total = 0;
+  if (currentQuizData) currentQuizData.questions.forEach((q, i) => { correct += gradeQuestion(q, quizAnswers[i]); total += qPoints(q); });
+  total = total || 1;
   const pct = Math.round((correct / total) * 100);
   const xp = Math.round(pct * 1.5);
 
@@ -5518,7 +5549,7 @@ async function submitQuiz() {
   const labelEl = overlay ? overlay.querySelector('.score-label') : null;
   const xpEl = overlay ? overlay.querySelector('[style*="moss"]') : null;
   if (numEl) numEl.textContent = pct + '%';
-  if (labelEl) labelEl.textContent = `${correct} / ${total} Correct`;
+  if (labelEl) labelEl.textContent = `${correct} / ${total} Points`;
   if (xpEl) xpEl.textContent = `+${xp} XP EARNED`;
   if (overlay) overlay.classList.add('open');
 }
@@ -5609,6 +5640,7 @@ async function renderStudentNotes() {
     author: n.profiles ? n.profiles.name : 'Unknown',
     authorShort: n.profiles ? n.profiles.name.split(' ')[0] : 'Student',
     date: new Date(n.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }),
+    file: n.file_path ? { path: n.file_path, name: n.file_name || 'attachment', size: n.file_size || 0 } : null,
     status: n.status,
     authorId: n.author_id
   }));
@@ -5623,7 +5655,7 @@ async function renderStudentNotes() {
         <div class="note-card" onclick="openNoteView('${n.id}')">
           <span class="note-author">by ${n.authorShort}</span>
           <span class="note-title">${n.title}</span>
-          <p class="note-preview">${n.content.substring(0,160).replace(/\n/g,' ')}...</p>
+          <p class="note-preview">${notePreview(n)}</p>
           <div class="note-footer">
             <span class="note-subject">${n.subject}</span>
             <span class="note-date">${n.date}</span>
@@ -5665,20 +5697,62 @@ function openNoteView(id) {
   const note = notesStore.find(n => n.id === id);
   if (!note) return;
   if (note.status !== 'approved' && note.authorId !== currentUser?.id && currentUser?.role !== 'admin') return;
-  document.getElementById('nv-title').textContent = note.title;
-  document.getElementById('nv-author').textContent = 'by ' + note.authorShort;
-  document.getElementById('nv-date').textContent = note.date;
-  document.getElementById('nv-subject').textContent = note.subject;
-  document.getElementById('nv-content').textContent = note.content;
-  document.getElementById('note-view-modal').classList.add('open');
+  showNote(note);
 }
 
-function closeNoteView() { document.getElementById('note-view-modal').classList.remove('open'); }
+const NOTE_BUCKET = 'note-files', NOTE_MAX = 10 * 1024 * 1024;
+const NOTE_TYPES = { pdf:'application/pdf', doc:'application/msword', docx:'application/vnd.openxmlformats-officedocument.wordprocessingml.document', png:'image/png', jpg:'image/jpeg', jpeg:'image/jpeg' };
+const fileExt = n => (String(n).split('.').pop() || '').toLowerCase();
+const fmtSize = b => b >= 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB';
+let _nvFile = null, _nvUrl = null;
+function notePreview(n) {
+  const c = n.content || '', f = n.file ? n.file.name : n.file_name, has = n.file || n.file_path;
+  return (c ? escHtml(c.substring(0, 160).replace(/\n/g, ' ')) + (c.length > 160 ? '…' : '') : '') + (has ? `<span class="attach-tag">ATTACHMENT · ${escHtml(fileExt(f || '').toUpperCase() || 'FILE')}</span>` : '');
+}
+function nvClearUrl() { if (_nvUrl) { URL.revokeObjectURL(_nvUrl); _nvUrl = null; } }
+function showNote(n) {
+  nvClearUrl();
+  document.getElementById('nv-title').textContent = n.title;
+  document.getElementById('nv-author').textContent = 'by ' + n.authorShort;
+  document.getElementById('nv-date').textContent = n.date;
+  document.getElementById('nv-subject').textContent = n.subject;
+  const c = document.getElementById('nv-content'); c.textContent = n.content || ''; c.style.display = n.content ? 'block' : 'none';
+  const box = document.getElementById('nv-attach');
+  _nvFile = n.file || null;
+  if (_nvFile) {
+    box.style.display = 'block';
+    box.innerHTML = `<div class="attach-chip"><span class="attach-name">${escHtml(_nvFile.name)}</span><span class="attach-size">${_nvFile.size ? fmtSize(_nvFile.size) : ''}</span></div><div class="attach-actions"><button class="btn-pixel" style="font-size:7px;" onclick="nvPreview()">PREVIEW</button><button class="btn-pixel" style="font-size:7px;" onclick="nvDownload()">DOWNLOAD</button></div><div id="nv-preview"></div>`;
+  } else { box.style.display = 'none'; box.innerHTML = ''; }
+  document.getElementById('note-view-modal').classList.add('open');
+}
+async function nvBlob() {
+  const f = _nvFile;
+  const { data, error } = await _supabase.storage.from(NOTE_BUCKET).download(f.path);
+  if (error || !data) throw new Error(error ? error.message : 'File not found');
+  return new Blob([data], { type: NOTE_TYPES[fileExt(f.name)] || data.type });
+}
+async function nvPreview() {
+  const box = document.getElementById('nv-preview'), ext = fileExt(_nvFile.name);
+  if (ext === 'doc' || ext === 'docx') { box.innerHTML = '<span class="q-hint">Word files can\'t be previewed in the browser. Use DOWNLOAD to open it.</span>'; return; }
+  box.innerHTML = '<span class="q-hint">Loading preview...</span>';
+  try {
+    const b = await nvBlob(); nvClearUrl(); _nvUrl = URL.createObjectURL(b);
+    box.innerHTML = ext === 'pdf' ? `<iframe class="attach-frame" src="${_nvUrl}"></iframe><span class="q-hint">Blank preview? Your browser may block PDF previews, use DOWNLOAD instead.</span>` : `<img class="attach-img" src="${_nvUrl}" alt="">`;
+  } catch (e) { box.innerHTML = '<span class="q-hint" style="color:#b91c1c;">Could not load file: ' + escHtml(e.message) + '</span>'; }
+}
+async function nvDownload() {
+  try {
+    const u = URL.createObjectURL(await nvBlob()), a = document.createElement('a');
+    a.href = u; a.download = _nvFile.name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(u), 4000);
+  } catch (e) { alert('Download failed: ' + e.message); }
+}
+function closeNoteView() { nvClearUrl(); const p = document.getElementById('nv-preview'); if (p) p.innerHTML = ''; document.getElementById('note-view-modal').classList.remove('open'); }
 
 function openNoteModal() {
   const modal = document.getElementById('upload-note-modal');
   if (modal) modal.classList.add('open');
-  ['note-title-input','note-content-input'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  ['note-title-input','note-subject-input','note-content-input','note-file-input'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   const msg = document.getElementById('note-modal-msg');
   if (msg) { msg.style.display = 'none'; msg.className = 'modal-msg'; }
 }
@@ -5694,33 +5768,39 @@ function showNoteMsg(text, type) {
 }
 
 async function submitUploadNote() {
-  const title = (document.getElementById('note-title-input').value || '').trim();
-  const subject = (document.getElementById('note-subject-input').value || 'General').trim();
-  const content = (document.getElementById('note-content-input').value || '').trim();
+  if (window._noteBusy) return;
+  const val = id => (document.getElementById(id).value || '').trim();
+  const title = val('note-title-input'), subject = val('note-subject-input') || 'General', content = val('note-content-input');
+  const file = document.getElementById('note-file-input').files[0], ext = file ? fileExt(file.name) : '';
   if (!title) { showNoteMsg('Please enter a note title.', 'error'); return; }
-  if (!content) { showNoteMsg('Please enter some content for your note.', 'error'); return; }
-
-  // Get first enrolled classroom
-  const { data: enrollments } = await _supabase.from('enrollments').select('classroom_id').eq('student_id', currentUser.id).limit(1);
-  const classroomId = enrollments && enrollments.length > 0 ? enrollments[0].classroom_id : null;
-  if (!classroomId) { showNoteMsg('Join a class first — your teacher reviews notes from their own classes.', 'error'); return; }
-
-  const { error } = await _supabase.from('notes').insert({
-    title, content, subject,
-    author_id: currentUser.id,
-    classroom_id: classroomId,
-    status: 'pending'
-  });
-
-  if (error) { showNoteMsg('Failed to upload note: ' + error.message, 'error'); return; }
-
-  // Update notes shared count
-  studentState.notesShared++;
-  await _supabase.from('student_stats').upsert({ student_id: currentUser.id, notes_shared: studentState.notesShared }, { onConflict: 'student_id' });
-  updateUserUI();
-
-  showNoteMsg('Note submitted! It will appear once approved by your teacher.', 'success');
-  setTimeout(async () => { closeNoteModal(); await renderStudentNotes(); }, 1800);
+  if (!content && !file) { showNoteMsg('Write some content or attach a file.', 'error'); return; }
+  if (file && !NOTE_TYPES[ext]) { showNoteMsg('Unsupported file type. Use PDF, DOC, DOCX, PNG or JPG.', 'error'); return; }
+  if (file && (file.size === 0 || file.size > NOTE_MAX)) { showNoteMsg(file.size === 0 ? 'That file is empty.' : 'File is too large (max 10 MB).', 'error'); return; }
+  window._noteBusy = true;
+  let path = null;
+  try {
+    const { data: enrollments } = await _supabase.from('enrollments').select('classroom_id').eq('student_id', currentUser.id).limit(1);
+    const classroomId = enrollments && enrollments.length > 0 ? enrollments[0].classroom_id : null;
+    if (!classroomId) { showNoteMsg('Join a class first — your teacher reviews notes from their own classes.', 'error'); return; }
+    const row = { title, content, subject, author_id: currentUser.id, classroom_id: classroomId, status: 'pending' };
+    if (file) {
+      path = `${currentUser.id}/${Date.now()}_${file.name.replace(/[^A-Za-z0-9._-]/g, '_')}`;
+      const up = await _supabase.storage.from(NOTE_BUCKET).upload(path, file, { contentType: NOTE_TYPES[ext], upsert: false });
+      if (up.error) { path = null; showNoteMsg('File upload failed: ' + up.error.message + (/bucket|policy|security/i.test(up.error.message) ? ' (run supabase_setup.sql first)' : ''), 'error'); return; }
+      Object.assign(row, { file_path: path, file_name: file.name, file_type: NOTE_TYPES[ext], file_size: file.size });
+    }
+    const { error } = await _supabase.from('notes').insert(row);
+    if (error) {
+      if (path) await _supabase.storage.from(NOTE_BUCKET).remove([path]);
+      showNoteMsg('Failed to upload note: ' + error.message + (/file_(path|name|type|size)|schema cache/i.test(error.message) ? ' (run supabase_setup.sql first)' : ''), 'error');
+      return;
+    }
+    studentState.notesShared++;
+    await _supabase.from('student_stats').upsert({ student_id: currentUser.id, notes_shared: studentState.notesShared }, { onConflict: 'student_id' });
+    updateUserUI();
+    showNoteMsg('Note submitted! It will appear once approved by your teacher.', 'success');
+    setTimeout(async () => { closeNoteModal(); await renderStudentNotes(); }, 1800);
+  } finally { window._noteBusy = false; }
 }
 
 /* ============================================================
@@ -6064,7 +6144,7 @@ async function renderAdminQuizzes() {
     const qSubs = subMap[q.id] || [];
     const avg = qSubs.length > 0 ? Math.round(qSubs.reduce((a,b) => a+b,0)/qSubs.length) + '%' : '—%';
     return `<tr>
-      <td><strong>${q.title}</strong></td>
+      <td><strong>${escHtml(q.title)}</strong></td>
       <td>${q.classrooms ? q.classrooms.code + ' — ' + q.classrooms.name : '—'}</td>
       <td>${(q.questions || []).length}</td>
       <td>${qSubs.length}</td>
@@ -6072,7 +6152,7 @@ async function renderAdminQuizzes() {
       <td><span class="badge ${q.status === 'published' ? 'badge-active' : q.status === 'draft' ? 'badge-pending' : 'badge-inactive'}">${q.status}</span></td>
       <td>
         ${q.status !== 'published' ? `<button class="adm-action-btn" style="color:var(--adm-success);border-color:rgba(22,163,74,0.3);" onclick="toggleQuizStatus('${q.id}','published')">Publish</button>` : `<button class="adm-action-btn" onclick="toggleQuizStatus('${q.id}','draft')">Unpublish</button>`}
-        <button class="adm-action-btn danger" onclick="deleteQuiz('${q.id}', '${q.title.replace(/'/g,"\\'")}')">Delete</button>
+        <button class="adm-action-btn danger" data-title="${escHtml(q.title)}" onclick="deleteQuiz('${q.id}', this.dataset.title)">Delete</button>
       </td>
     </tr>`;
   }).join('');
@@ -6098,24 +6178,11 @@ async function deleteQuiz(quizId, title) {
    ADMIN — CREATE QUIZ
 ============================================================ */
 function resetQuizCreate() {
-  const titleIn = document.getElementById('quiz-title-input'); if (titleIn) titleIn.value = '';
-  const tlIn = document.getElementById('quiz-timelimit-input'); if (tlIn) tlIn.value = '30';
-  const psIn = document.getElementById('quiz-passing-input'); if (psIn) psIn.value = '75';
-  const instrIn = document.getElementById('quiz-instructions-input'); if (instrIn) instrIn.value = '';
+  const v = (id, val) => { const e = document.getElementById(id); if (e) e.value = val; };
+  v('quiz-title-input', ''); v('quiz-timelimit-input', '30'); v('quiz-passing-input', '75'); v('quiz-instructions-input', '');
   setFormMsg('quiz-create-msg', '', false);
-
-  // Reset question list to single blank question
-  questionCount = 1;
   const list = document.getElementById('question-list');
-  if (list) {
-    list.innerHTML = `<div class="question-builder">
-      <div class="q-num-badge">Question 1</div>
-      <input class="q-builder-input" type="text" placeholder="Enter question text...">
-      <div class="choices-builder">
-        ${['A','B','C','D'].map(l => `<div class="choice-builder"><div class="choice-letter-badge">${l}</div><input type="text" placeholder="Choice ${l}"><div class="correct-marker" onclick="toggleCorrect(this)"></div></div>`).join('')}
-      </div>
-    </div>`;
-  }
+  if (list) { list.innerHTML = ''; list.appendChild(qbMake('mcq')); qbRenumber(); }
 }
 
 async function populateClassSelects() {
@@ -6132,20 +6199,70 @@ async function populateClassSelects() {
   if (inviteSelect) inviteSelect.innerHTML = emptyOpt + opts;
 }
 
-function addQuestion() {
-  questionCount++;
-  const list = document.getElementById('question-list');
-  const div = document.createElement('div');
-  div.className = 'question-builder';
-  div.innerHTML = `
-    <div class="q-num-badge">Question ${questionCount}</div>
-    <input class="q-builder-input" type="text" placeholder="Enter question text...">
-    <div class="choices-builder">
-      ${['A','B','C','D'].map(l => `<div class="choice-builder"><div class="choice-letter-badge">${l}</div><input type="text" placeholder="Choice ${l}"><div class="correct-marker" onclick="toggleCorrect(this)"></div></div>`).join('')}
-    </div>
-  `;
-  list.appendChild(div);
-  div.scrollIntoView({ behavior:'smooth', block:'nearest' });
+const mbRow = () => `<div class="mb-row"><input class="adm-input mb-l" placeholder="Item"><input class="adm-input mb-r" placeholder="Matching answer"><button type="button" class="adm-action-btn danger" onclick="mbDel(this)">&#10005;</button></div>`;
+function qbBody(t) {
+  if (t === 'mcq') return `<div class="choices-builder">${['A','B','C','D'].map(l => `<div class="choice-builder"><div class="choice-letter-badge">${l}</div><input type="text" placeholder="Choice ${l}"><div class="correct-marker" title="Mark as correct" onclick="toggleCorrect(this)"></div></div>`).join('')}</div>`;
+  if (t === 'tf') return `<div class="choices-builder">${['True','False'].map(l => `<div class="choice-builder"><div class="choice-letter-badge" style="width:auto;padding:0 10px;">${l}</div><span style="flex:1"></span><div class="correct-marker" title="Mark as correct" onclick="toggleCorrect(this)"></div></div>`).join('')}</div>`;
+  if (t === 'identification') return `<input class="adm-input ib-ans" type="text" placeholder="Correct answer"><input class="adm-input ib-alt" type="text" style="margin-top:8px;" placeholder="Other accepted answers (optional, separate with ;)"><span class="q-hint">Not case-sensitive. Extra spaces and a trailing period are ignored.</span>`;
+  if (t === 'enumeration') return `<textarea class="adm-textarea eb-ans" placeholder="One correct answer per line. For synonyms use | (e.g. RAM | Random Access Memory)"></textarea><label class="q-hint"><input type="checkbox" class="eb-ordered"> Order matters</label><span class="q-hint">Each line is worth 1 point. Students see one box per line.</span>`;
+  return `<div class="mb-pairs">${mbRow()}${mbRow()}${mbRow()}</div><button type="button" class="btn-adm-secondary" onclick="mbAdd(this)">+ Add Pair</button><span class="q-hint">Each pair is worth 1 point. Students choose matches from a shuffled list.</span>`;
+}
+function mbAdd(b) { const p = b.parentElement.querySelector('.mb-pairs'); if (p.children.length >= 10) return; p.insertAdjacentHTML('beforeend', mbRow()); }
+function mbDel(b) { const p = b.closest('.mb-pairs'); if (p.children.length > 2) b.closest('.mb-row').remove(); }
+function qbMake(t) {
+  const d = document.createElement('div');
+  d.className = 'question-builder'; d.dataset.type = t;
+  d.innerHTML = `<div class="q-num-badge"></div><div class="q-toolbar"><select class="adm-select" onchange="qbChangeType(this)">${Object.entries(QTYPES).map(([k, v]) => `<option value="${k}" ${k === t ? 'selected' : ''}>${v}</option>`).join('')}</select><button type="button" class="adm-action-btn danger" onclick="qbRemove(this)">Remove</button></div><input class="q-builder-input" type="text" placeholder="Enter question text..."><div class="q-body">${qbBody(t)}</div>`;
+  return d;
+}
+function qbRenumber() {
+  const all = document.querySelectorAll('#question-list .question-builder');
+  all.forEach((d, i) => { d.querySelector('.q-num-badge').textContent = 'Question ' + (i + 1); });
+  questionCount = all.length;
+}
+function addQuestion() { const d = qbMake('mcq'); document.getElementById('question-list').appendChild(d); qbRenumber(); d.scrollIntoView({ behavior:'smooth', block:'nearest' }); }
+function qbChangeType(sel) {
+  const d = sel.closest('.question-builder'), body = d.querySelector('.q-body');
+  const dirty = [...body.querySelectorAll('input[type=text],textarea')].some(x => x.value.trim());
+  if (dirty && !confirm('Changing the question type will clear the answers you entered. Continue?')) { sel.value = d.dataset.type; return; }
+  d.dataset.type = sel.value; body.innerHTML = qbBody(sel.value);
+}
+function qbRemove(b) { if (document.querySelectorAll('#question-list .question-builder').length < 2) return; b.closest('.question-builder').remove(); qbRenumber(); }
+function qbParse(d, n) {
+  const t = d.dataset.type, text = d.querySelector('.q-builder-input').value.trim(), E = m => ({ err: `Question ${n}: ${m}` });
+  if (!text) return E('please enter the question text.');
+  if (t === 'mcq') {
+    const choices = []; let correct = -1;
+    for (const row of d.querySelectorAll('.choice-builder')) {
+      const v = row.querySelector('input').value.trim(), marked = row.querySelector('.correct-marker').classList.contains('marked');
+      if (v) { choices.push(v); if (marked) correct = choices.length - 1; } else if (marked) return E('the choice you marked as correct is blank.');
+    }
+    if (choices.length < 2) return E('add at least 2 choices.');
+    if (correct < 0) return E('mark the correct answer.');
+    return { q: { type:'mcq', text, choices, correct } };
+  }
+  if (t === 'tf') {
+    const i = [...d.querySelectorAll('.correct-marker')].findIndex(x => x.classList.contains('marked'));
+    if (i < 0) return E('mark True or False as the correct answer.');
+    return { q: { type:'tf', text, correct: i === 0 } };
+  }
+  if (t === 'identification') {
+    const answer = d.querySelector('.ib-ans').value.trim();
+    if (!answer) return E('enter the correct answer.');
+    return { q: { type:'identification', text, answer, alternates: d.querySelector('.ib-alt').value.split(';').map(x => x.trim()).filter(Boolean) } };
+  }
+  if (t === 'enumeration') {
+    const answers = d.querySelector('.eb-ans').value.split('\n').map(x => x.trim()).filter(Boolean);
+    if (answers.length < 2) return E('enter at least 2 answers (one per line).');
+    return { q: { type:'enumeration', text, answers, ordered: d.querySelector('.eb-ordered').checked } };
+  }
+  const pairs = [];
+  for (const r of d.querySelectorAll('.mb-row')) {
+    const left = r.querySelector('.mb-l').value.trim(), right = r.querySelector('.mb-r').value.trim();
+    if (left && right) pairs.push({ left, right }); else if (left || right) return E('a matching pair is only half filled in.');
+  }
+  if (pairs.length < 2) return E('add at least 2 complete pairs.');
+  return { q: { type:'matching', text, pairs } };
 }
 
 function toggleCorrect(el) {
@@ -6163,34 +6280,16 @@ async function publishQuiz(status) {
   if (!title) { setFormMsg('quiz-create-msg', 'Please enter a quiz title.', true); return; }
   if (!classroomId) { setFormMsg('quiz-create-msg', 'Please select a classroom.', true); return; }
 
-  // Parse questions
-  const questionBuilders = document.querySelectorAll('#question-list .question-builder');
   const questions = [];
-  let hasError = false;
-
-  questionBuilders.forEach((qb, idx) => {
-    const qText = (qb.querySelector('.q-builder-input')?.value || '').trim();
-    const choiceInputs = qb.querySelectorAll('.choices-builder input[type="text"]');
-    const correctMarkers = qb.querySelectorAll('.correct-marker');
-
-    if (!qText) { setFormMsg('quiz-create-msg', `Question ${idx+1} is missing question text.`, true); hasError = true; return; }
-
-    const choices = [];
-    let correct = -1;
-    choiceInputs.forEach((inp, i) => {
-      const val = (inp.value || '').trim();
-      if (!val && i < 2) { setFormMsg('quiz-create-msg', `Question ${idx+1}: Please fill in at least choices A and B.`, true); hasError = true; }
-      if (val) choices.push(val);
-      if (correctMarkers[i] && correctMarkers[i].classList.contains('marked')) correct = choices.length - 1;
-    });
-
-    if (correct === -1) { setFormMsg('quiz-create-msg', `Question ${idx+1}: Please mark a correct answer.`, true); hasError = true; return; }
-    if (choices.length < 2) { setFormMsg('quiz-create-msg', `Question ${idx+1}: Please add at least 2 choices.`, true); hasError = true; return; }
-
-    questions.push({ text: qText, choices, correct });
-  });
-
-  if (hasError || questions.length === 0) return;
+  const builders = [...document.querySelectorAll('#question-list .question-builder')];
+  for (let n = 0; n < builders.length; n++) {
+    const r = qbParse(builders[n], n + 1);
+    if (r.err) { setFormMsg('quiz-create-msg', r.err, true); builders[n].scrollIntoView({ behavior:'smooth', block:'center' }); return; }
+    questions.push(r.q);
+  }
+  if (questions.length === 0) { setFormMsg('quiz-create-msg', 'Add at least one question.', true); return; }
+  if (window._quizSaving) return;
+  window._quizSaving = true;
 
   setFormMsg('quiz-create-msg', 'Saving quiz...', false);
 
@@ -6199,6 +6298,7 @@ async function publishQuiz(status) {
     time_limit_mins: timeLimitMins, passing_score: passingScore,
     instructions, questions, status
   });
+  window._quizSaving = false;
 
   if (error) { setFormMsg('quiz-create-msg', 'Failed to save quiz: ' + error.message, true); return; }
 
@@ -6206,6 +6306,8 @@ async function publishQuiz(status) {
   showAdminToast(`Quiz "${title}" ${status === 'published' ? 'published' : 'saved as draft'}!`, 'success');
   setTimeout(() => { switchAdmView('quizzes'); }, 1500);
 }
+
+resetQuizCreate();
 
 /* ============================================================
    STUDENT — CLASS DETAIL
@@ -6294,7 +6396,7 @@ async function renderClassDetailQuizzes() {
     return `
       <div class="pixel-card ${done ? 'moss-accent' : 'terracotta-accent'}" onclick="${done ? '' : `startQuizFromDB('${q.id}')`}" style="${done ? 'opacity:0.8;' : 'cursor:pointer;'}">
         <span class="card-tag ${done ? 'tag-notes' : 'tag-testing'}">${done ? 'COMPLETED' : 'PENDING'}</span>
-        <span class="card-title">${q.title}</span>
+        <span class="card-title">${escHtml(q.title)}</span>
         <span class="card-meta">${q.time_limit_mins || 30} min &nbsp;·&nbsp; ${(q.questions||[]).length} questions</span>
         ${q.instructions ? `<p style="font-family:'Lato',sans-serif;font-size:12px;color:rgba(46,64,83,0.6);margin-top:6px;">${q.instructions}</p>` : ''}
         ${done
@@ -6330,23 +6432,18 @@ async function renderClassDetailNotes() {
       <div class="note-subject">${n.subject || 'General'}</div>
       <div class="note-title">${n.title}</div>
       <div class="note-author">by ${n.profiles ? n.profiles.name : 'Student'}</div>
-      <div class="note-preview">${(n.content || '').substring(0, 100)}${(n.content || '').length > 100 ? '…' : ''}</div>
+      <div class="note-preview">${notePreview(n)}</div>
     </div>
   `).join('');
 }
 
 function viewNoteFromDetail(noteId) {
-  // Re-use existing note view modal
-  const note = { id: noteId };
-  // Fetch fresh and show
   _supabase.from('notes').select('*, profiles(name)').eq('id', noteId).single().then(({ data: n }) => {
     if (!n) return;
-    document.getElementById('nv-title').textContent = n.title;
-    document.getElementById('nv-author').textContent = 'by ' + (n.profiles ? n.profiles.name.split(' ')[0] : 'Student');
-    document.getElementById('nv-date').textContent = new Date(n.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-    document.getElementById('nv-subject').textContent = n.subject || 'General';
-    document.getElementById('nv-content').textContent = n.content;
-    document.getElementById('note-view-modal').classList.add('open');
+    showNote({ title: n.title, content: n.content || '', subject: n.subject || 'General',
+      authorShort: n.profiles && n.profiles.name ? n.profiles.name.split(' ')[0] : 'Student',
+      date: new Date(n.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }),
+      file: n.file_path ? { path: n.file_path, name: n.file_name || 'attachment', size: n.file_size || 0 } : null });
   });
 }
 
@@ -6429,6 +6526,7 @@ async function renderAdminNotes() {
     author: n.profiles ? n.profiles.name : 'Unknown',
     authorShort: n.profiles ? n.profiles.name.split(' ')[0] : 'Unknown',
     date: new Date(n.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }),
+    file: n.file_path ? { path: n.file_path, name: n.file_name || 'attachment', size: n.file_size || 0 } : null,
     status: n.status,
     authorId: n.author_id,
     classLabel: n.classrooms ? n.classrooms.code : '—'
@@ -6451,9 +6549,9 @@ async function renderAdminNotes() {
   tbody.innerHTML = sorted.map(n => {
     const statusBadge = n.status === 'approved' ? `<span class="badge badge-active">Approved</span>` : n.status === 'rejected' ? `<span class="badge badge-inactive">Rejected</span>` : `<span class="badge badge-pending">Pending</span>`;
     const actions = n.status === 'pending'
-      ? `<button class="adm-action-btn" style="color:var(--adm-success);border-color:rgba(22,163,74,0.3);" onclick="adminApproveNote('${n.id}')">Approve</button><button class="adm-action-btn danger" onclick="adminRejectNote('${n.id}')">Reject</button>`
+      ? `<button class="adm-action-btn" onclick="adminViewNote('${n.id}')">View</button><button class="adm-action-btn" style="color:var(--adm-success);border-color:rgba(22,163,74,0.3);" onclick="adminApproveNote('${n.id}')">Approve</button><button class="adm-action-btn danger" onclick="adminRejectNote('${n.id}')">Reject</button>`
       : `<button class="adm-action-btn" onclick="adminViewNote('${n.id}')">View</button><button class="adm-action-btn danger" onclick="adminRemoveNote('${n.id}')">Remove</button>`;
-    return `<tr><td><strong>${n.title}</strong></td><td>${n.author}</td><td>${n.classLabel}</td><td>${n.date}</td><td>${statusBadge}</td><td>${actions}</td></tr>`;
+    return `<tr><td><strong>${escHtml(n.title)}</strong>${n.file ? `<br><span class="attach-tag" style="margin-left:0;">${escHtml(n.file.name)}</span>` : ''}</td><td>${escHtml(n.author)}</td><td>${n.classLabel}</td><td>${n.date}</td><td>${statusBadge}</td><td>${actions}</td></tr>`;
   }).join('');
 }
 
@@ -6474,7 +6572,9 @@ async function adminRejectNote(id) {
 async function adminRemoveNote(id) {
   const note = notesStore.find(n => n.id === id);
   if (!confirm(`Remove note "${note ? note.title : ''}"?`)) return;
-  await _supabase.from('notes').delete().eq('id', id);
+  if (note && note.file) await _supabase.storage.from(NOTE_BUCKET).remove([note.file.path]);
+  const { error } = await _supabase.from('notes').delete().eq('id', id);
+  if (error) { showAdminToast('Could not remove note: ' + error.message, 'danger'); return; }
   showAdminToast('Note removed.', 'danger');
   await renderAdminNotes();
 }
@@ -6482,12 +6582,7 @@ async function adminRemoveNote(id) {
 function adminViewNote(id) {
   const note = notesStore.find(n => n.id === id);
   if (!note) return;
-  document.getElementById('nv-title').textContent = note.title;
-  document.getElementById('nv-author').textContent = 'by ' + note.authorShort;
-  document.getElementById('nv-date').textContent = note.date;
-  document.getElementById('nv-subject').textContent = note.subject;
-  document.getElementById('nv-content').textContent = note.content;
-  document.getElementById('note-view-modal').classList.add('open');
+  showNote(note);
 }
 
 /* ============================================================
