@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QuizLedge — Gamified Quiz Learning Platform</title>
+<title>QuizLedge</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'><path d='M21 3 A18 18 0 0 1 39 21' fill='none' stroke='%232E4053' stroke-width='4' stroke-linecap='round'/><path d='M39 21 A18 18 0 0 1 21 39' fill='none' stroke='%238A9A5B' stroke-width='4' stroke-linecap='round'/><path d='M21 39 A18 18 0 0 1 3 21' fill='none' stroke='%23E2725B' stroke-width='4' stroke-linecap='round'/><path d='M3 21 A18 18 0 0 1 21 3' fill='none' stroke='%23B8860B' stroke-width='4' stroke-linecap='round'/><circle cx='21' cy='21' r='12' fill='%232E4053'/><rect x='14' y='20' width='4' height='7' rx='0.5' fill='%238A9A5B'/><rect x='19' y='16' width='4' height='11' rx='0.5' fill='white'/><rect x='24' y='23' width='4' height='4' rx='0.5' fill='%23E2725B'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&family=Lato:wght@300;400;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
@@ -3253,9 +3253,143 @@ body {
 .attach-img{max-width:100%;border:2px solid var(--indigo)}
 .attach-tag{display:inline-block;margin-left:6px;font-family:'Press Start 2P',monospace;font-size:6px;color:var(--moss-dark);border:1px solid currentColor;padding:2px 5px}
 #note-view-modal .modal-box{max-width:min(760px,95vw)!important}
+/* ============================================================
+   LOGIN REDESIGN — open layout, no card box
+============================================================ */
+#page-login .login-container{max-width:420px}
+#page-login .login-card{background:transparent;border:none;box-shadow:none;border-radius:0;padding:0}
+#page-login .login-tabs{display:flex;gap:4px;padding:4px;margin-bottom:26px;border:none;background:rgba(46,64,83,.08);border-radius:999px}
+#page-login .login-tab{flex:1;padding:13px 10px;border-radius:999px;opacity:.55;background:transparent;border:none;margin:0;font-size:8px;transition:all .25s}
+#page-login .login-tab:hover{opacity:.85}
+#page-login .login-tab.active,#page-login .login-tab.active:hover{opacity:1;background:#fff;color:var(--indigo);border:none;margin:0;box-shadow:0 4px 14px -4px rgba(46,64,83,.35)}
+#page-login .form-group{margin-bottom:16px}
+#page-login .form-group label,#reset-password-overlay .form-group label{opacity:.75;padding-left:4px;margin-bottom:9px}
+#page-login .form-group input,#reset-password-overlay .form-group input{height:50px;padding:0 16px;background:rgba(255,255,255,.78);border:1.5px solid rgba(46,64,83,.16);border-radius:14px;box-shadow:none;font-size:14px}
+#page-login .form-group input:focus,#reset-password-overlay .form-group input:focus{border-color:var(--moss-dark);background:#fff;box-shadow:0 0 0 4px rgba(138,154,91,.22)}
+#page-login .form-group input::placeholder,#reset-password-overlay .form-group input::placeholder{color:rgba(46,64,83,.38)}
+#page-login .email-field{border:1.5px solid rgba(46,64,83,.16);border-radius:14px;background:rgba(255,255,255,.78);box-shadow:none}
+#page-login .email-field:focus-within{border-color:var(--moss-dark);background:#fff;box-shadow:0 0 0 4px rgba(138,154,91,.22)}
+#page-login .form-group .email-field input,#page-login .form-group .email-field input:focus{height:48px;border:none;background:transparent;box-shadow:none;border-radius:0}
+#page-login .email-domain{border-left:none;background:rgba(46,64,83,.06);margin:6px;border-radius:10px;padding:0 12px;font-size:12px}
+#login-error-msg,#signup-error-msg,#signup-success,#forgot-error-msg,#forgot-success-msg,#reset-error-msg,#reset-success-msg{border-radius:12px !important;padding:11px 14px !important}
+#page-login .btn-login,#reset-password-overlay .btn-login{position:relative;overflow:hidden;height:52px;padding:0 16px;margin-top:14px;border:none;border-radius:14px;background:linear-gradient(180deg,var(--indigo-light),var(--indigo));box-shadow:0 10px 22px -8px rgba(46,64,83,.65),inset 0 1px 0 rgba(255,255,255,.12);font-size:10px;letter-spacing:1.5px;text-transform:none;transition:transform .15s,box-shadow .2s,opacity .2s}
+#page-login .btn-login::after,#reset-password-overlay .btn-login::after{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.2) 50%,transparent 70%);transform:translateX(-120%);transition:transform .6s}
+#page-login .btn-login:hover,#reset-password-overlay .btn-login:hover{transform:translateY(-2px);box-shadow:0 14px 26px -8px rgba(46,64,83,.7),inset 0 1px 0 rgba(255,255,255,.12)}
+#page-login .btn-login:hover::after,#reset-password-overlay .btn-login:hover::after{transform:translateX(120%)}
+#page-login .btn-login:active{transform:translateY(1px);box-shadow:0 5px 12px -6px rgba(46,64,83,.7)}
+#page-login .btn-login:disabled{opacity:.7;cursor:progress;transform:none}
+/* show / hide password */
+.pw-wrap{position:relative}
+.pw-wrap input{padding-right:50px !important}
+.pw-eye{position:absolute;right:8px;top:7px;width:36px;height:36px;border:none;background:none;border-radius:10px;cursor:pointer;color:rgba(46,64,83,.45);display:flex;align-items:center;justify-content:center;transition:color .15s,background .15s}
+.pw-eye:hover{color:var(--indigo);background:rgba(46,64,83,.07)}
+.pw-eye svg{width:18px;height:18px}
+.pw-eye .eye-off{display:none}
+.pw-eye.on .eye-on{display:none}
+.pw-eye.on .eye-off{display:block}
+/* password criteria checker */
+.pw-panel{position:relative;overflow:hidden;margin-top:12px;padding:14px 16px 10px;border-radius:14px;background:rgba(255,255,255,.55);border:1.5px solid rgba(46,64,83,.1)}
+.pw-panel::after{content:'';position:absolute;top:0;bottom:0;left:-50%;width:40%;background:linear-gradient(90deg,transparent,rgba(138,154,91,.28),transparent);pointer-events:none;opacity:0}
+.pw-panel.scan::after{animation:pwScan .7s ease-out}
+@keyframes pwScan{0%{left:-50%;opacity:1}100%{left:115%;opacity:1}}
+.pw-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-family:'Press Start 2P',monospace;font-size:6px;letter-spacing:1px;color:rgba(46,64,83,.55)}
+.pw-head b{font-weight:400;transition:color .3s}
+.pw-meter{display:flex;gap:5px;margin-bottom:10px}
+.pw-meter i{flex:1;height:5px;border-radius:99px;background:rgba(46,64,83,.1);transition:background .35s,transform .35s}
+.pw-meter i.on{background:var(--pw-c,var(--moss));transform:scaleY(1.3)}
+.pw-rule{display:flex;align-items:center;gap:10px;padding:4px 0;font-family:'Lato',sans-serif;font-size:12px;color:rgba(46,64,83,.55);transition:color .3s}
+.pw-ic{flex:none;width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#fff;border:1.5px solid rgba(46,64,83,.25);transition:background .3s,border-color .3s}
+.pw-ic svg{width:10px;height:10px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:14;stroke-dashoffset:14;transition:stroke-dashoffset .35s .1s}
+.pw-rule.ok{color:var(--moss-dark);font-weight:700}
+.pw-rule.ok .pw-ic{background:var(--moss);border-color:var(--moss);animation:pwPop .45s cubic-bezier(.34,1.56,.64,1)}
+.pw-rule.ok .pw-ic svg{stroke-dashoffset:0}
+.pw-rule.lost .pw-ic{animation:pwShake .35s}
+@keyframes pwPop{0%{transform:scale(.6)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes pwShake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+
+/* ============================================================
+   CONFIRMATION DIALOG
+============================================================ */
+#cf-overlay{position:fixed;inset:0;z-index:10050;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(30,42,56,.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+#cf-overlay.open{display:flex;animation:cfFade .2s ease}
+@keyframes cfFade{from{opacity:0}to{opacity:1}}
+.cf-box{width:100%;max-width:400px;padding:30px 28px 24px;text-align:center;background:#FBFBF4;border-radius:20px;box-shadow:0 30px 70px -20px rgba(20,30,45,.55),0 0 0 1px rgba(46,64,83,.08);animation:cfPop .32s cubic-bezier(.34,1.56,.64,1)}
+@keyframes cfPop{from{opacity:0;transform:translateY(14px) scale(.92)}to{opacity:1;transform:none}}
+.cf-box[data-tone=primary]{--cf:var(--indigo);--cf-soft:rgba(46,64,83,.1)}
+.cf-box[data-tone=danger]{--cf:var(--terracotta-dark);--cf-soft:rgba(226,114,91,.16)}
+.cf-box[data-tone=warning]{--cf:#B8860B;--cf-soft:rgba(184,134,11,.14)}
+.cf-box[data-tone=success]{--cf:var(--moss-dark);--cf-soft:rgba(138,154,91,.2)}
+.cf-icon{width:60px;height:60px;margin:0 auto 18px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--cf-soft);color:var(--cf)}
+.cf-icon svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cf-title{font-family:'Press Start 2P',monospace;font-size:11px;line-height:1.7;color:var(--indigo);margin-bottom:12px}
+.cf-msg{font-family:'Lato',sans-serif;font-size:14px;line-height:1.6;color:rgba(46,64,83,.75);white-space:pre-line;margin-bottom:24px}
+.cf-actions{display:flex;gap:10px}
+.cf-btn{flex:1;height:46px;border-radius:12px;border:1.5px solid transparent;font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:transform .12s,box-shadow .2s,background .2s}
+.cf-btn.ghost{background:transparent;border-color:rgba(46,64,83,.25);color:var(--indigo)}
+.cf-btn.ghost:hover{background:rgba(46,64,83,.06)}
+.cf-btn.solid{background:var(--cf);color:#fff;box-shadow:0 8px 18px -8px var(--cf)}
+.cf-btn.solid:hover{transform:translateY(-1px)}
+.cf-btn:active{transform:translateY(1px)}
+.cf-btn:focus-visible{outline:3px solid rgba(138,154,91,.55);outline-offset:2px}
+
+/* ============================================================
+   ATTACHMENT — upload dropzone + file card
+============================================================ */
+.dz-input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.dz{display:flex;flex-direction:column;align-items:center;gap:6px;padding:22px 16px;text-align:center;border-radius:16px;border:1.5px dashed rgba(46,64,83,.3);background:rgba(255,255,255,.55);cursor:pointer;transition:border-color .2s,background .2s,transform .2s}
+.dz:hover,.dz:focus-visible{outline:none;border-color:var(--moss-dark);background:rgba(255,255,255,.9)}
+.dz.drag{border-color:var(--moss-dark);background:rgba(138,154,91,.16);transform:scale(1.01)}
+.dz-ic{width:46px;height:46px;margin-bottom:4px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:rgba(138,154,91,.2);color:var(--moss-dark);transition:transform .25s}
+.dz:hover .dz-ic,.dz.drag .dz-ic{transform:translateY(-3px)}
+.dz-ic svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.dz-title{font-family:'Lato',sans-serif;font-size:13px;font-weight:700;color:var(--indigo)}
+.dz-title u{color:var(--moss-dark)}
+.dz-sub{font-family:'Lato',sans-serif;font-size:11px;color:rgba(46,64,83,.55)}
+.fc{display:none;align-items:center;gap:12px;padding:12px;border-radius:16px;background:#fff;border:1.5px solid rgba(46,64,83,.12);box-shadow:0 6px 16px -10px rgba(46,64,83,.4)}
+.fc.show{display:flex;animation:cfPop .3s ease}
+.fc-thumb{flex:none;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P',monospace;font-size:7px;color:#fff;background-size:cover;background-position:center;background-color:var(--moss-dark)}
+.fc-thumb[data-k=pdf]{background-color:#D9604A}
+.fc-thumb[data-k=doc]{background-color:#3F6BA8}
+.fc-meta{flex:1;min-width:0}
+.fc-name{font-family:'Lato',sans-serif;font-weight:700;font-size:13px;color:var(--indigo);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fc-size{margin-top:2px;font-family:'Lato',sans-serif;font-size:11px;color:rgba(46,64,83,.55)}
+.fc-x{flex:none;width:32px;height:32px;border:none;border-radius:10px;background:rgba(46,64,83,.07);color:var(--indigo);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s}
+.fc-x:hover{background:rgba(226,114,91,.18);color:var(--terracotta-dark)}
+.fc-x svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round}
+/* ATTACHMENT — viewer inside the note modal */
+.att{margin-bottom:16px;overflow:hidden;border-radius:16px;background:#fff;border:1.5px solid rgba(46,64,83,.14);box-shadow:0 8px 22px -16px rgba(46,64,83,.5)}
+.att-head{display:flex;align-items:center;gap:12px;padding:14px}
+.att-btns{display:flex;gap:8px;flex:none}
+.att-btn{height:36px;padding:0 14px;border-radius:10px;border:1.5px solid rgba(46,64,83,.2);background:#fff;color:var(--indigo);font-family:'Lato',sans-serif;font-weight:700;font-size:12px;display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition:background .15s,transform .12s}
+.att-btn:hover{background:rgba(46,64,83,.06)}
+.att-btn:active{transform:translateY(1px)}
+.att-btn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.att-btn.primary{background:var(--indigo);border-color:var(--indigo);color:#fff}
+.att-btn.primary:hover{background:var(--indigo-light)}
+.att-view{border-top:1.5px solid rgba(46,64,83,.1);background:#EEEDE3}
+.att-frame{display:block;width:100%;height:min(62vh,560px);border:0;background:#fff}
+.att-img{display:block;max-width:100%;max-height:min(62vh,560px);margin:0 auto;padding:14px;object-fit:contain}
+.att-note{padding:16px 18px;text-align:center;font-family:'Lato',sans-serif;font-size:12px;line-height:1.6;color:rgba(46,64,83,.65)}
+.att-load{display:flex;align-items:center;justify-content:center;gap:10px;padding:34px;font-family:'Lato',sans-serif;font-size:12px;color:rgba(46,64,83,.6)}
+.att-spin{width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(46,64,83,.15);border-top-color:var(--moss-dark);animation:attSpin .8s linear infinite}
+@keyframes attSpin{to{transform:rotate(360deg)}}
+@media(max-width:520px){.att-head{flex-wrap:wrap}.att-btns{width:100%}.att-btn{flex:1}}
 </style>
 </head>
 <body>
+
+<!-- CONFIRMATION DIALOG (used by askConfirm / askNotice) -->
+<div id="cf-overlay" role="dialog" aria-modal="true" aria-labelledby="cf-title" aria-describedby="cf-msg">
+  <div class="cf-box" id="cf-box" data-tone="primary">
+    <div class="cf-icon" id="cf-icon"></div>
+    <div class="cf-title" id="cf-title"></div>
+    <div class="cf-msg" id="cf-msg"></div>
+    <div class="cf-actions">
+      <button type="button" class="cf-btn ghost" id="cf-cancel">Cancel</button>
+      <button type="button" class="cf-btn solid" id="cf-ok">Confirm</button>
+    </div>
+  </div>
+</div>
 
 <!-- ============================================================
      RESET PASSWORD MODAL (shown when user clicks link in email)
@@ -3587,13 +3721,13 @@ body {
         </div>
         <div class="form-group">
           <label>Password</label>
-          <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password">
+          <div class="pw-wrap"><input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password"><button type="button" class="pw-eye" onclick="togglePw('login-pass', this)" aria-label="Show password" tabindex="-1"><svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10.9 10.9 0 0 1 12 19C5 19 1 12 1 12a18.5 18.5 0 0 1 5.1-5.9"/><path d="M9.9 5.1A10.9 10.9 0 0 1 12 5c7 0 11 7 11 7a18.5 18.5 0 0 1-2.2 3.2"/><path d="M1 1l22 22"/></svg></button></div>
         </div>
         <div id="login-error-msg" style="display:none; background:rgba(220,38,38,0.08); border:1px solid rgba(220,38,38,0.3); color:#b91c1c; font-family:'Lato',sans-serif; font-size:12px; padding:9px 12px; border-radius:2px; margin-top:4px; line-height:1.4;"></div>
         <div style="display:flex; justify-content:flex-end; align-items:center; margin:6px 0 2px;">
           <button onclick="switchLoginTab('forgot', null)" style="background:none; border:none; cursor:pointer; font-family:'Press Start 2P',monospace; font-size:6px; color:var(--moss-dark); letter-spacing:0.5px; text-decoration:underline; padding:0;">FORGOT PASSWORD?</button>
         </div>
-        <button class="btn-login" onclick="handleLogin()">ENTER &gt;&gt;</button>
+        <button type="button" class="btn-login" id="btn-login-submit" onclick="handleLogin()">Enter Game</button>
       </div>
 
       
@@ -3621,7 +3755,7 @@ body {
       <div id="form-signup" class="form-panel">
         <div class="form-group">
           <label>Full Name</label>
-          <input type="text" id="signup-name" placeholder="Juan dela Cruz" autocomplete="name">
+          <input type="text" id="signup-name" placeholder="ex. Tom Santos" autocomplete="name">
         </div>
         <div class="form-group">
           <label>Email Address</label>
@@ -3633,21 +3767,24 @@ body {
         </div>
         <div class="form-group">
           <label>Password</label>
-          <input type="password" id="signup-pass" placeholder="Min. 8 chars, uppercase, number, symbol" autocomplete="new-password" oninput="checkPasswordCriteria(this.value)">
-          <div id="pw-criteria" style="margin-top:8px; display:none; background:rgba(46,64,83,0.04); border:1px solid rgba(46,64,83,0.12); border-radius:2px; padding:10px 12px;">
-            <div id="pw-len"  class="pw-rule" style="display:flex;align-items:center;gap:6px;font-family:'Lato',sans-serif;font-size:11px;color:rgba(46,64,83,0.5);margin-bottom:4px;">&#9632; At least 8 characters</div>
-            <div id="pw-upper" class="pw-rule" style="display:flex;align-items:center;gap:6px;font-family:'Lato',sans-serif;font-size:11px;color:rgba(46,64,83,0.5);margin-bottom:4px;">&#9632; At least 1 uppercase letter (A–Z)</div>
-            <div id="pw-num"  class="pw-rule" style="display:flex;align-items:center;gap:6px;font-family:'Lato',sans-serif;font-size:11px;color:rgba(46,64,83,0.5);margin-bottom:4px;">&#9632; At least 1 number (0–9)</div>
-            <div id="pw-sym"  class="pw-rule" style="display:flex;align-items:center;gap:6px;font-family:'Lato',sans-serif;font-size:11px;color:rgba(46,64,83,0.5);">&#9632; At least 1 special character (!@#$%^&*)</div>
+          <div class="pw-wrap"><input type="password" id="signup-pass" placeholder="Create a password" autocomplete="new-password" oninput="checkPasswordCriteria(true)"><button type="button" class="pw-eye" onclick="togglePw('signup-pass', this)" aria-label="Show password" tabindex="-1"><svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10.9 10.9 0 0 1 12 19C5 19 1 12 1 12a18.5 18.5 0 0 1 5.1-5.9"/><path d="M9.9 5.1A10.9 10.9 0 0 1 12 5c7 0 11 7 11 7a18.5 18.5 0 0 1-2.2 3.2"/><path d="M1 1l22 22"/></svg></button></div>
+          <div class="pw-panel" id="pw-criteria">
+            <div class="pw-head"><span>PASSWORD CHECK</span><b id="pw-strength">&mdash;</b></div>
+            <div class="pw-meter" id="pw-meter"><i></i><i></i><i></i><i></i></div>
+            <div class="pw-rule" id="pw-len"><span class="pw-ic"><svg viewBox="0 0 12 12"><path d="M2.5 6.5l2.5 2.5 4.5-5"/></svg></span>At least 8 characters</div>
+            <div class="pw-rule" id="pw-upper"><span class="pw-ic"><svg viewBox="0 0 12 12"><path d="M2.5 6.5l2.5 2.5 4.5-5"/></svg></span>At least 1 uppercase letter (A&ndash;Z)</div>
+            <div class="pw-rule" id="pw-num"><span class="pw-ic"><svg viewBox="0 0 12 12"><path d="M2.5 6.5l2.5 2.5 4.5-5"/></svg></span>At least 1 number (0&ndash;9)</div>
+            <div class="pw-rule" id="pw-sym"><span class="pw-ic"><svg viewBox="0 0 12 12"><path d="M2.5 6.5l2.5 2.5 4.5-5"/></svg></span>At least 1 special character (!@#$%^&amp;*)</div>
+            <div class="pw-rule" id="pw-match"><span class="pw-ic"><svg viewBox="0 0 12 12"><path d="M2.5 6.5l2.5 2.5 4.5-5"/></svg></span>Passwords match</div>
           </div>
         </div>
         <div class="form-group">
           <label>Confirm Password</label>
-          <input type="password" id="signup-confirm" placeholder="Re-enter password" autocomplete="new-password">
+          <div class="pw-wrap"><input type="password" id="signup-confirm" placeholder="Re-enter password" autocomplete="new-password" oninput="checkPasswordCriteria(true)"><button type="button" class="pw-eye" onclick="togglePw('signup-confirm', this)" aria-label="Show password" tabindex="-1"><svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10.9 10.9 0 0 1 12 19C5 19 1 12 1 12a18.5 18.5 0 0 1 5.1-5.9"/><path d="M9.9 5.1A10.9 10.9 0 0 1 12 5c7 0 11 7 11 7a18.5 18.5 0 0 1-2.2 3.2"/><path d="M1 1l22 22"/></svg></button></div>
         </div>
         <div id="signup-error-msg" style="display:none; background:rgba(220,38,38,0.08); border:1px solid rgba(220,38,38,0.3); color:#b91c1c; font-family:'Lato',sans-serif; font-size:12px; padding:9px 12px; border-radius:2px; margin-top:4px; line-height:1.4;"></div>
         <div id="signup-success" style="display:none; background:rgba(22,163,74,0.08); border:1px solid rgba(22,163,74,0.3); color:#15803d; font-family:'Lato',sans-serif; font-size:12px; padding:9px 12px; border-radius:2px; margin-top:4px;"></div>
-        <button class="btn-login" onclick="handleSignup()">CREATE ACCOUNT &gt;&gt;</button>
+        <button type="button" class="btn-login" id="btn-signup-submit" onclick="handleSignup()">CREATE ACCOUNT &gt;&gt;</button>
       </div>
 
       <div class="login-pixel-deco">
@@ -3702,11 +3839,22 @@ body {
     <label class="modal-label">CONTENT / PREVIEW</label>
     <textarea class="modal-textarea" id="note-content-input" placeholder="Write your notes here (optional if you attach a file)..."></textarea>
     <label class="modal-label">ATTACHMENT (OPTIONAL)</label>
-    <input class="modal-input" id="note-file-input" type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" style="margin-bottom:4px;">
-    <span class="q-hint">PDF, DOC, DOCX, PNG or JPG &middot; max 10 MB</span>
+    <div style="margin-bottom:16px;position:relative;">
+      <input class="dz-input" id="note-file-input" type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" tabindex="-1" onchange="noteFileChosen(this.files[0])">
+      <div class="dz" id="note-dz" tabindex="0" role="button" aria-label="Attach a file" onclick="document.getElementById('note-file-input').click()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+        <div class="dz-ic"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg></div>
+        <div class="dz-title">Drag &amp; drop a file here, or <u>browse</u></div>
+        <div class="dz-sub">PDF, DOC, DOCX, PNG or JPG &middot; up to 10 MB</div>
+      </div>
+      <div class="fc" id="note-fc">
+        <div class="fc-thumb" id="note-fc-thumb"></div>
+        <div class="fc-meta"><div class="fc-name" id="note-fc-name"></div><div class="fc-size" id="note-fc-size"></div></div>
+        <button type="button" class="fc-x" onclick="noteFileClear()" aria-label="Remove file"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+    </div>
     <div class="modal-actions">
       <button class="btn-pixel" onclick="submitUploadNote()">UPLOAD &gt;&gt;</button>
-      <button class="btn-pixel" style="background:transparent; color:var(--indigo); border-color:var(--indigo); box-shadow:3px 3px 0px rgba(46,64,83,0.2);" onclick="closeNoteModal()">CANCEL</button>
+      <button class="btn-pixel" style="background:transparent; color:var(--indigo); border-color:var(--indigo); box-shadow:3px 3px 0px rgba(46,64,83,0.2);" onclick="cancelNoteModal()">CANCEL</button>
     </div>
   </div>
 </div>
@@ -3748,30 +3896,30 @@ body {
     </div>
     <nav class="stu-nav">
       <div class="nav-section-label">MAIN</div>
-      <a class="stu-nav-link active" onclick="switchStuView('dashboard')">
+      <a class="stu-nav-link active" onclick="navStu('dashboard')">
         <span class="nav-icon"><svg class="px-icon" viewBox="0 0 10 9" width="16" height="14" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="4" y="0" width="2" height="1"/><rect x="3" y="1" width="4" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="1" y="3" width="8" height="1"/><rect x="0" y="4" width="10" height="1"/><rect x="1" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="1" y="6" width="1" height="1"/><rect x="3" y="6" width="4" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="1" y="7" width="1" height="1"/><rect x="3" y="7" width="1" height="1"/><rect x="6" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="1" y="8" width="1" height="1"/><rect x="3" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/></g></svg></span> Dashboard
       </a>
-      <a class="stu-nav-link" onclick="switchStuView('classes')">
+      <a class="stu-nav-link" onclick="navStu('classes')">
         <span class="nav-icon"><svg class="px-icon" viewBox="0 0 10 9" width="16" height="14" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="5" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="10" height="1"/><rect x="3" y="7" width="4" height="1"/><rect x="2" y="8" width="6" height="1"/></g></svg></span> My Classes
       </a>
-      <a class="stu-nav-link" onclick="switchStuView('quizzes')">
+      <a class="stu-nav-link" onclick="navStu('quizzes')">
         <span class="nav-icon"><svg class="px-icon" viewBox="0 0 9 11" width="16" height="20" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="9" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="3" y="2" width="3" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="6" y="3" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="5" y="5" width="2" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="4" y="6" width="2" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="0" y="10" width="9" height="1"/></g></svg></span> Quizzes
         <span class="nav-badge" id="stu-quizzes-nav-badge" style="display:none;"></span>
       </a>
-      <a class="stu-nav-link" onclick="switchStuView('notes')">
+      <a class="stu-nav-link" onclick="navStu('notes')">
         <span class="nav-icon"><svg class="px-icon" viewBox="0 0 10 11" width="16" height="18" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="6" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="2" y="6" width="6" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="2" y="8" width="4" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="9" y="9" width="1" height="1"/><rect x="0" y="10" width="10" height="1"/></g></svg></span> Notes
       </a>
       <div class="nav-section-label">PROGRESS</div>
-      <a class="stu-nav-link" onclick="switchStuView('leaderboard')">
+      <a class="stu-nav-link" onclick="navStu('leaderboard')">
         <span class="nav-icon"><svg class="px-icon" viewBox="0 0 11 9" width="16" height="13" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="8" y="0" width="3" height="1"/><rect x="8" y="1" width="3" height="1"/><rect x="4" y="2" width="3" height="1"/><rect x="8" y="2" width="3" height="1"/><rect x="4" y="3" width="3" height="1"/><rect x="8" y="3" width="3" height="1"/><rect x="4" y="4" width="3" height="1"/><rect x="8" y="4" width="3" height="1"/><rect x="0" y="5" width="3" height="1"/><rect x="4" y="5" width="3" height="1"/><rect x="8" y="5" width="3" height="1"/><rect x="0" y="6" width="3" height="1"/><rect x="4" y="6" width="3" height="1"/><rect x="8" y="6" width="3" height="1"/><rect x="0" y="7" width="3" height="1"/><rect x="4" y="7" width="3" height="1"/><rect x="8" y="7" width="3" height="1"/><rect x="0" y="8" width="11" height="1"/></g></svg></span> Leaderboard
       </a>
-      <a class="stu-nav-link" onclick="switchStuView('quests')">
+      <a class="stu-nav-link" onclick="navStu('quests')">
         <span class="nav-icon"><svg class="px-icon" viewBox="0 0 10 9" width="16" height="14" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="4" y="0" width="2" height="1"/><rect x="3" y="1" width="4" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="1" y="3" width="8" height="1"/><rect x="0" y="4" width="10" height="1"/><rect x="1" y="5" width="8" height="1"/><rect x="2" y="6" width="6" height="1"/><rect x="3" y="7" width="4" height="1"/><rect x="4" y="8" width="2" height="1"/></g></svg></span> Quests
         <span class="nav-badge" id="stu-quests-nav-badge" style="display:none;"></span>
       </a>
     </nav>
     <div class="stu-sidebar-footer">
-      <button class="btn-logout" onclick="goToLogin()">[ LOGOUT ]</button>
+      <button class="btn-logout" onclick="confirmLogout()">[ LOGOUT ]</button>
     </div>
   </aside>
 
@@ -3910,11 +4058,11 @@ body {
         </div>
 
         <div style="display:flex; justify-content:space-between; align-items:center;">
-          <button class="btn-pixel" onclick="switchStuView('quizzes')" style="background:transparent; color:var(--indigo); border-color:var(--indigo); box-shadow:3px 3px 0px rgba(46,64,83,0.2);">&lt; BACK</button>
+          <button class="btn-pixel" onclick="navStu('quizzes')" style="background:transparent; color:var(--indigo); border-color:var(--indigo); box-shadow:3px 3px 0px rgba(46,64,83,0.2);">&lt; BACK</button>
           <div style="display:flex;gap:10px;">
             <button class="btn-pixel" id="qt-prev-btn" onclick="quizPrev()" style="background:transparent; color:var(--indigo); border-color:var(--indigo); box-shadow:3px 3px 0px rgba(46,64,83,0.2); display:none;">&lt; PREV</button>
             <button class="btn-pixel" id="qt-next-btn" onclick="quizNext()">NEXT QUESTION &gt;&gt;</button>
-            <button class="btn-pixel" id="qt-submit-btn" onclick="submitQuiz()" style="display:none; background:var(--terracotta); border-color:var(--terracotta); box-shadow:3px 3px 0px var(--terracotta-dark);">SUBMIT QUIZ</button>
+            <button class="btn-pixel" id="qt-submit-btn" onclick="confirmSubmitQuiz()" style="display:none; background:var(--terracotta); border-color:var(--terracotta); box-shadow:3px 3px 0px var(--terracotta-dark);">SUBMIT QUIZ</button>
           </div>
         </div>
       </div>
@@ -4105,7 +4253,7 @@ body {
           <span class="adm-user-role">Teacher / Administrator</span>
         </div>
       </div>
-      <button class="btn-adm-logout" onclick="goToLogin()">Sign Out</button>
+      <button class="btn-adm-logout" onclick="confirmLogout()">Sign Out</button>
     </div>
   </aside>
 
@@ -4791,13 +4939,21 @@ async function handleResetPassword() {
    LOGIN
 ============================================================ */
 async function handleLogin() {
+  if (window._loginBusy) return;
+  window._loginBusy = true;
+  const btn = document.getElementById('btn-login-submit'), old = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.textContent = 'Entering...'; }
+  try { await _doLogin(); }
+  finally { window._loginBusy = false; if (btn) { btn.disabled = false; btn.innerHTML = old; } }
+}
+async function _doLogin() {
   const email = getFullEmail('login-email');
   const pass = document.getElementById('login-pass').value || '';
 
   if (!email) { showLoginError('Please enter your email address.'); return; }
   if (!pass) { showLoginError('Please enter your password.'); return; }
 
-  showLoginError('Signing in...');
+  showLoginError('');
   const { data, error } = await _supabase.auth.signInWithPassword({ email, password: pass });
   if (error) { showLoginError('Incorrect email or password. Please try again.'); return; }
 
@@ -4844,6 +5000,13 @@ async function handleLogin() {
    SIGNUP
 ============================================================ */
 async function handleSignup() {
+  if (window._signupBusy) return;
+  window._signupBusy = true;
+  const btn = document.getElementById('btn-signup-submit'), old = btn ? btn.innerHTML : '';
+  try { await _doSignup(btn); }
+  finally { window._signupBusy = false; if (btn) { btn.disabled = false; btn.innerHTML = old; } }
+}
+async function _doSignup(btn) {
   const name = (document.getElementById('signup-name').value || '').trim();
   const email = getFullEmail('signup-email');
   const pass = document.getElementById('signup-pass').value || '';
@@ -4858,7 +5021,14 @@ async function handleSignup() {
   if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/.test(pass)) { showSignupError('Password must contain at least one special character.'); return; }
   if (pass !== confirm) { showSignupError('Passwords do not match.'); return; }
 
-  showSignupError('Creating ' + roleLabel(role).toLowerCase() + ' account...');
+  const okSignup = await askConfirm({
+    title: 'Create your account?',
+    message: `Name: ${name}\nEmail: ${email}\nRole: ${roleLabel(role)}\n\nThe role is picked from your email (ID number = student, name = teacher/admin). Is this correct?`,
+    confirmText: 'Create', cancelText: 'Go Back', tone: 'success', icon: 'user'
+  });
+  if (!okSignup) { showSignupError(''); return; }
+  if (btn) { btn.disabled = true; btn.textContent = 'Creating...'; }
+  showSignupError('');
   const { data, error } = await _supabase.auth.signUp({ email, password: pass, options: { data: { name, role } } });
   if (error) { showSignupError(error.message); return; }
 
@@ -4879,6 +5049,8 @@ async function handleSignup() {
       successEl.style.display = 'none';
       switchLoginTab('login', document.querySelector('.login-tab'));
       setEmailLocal('login-email', email);
+      ['signup-name','signup-email','signup-pass','signup-confirm'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+      checkPasswordCriteria();
     }, 2000);
   }
 }
@@ -5114,7 +5286,7 @@ async function claimQuest(questId, xpReward) {
     // Rollback on failure
     studentState.claimedQuests = studentState.claimedQuests.filter(id => id !== questId);
     studentState.xp -= xpReward;
-    alert('Failed to save claim. Please try again.');
+    askNotice('Failed to save claim. Please try again.', 'Claim failed');
     return;
   }
 
@@ -5272,6 +5444,13 @@ async function joinClassByCode() {
   const { data: existing } = await _supabase.from('enrollments').select('id').eq('student_id', currentUser.id).eq('classroom_id', classroom.id).single();
   if (existing) { setFormMsg('join-class-msg', `You are already enrolled in "${classroom.name}".`, true); return; }
 
+  const okJoin = await askConfirm({
+    title: 'Join this class?',
+    message: `Join "${classroom.name}" (code ${classroom.code})?\n\nYou'll get access to its quizzes and shared notes.`,
+    confirmText: 'Join Class', tone: 'success', icon: 'check'
+  });
+  if (!okJoin) return;
+
   // Enroll
   const { error: enrollError } = await _supabase.from('enrollments').insert({ student_id: currentUser.id, classroom_id: classroom.id });
   if (enrollError) { setFormMsg('join-class-msg', 'Failed to join class: ' + enrollError.message, true); return; }
@@ -5342,7 +5521,7 @@ async function renderStudentQuizzes() {
 ============================================================ */
 async function startQuizFromDB(quizId) {
   const { data: quiz, error } = await _supabase.from('quizzes').select('*, classrooms(name, code)').eq('id', quizId).single();
-  if (error || !quiz) { alert('Could not load quiz. Please try again.'); return; }
+  if (error || !quiz) { askNotice('Could not load quiz. Please try again.', 'Quiz unavailable'); return; }
 
   const quizData = {
     id: quiz.id,
@@ -5369,7 +5548,7 @@ function startQuizTimer() {
   timerInterval = setInterval(() => {
     timerSeconds = Math.max(0, timerSeconds - 1);
     updateTimerDisplay();
-    if (timerSeconds === 0) { stopQuizTimer(); submitQuiz(); }
+    if (timerSeconds === 0) { stopQuizTimer(); cfForceClose(); submitQuiz(); }
   }, 1000);
 }
 
@@ -5517,7 +5696,7 @@ async function submitQuiz() {
       total_questions: total,
       xp_earned: xp
     }, { onConflict: 'quiz_id,student_id' });
-    if (subErr) { console.error('Quiz submission failed:', subErr); alert('Your score could not be saved: ' + subErr.message); }
+    if (subErr) { console.error('Quiz submission failed:', subErr); askNotice('Your score could not be saved: ' + subErr.message, 'Score not saved'); }
 
     // Update student stats
     studentState.quizzesTaken++;
@@ -5721,7 +5900,7 @@ function showNote(n) {
   _nvFile = n.file || null;
   if (_nvFile) {
     box.style.display = 'block';
-    box.innerHTML = `<div class="attach-chip"><span class="attach-name">${escHtml(_nvFile.name)}</span><span class="attach-size">${_nvFile.size ? fmtSize(_nvFile.size) : ''}</span></div><div class="attach-actions"><button class="btn-pixel" style="font-size:7px;" onclick="nvPreview()">PREVIEW</button><button class="btn-pixel" style="font-size:7px;" onclick="nvDownload()">DOWNLOAD</button></div><div id="nv-preview"></div>`;
+    box.innerHTML = attViewerHtml(_nvFile);
   } else { box.style.display = 'none'; box.innerHTML = ''; }
   document.getElementById('note-view-modal').classList.add('open');
 }
@@ -5731,21 +5910,43 @@ async function nvBlob() {
   if (error || !data) throw new Error(error ? error.message : 'File not found');
   return new Blob([data], { type: NOTE_TYPES[fileExt(f.name)] || data.type });
 }
+const ATT_ICONS = {
+  eye: '<svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+  down: '<svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>'
+};
+const fileKind = ext => ext === 'pdf' ? 'pdf' : (ext === 'doc' || ext === 'docx') ? 'doc' : 'img';
+function attViewerHtml(f) {
+  const ext = fileExt(f.name), k = fileKind(ext);
+  return `<div class="att"><div class="att-head"><div class="fc-thumb" data-k="${k}">${k === 'img' ? 'IMG' : k.toUpperCase()}</div>` +
+    `<div class="fc-meta"><div class="fc-name" title="${escHtml(f.name)}">${escHtml(f.name)}</div><div class="fc-size">${f.size ? fmtSize(f.size) + ' &middot; ' : ''}${escHtml(ext.toUpperCase())}</div></div>` +
+    `<div class="att-btns"><button type="button" class="att-btn" id="nv-prev-btn" onclick="nvPreview()">${ATT_ICONS.eye}<span>Preview</span></button>` +
+    `<button type="button" class="att-btn primary" onclick="nvDownload()">${ATT_ICONS.down}<span>Download</span></button></div></div>` +
+    `<div class="att-view" id="nv-preview" style="display:none"></div></div>`;
+}
+function nvSetPrevLabel(open) { const l = document.querySelector('#nv-prev-btn span'); if (l) l.textContent = open ? 'Hide' : 'Preview'; }
 async function nvPreview() {
-  const box = document.getElementById('nv-preview'), ext = fileExt(_nvFile.name);
-  if (ext === 'doc' || ext === 'docx') { box.innerHTML = '<span class="q-hint">Word files can\'t be previewed in the browser. Use DOWNLOAD to open it.</span>'; return; }
-  box.innerHTML = '<span class="q-hint">Loading preview...</span>';
+  const view = document.getElementById('nv-preview');
+  if (!view || !_nvFile) return;
+  if (view.style.display !== 'none') { view.style.display = 'none'; view.innerHTML = ''; nvClearUrl(); nvSetPrevLabel(false); return; }
+  const ext = fileExt(_nvFile.name);
+  view.style.display = 'block'; nvSetPrevLabel(true);
+  if (ext === 'doc' || ext === 'docx') { view.innerHTML = '<div class="att-note">Word documents can\u2019t be previewed in the browser.<br>Use <b>Download</b> to open it in Word.</div>'; return; }
+  view.innerHTML = '<div class="att-load"><span class="att-spin"></span>Loading preview\u2026</div>';
   try {
-    const b = await nvBlob(); nvClearUrl(); _nvUrl = URL.createObjectURL(b);
-    box.innerHTML = ext === 'pdf' ? `<iframe class="attach-frame" src="${_nvUrl}"></iframe><span class="q-hint">Blank preview? Your browser may block PDF previews, use DOWNLOAD instead.</span>` : `<img class="attach-img" src="${_nvUrl}" alt="">`;
-  } catch (e) { box.innerHTML = '<span class="q-hint" style="color:#b91c1c;">Could not load file: ' + escHtml(e.message) + '</span>'; }
+    const b = await nvBlob();
+    if (view.style.display === 'none') return;
+    nvClearUrl(); _nvUrl = URL.createObjectURL(b);
+    view.innerHTML = ext === 'pdf'
+      ? `<iframe class="att-frame" title="PDF preview" src="${_nvUrl}#toolbar=0&navpanes=0&view=FitH"></iframe><div class="att-note" style="padding:10px 18px;">Preview blank? Your browser may block PDF previews. Use Download instead.</div>`
+      : `<img class="att-img" src="${_nvUrl}" alt="Attachment preview">`;
+  } catch (e) { view.innerHTML = '<div class="att-note" style="color:#b91c1c;">Could not load file: ' + escHtml(e.message) + '</div>'; }
 }
 async function nvDownload() {
   try {
     const u = URL.createObjectURL(await nvBlob()), a = document.createElement('a');
     a.href = u; a.download = _nvFile.name; document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(u), 4000);
-  } catch (e) { alert('Download failed: ' + e.message); }
+  } catch (e) { askNotice('Download failed: ' + e.message, 'Download failed'); }
 }
 function closeNoteView() { nvClearUrl(); const p = document.getElementById('nv-preview'); if (p) p.innerHTML = ''; document.getElementById('note-view-modal').classList.remove('open'); }
 
@@ -5753,6 +5954,7 @@ function openNoteModal() {
   const modal = document.getElementById('upload-note-modal');
   if (modal) modal.classList.add('open');
   ['note-title-input','note-subject-input','note-content-input','note-file-input'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  noteFileClear();
   const msg = document.getElementById('note-modal-msg');
   if (msg) { msg.style.display = 'none'; msg.className = 'modal-msg'; }
 }
@@ -5771,11 +5973,17 @@ async function submitUploadNote() {
   if (window._noteBusy) return;
   const val = id => (document.getElementById(id).value || '').trim();
   const title = val('note-title-input'), subject = val('note-subject-input') || 'General', content = val('note-content-input');
-  const file = document.getElementById('note-file-input').files[0], ext = file ? fileExt(file.name) : '';
+  const file = window._noteFile || null, ext = file ? fileExt(file.name) : '';
   if (!title) { showNoteMsg('Please enter a note title.', 'error'); return; }
   if (!content && !file) { showNoteMsg('Write some content or attach a file.', 'error'); return; }
   if (file && !NOTE_TYPES[ext]) { showNoteMsg('Unsupported file type. Use PDF, DOC, DOCX, PNG or JPG.', 'error'); return; }
   if (file && (file.size === 0 || file.size > NOTE_MAX)) { showNoteMsg(file.size === 0 ? 'That file is empty.' : 'File is too large (max 10 MB).', 'error'); return; }
+  const okNote = await askConfirm({
+    title: 'Submit this note?',
+    message: `"${title}" will be sent to your teacher for review. It becomes visible to your classmates once approved.`,
+    confirmText: 'Submit', tone: 'primary', icon: 'send'
+  });
+  if (!okNote) return;
   window._noteBusy = true;
   let path = null;
   try {
@@ -6001,13 +6209,17 @@ async function renderAdminClasses() {
 
 async function archiveClass(id, currentStatus) {
   const newStatus = currentStatus === 'active' ? 'archived' : 'active';
+  const okArc = await askConfirm(newStatus === 'archived'
+    ? { title: 'Archive this class?', message: "Students won't be able to join it with its class code while it's archived. You can activate it again anytime.", confirmText: 'Archive', tone: 'warning', icon: 'warn' }
+    : { title: 'Activate this class?', message: 'Students will be able to join it with its class code again.', confirmText: 'Activate', tone: 'success', icon: 'check' });
+  if (!okArc) return;
   await _supabase.from('classrooms').update({ status: newStatus }).eq('id', id);
   showAdminToast(`Class ${newStatus === 'active' ? 'activated' : 'archived'}.`, 'success');
   await renderAdminClasses();
 }
 
 async function deleteClass(id, name) {
-  if (!confirm(`Delete classroom "${name}"? This will remove all enrollments and cannot be undone.`)) return;
+  if (!(await askConfirm({ title: 'Delete this class?', message: `"${name}" and all of its enrollments will be removed.\n\nThis cannot be undone.`, confirmText: 'Delete', tone: 'danger', icon: 'trash' }))) return;
   await _supabase.from('classrooms').delete().eq('id', id);
   showAdminToast(`"${name}" deleted.`, 'danger');
   await renderAdminClasses();
@@ -6108,7 +6320,7 @@ async function renderAdminStudents() {
 }
 
 async function removeStudentFromClasses(studentId, name) {
-  if (!confirm(`Remove ${name} from all your classes?`)) return;
+  if (!(await askConfirm({ title: 'Remove student?', message: `${name} will be removed from all of your classes.`, confirmText: 'Remove', tone: 'danger', icon: 'trash' }))) return;
   const { data: myClasses } = await _supabase.from('classrooms').select('id').eq('teacher_id', currentUser.id);
   const classIds = (myClasses || []).map(c => c.id);
   await _supabase.from('enrollments').delete().eq('student_id', studentId).in('classroom_id', classIds);
@@ -6166,7 +6378,7 @@ async function toggleQuizStatus(quizId, newStatus) {
 }
 
 async function deleteQuiz(quizId, title) {
-  if (!confirm(`Delete quiz "${title}"? All submissions will also be deleted.`)) return;
+  if (!(await askConfirm({ title: 'Delete this quiz?', message: `"${title}" and all student submissions will be deleted.\n\nThis cannot be undone.`, confirmText: 'Delete', tone: 'danger', icon: 'trash' }))) return;
   await _supabase.from('quiz_submissions').delete().eq('quiz_id', quizId);
   await _supabase.from('quizzes').delete().eq('id', quizId);
   showAdminToast(`"${title}" deleted.`, 'danger');
@@ -6221,13 +6433,19 @@ function qbRenumber() {
   questionCount = all.length;
 }
 function addQuestion() { const d = qbMake('mcq'); document.getElementById('question-list').appendChild(d); qbRenumber(); d.scrollIntoView({ behavior:'smooth', block:'nearest' }); }
-function qbChangeType(sel) {
+async function qbChangeType(sel) {
   const d = sel.closest('.question-builder'), body = d.querySelector('.q-body');
   const dirty = [...body.querySelectorAll('input[type=text],textarea')].some(x => x.value.trim());
-  if (dirty && !confirm('Changing the question type will clear the answers you entered. Continue?')) { sel.value = d.dataset.type; return; }
+  if (dirty && !(await askConfirm({ title: 'Change question type?', message: 'Changing the type will clear the answers you entered for this question.', confirmText: 'Change', tone: 'warning', icon: 'warn' }))) { sel.value = d.dataset.type; return; }
   d.dataset.type = sel.value; body.innerHTML = qbBody(sel.value);
 }
-function qbRemove(b) { if (document.querySelectorAll('#question-list .question-builder').length < 2) return; b.closest('.question-builder').remove(); qbRenumber(); }
+async function qbRemove(b) {
+  if (document.querySelectorAll('#question-list .question-builder').length < 2) return;
+  const qb = b.closest('.question-builder');
+  const dirty = [...qb.querySelectorAll('input[type=text],textarea')].some(x => x.value.trim());
+  if (dirty && !(await askConfirm({ title: 'Remove this question?', message: 'What you typed for this question will be lost.', confirmText: 'Remove', tone: 'danger', icon: 'trash' }))) return;
+  qb.remove(); qbRenumber();
+}
 function qbParse(d, n) {
   const t = d.dataset.type, text = d.querySelector('.q-builder-input').value.trim(), E = m => ({ err: `Question ${n}: ${m}` });
   if (!text) return E('please enter the question text.');
@@ -6288,6 +6506,14 @@ async function publishQuiz(status) {
     questions.push(r.q);
   }
   if (questions.length === 0) { setFormMsg('quiz-create-msg', 'Add at least one question.', true); return; }
+  if (status === 'published') {
+    const okPub = await askConfirm({
+      title: 'Publish this quiz?',
+      message: `"${title}" has ${questions.length} question${questions.length === 1 ? '' : 's'}. Students in the selected class will be able to take it right away.`,
+      confirmText: 'Publish', tone: 'success', icon: 'send'
+    });
+    if (!okPub) return;
+  }
   if (window._quizSaving) return;
   window._quizSaving = true;
 
@@ -6556,6 +6782,8 @@ async function renderAdminNotes() {
 }
 
 async function adminApproveNote(id) {
+  const _n = notesStore.find(n => n.id === id);
+  if (!(await askConfirm({ title: 'Approve this note?', message: `${_n ? '"' + _n.title + '" will' : 'This note will'} be published and visible to students in the class.`, confirmText: 'Approve', tone: 'success', icon: 'check' }))) return;
   const { error } = await _supabase.from('notes').update({ status: 'approved' }).eq('id', id);
   if (error) { console.error(error); showAdminToast('Could not update note: ' + error.message, 'danger'); return; }
   showAdminToast('Note approved and published.', 'success');
@@ -6563,6 +6791,8 @@ async function adminApproveNote(id) {
 }
 
 async function adminRejectNote(id) {
+  const _n = notesStore.find(n => n.id === id);
+  if (!(await askConfirm({ title: 'Reject this note?', message: `${_n ? '"' + _n.title + '" will' : 'This note will'} not be published to students.`, confirmText: 'Reject', tone: 'warning', icon: 'warn' }))) return;
   const { error } = await _supabase.from('notes').update({ status: 'rejected' }).eq('id', id);
   if (error) { console.error(error); showAdminToast('Could not update note: ' + error.message, 'danger'); return; }
   showAdminToast('Note has been rejected.', 'warning');
@@ -6571,7 +6801,7 @@ async function adminRejectNote(id) {
 
 async function adminRemoveNote(id) {
   const note = notesStore.find(n => n.id === id);
-  if (!confirm(`Remove note "${note ? note.title : ''}"?`)) return;
+  if (!(await askConfirm({ title: 'Remove this note?', message: `"${note ? note.title : 'This note'}" and its attachment will be permanently deleted.`, confirmText: 'Remove', tone: 'danger', icon: 'trash' }))) return;
   if (note && note.file) await _supabase.storage.from(NOTE_BUCKET).remove([note.file.path]);
   const { error } = await _supabase.from('notes').delete().eq('id', id);
   if (error) { showAdminToast('Could not remove note: ' + error.message, 'danger'); return; }
@@ -6727,6 +6957,224 @@ function lpFilterFeatures(btn, cat) {
 // Initial renders on page load
 window.selectedRole = 'student';
 renderAdminNotes();
+
+/* ============================================================
+   CONFIRMATION DIALOG
+============================================================ */
+const CF_ICONS = {
+  question: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7"/><path d="M12 17h.01"/></svg>',
+  logout: '<svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>',
+  trash: '<svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>',
+  warn: '<svg viewBox="0 0 24 24"><path d="M12 3l10 18H2L12 3z"/><path d="M12 10v5"/><path d="M12 18h.01"/></svg>',
+  send: '<svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>',
+  check: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></svg>',
+  user: '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>'
+};
+let _cfResolve = null, _cfPrevFocus = null, _cfOpenedAt = 0;
+
+function askConfirm(o) {
+  o = o || {};
+  if (_cfResolve) cfClose(false);
+  return new Promise(resolve => {
+    _cfResolve = resolve;
+    _cfPrevFocus = document.activeElement;
+    _cfOpenedAt = Date.now();
+    const $ = id => document.getElementById(id);
+    $('cf-box').dataset.tone = o.tone || 'primary';
+    $('cf-icon').innerHTML = CF_ICONS[o.icon] || CF_ICONS.question;
+    $('cf-title').textContent = o.title || 'Are you sure?';
+    $('cf-msg').textContent = o.message || '';
+    $('cf-msg').style.display = o.message ? 'block' : 'none';
+    $('cf-ok').textContent = o.confirmText || 'Confirm';
+    $('cf-cancel').textContent = o.cancelText || 'Cancel';
+    $('cf-cancel').style.display = o.hideCancel ? 'none' : '';
+    $('cf-overlay').classList.add('open');
+    // destructive actions focus "cancel" first so a stray Enter can't delete anything
+    ((o.tone === 'danger' && !o.hideCancel) ? $('cf-cancel') : $('cf-ok')).focus();
+  });
+}
+function askNotice(message, title) {
+  return askConfirm({ title: title || 'Heads up', message, confirmText: 'OK', hideCancel: true, tone: 'warning', icon: 'warn' });
+}
+function cfClose(val) {
+  document.getElementById('cf-overlay').classList.remove('open');
+  const r = _cfResolve; _cfResolve = null;
+  try { if (_cfPrevFocus && _cfPrevFocus.focus) _cfPrevFocus.focus(); } catch (e) {}
+  if (r) r(val);
+}
+function cfForceClose() { if (_cfResolve) cfClose(false); }
+
+document.getElementById('cf-ok').addEventListener('click', () => { if (Date.now() - _cfOpenedAt > 250) cfClose(true); });
+document.getElementById('cf-cancel').addEventListener('click', () => cfClose(false));
+document.getElementById('cf-overlay').addEventListener('mousedown', e => { if (e.target.id === 'cf-overlay') cfClose(false); });
+
+document.addEventListener('keydown', e => {
+  const ov = document.getElementById('cf-overlay');
+  if (ov.classList.contains('open')) {
+    if (e.key === 'Escape') { e.preventDefault(); cfClose(false); }
+    else if (e.key === 'Tab') {
+      const btns = [...ov.querySelectorAll('.cf-btn')].filter(b => b.style.display !== 'none');
+      const i = btns.indexOf(document.activeElement);
+      e.preventDefault();
+      btns[(i + (e.shiftKey ? btns.length - 1 : 1)) % btns.length].focus();
+    }
+    return;
+  }
+  // ENTER submits whichever form the cursor is in
+  if (e.key !== 'Enter' || e.repeat || e.isComposing || e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) return;
+  const t = e.target;
+  if (!t || t.tagName !== 'INPUT' || ['file', 'checkbox', 'radio', 'button', 'submit'].includes(t.type)) return;
+  const inside = id => { const el = document.getElementById(id); return !!el && el.contains(t); };
+  let fn = null;
+  if (inside('form-login')) fn = handleLogin;
+  else if (inside('form-signup')) fn = handleSignup;
+  else if (inside('form-forgot')) fn = handleForgotPassword;
+  else if (inside('reset-password-overlay')) fn = handleResetPassword;
+  else if (inside('upload-note-modal')) fn = submitUploadNote;
+  else if (t.id === 'join-class-input') fn = joinClassByCode;
+  if (fn) { e.preventDefault(); fn(); }
+});
+
+/* ---- logout / quiz leave / quiz submit ---- */
+function quizInProgress() {
+  const v = document.getElementById('stu-quiz-take');
+  return !!(currentQuizData && !quizSubmitting && v && v.classList.contains('active'));
+}
+async function confirmLogout() {
+  const ok = await askConfirm({
+    title: 'Log out?',
+    message: quizInProgress() ? "You're in the middle of a quiz. Logging out will lose your progress." : "You'll be signed out and taken back to the login screen.",
+    confirmText: 'Log Out', cancelText: 'Stay', tone: 'warning', icon: 'logout'
+  });
+  if (ok) await goToLogin();
+}
+async function navStu(view) {
+  if (view !== 'quiz-take' && quizInProgress()) {
+    const ok = await askConfirm({
+      title: 'Leave this quiz?',
+      message: "Your answers won't be saved and the timer will stop. You'll have to start the quiz again.",
+      confirmText: 'Leave Quiz', cancelText: 'Keep Going', tone: 'danger', icon: 'warn'
+    });
+    if (!ok) return;
+  }
+  switchStuView(view);
+}
+async function confirmSubmitQuiz() {
+  if (quizSubmitting) return;
+  const total = currentQuizData ? currentQuizData.questions.length : 0;
+  let answered = 0;
+  for (let i = 0; i < total; i++) if (isAnswered(i)) answered++;
+  const left = total - answered;
+  const ok = await askConfirm({
+    title: 'Submit your quiz?',
+    message: (left > 0
+      ? `You still have ${left} unanswered question${left > 1 ? 's' : ''} (${answered} of ${total} answered). Unanswered items will be scored as wrong.`
+      : `You answered all ${total} question${total === 1 ? '' : 's'}.`) + "\n\nOnce submitted, you can't change your answers.",
+    confirmText: 'Submit', cancelText: 'Review', tone: left > 0 ? 'warning' : 'success', icon: 'send'
+  });
+  if (ok) submitQuiz();
+}
+
+/* ============================================================
+   LOGIN / SIGNUP HELPERS
+============================================================ */
+function togglePw(id, btn) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const show = el.type === 'password';
+  el.type = show ? 'text' : 'password';
+  btn.classList.toggle('on', show);
+  btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+}
+
+const PW_SYM_RE = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/;
+const PW_LEVELS = [
+  { t: '\u2014', c: 'rgba(46,64,83,.55)' },
+  { t: 'WEAK', c: '#E2725B' },
+  { t: 'FAIR', c: '#B8860B' },
+  { t: 'GOOD', c: '#8A9A5B' },
+  { t: 'STRONG', c: '#6B7A45' }
+];
+const _pwState = {};
+function checkPasswordCriteria(animate) {
+  const p = (document.getElementById('signup-pass') || {}).value || '';
+  const c = (document.getElementById('signup-confirm') || {}).value || '';
+  const rules = {
+    'pw-len': p.length >= 8,
+    'pw-upper': /[A-Z]/.test(p),
+    'pw-num': /[0-9]/.test(p),
+    'pw-sym': PW_SYM_RE.test(p),
+    'pw-match': p.length > 0 && c.length > 0 && p === c
+  };
+  let score = 0;
+  Object.keys(rules).forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const ok = rules[id];
+    el.classList.toggle('ok', ok);
+    if (_pwState[id] && !ok) { el.classList.remove('lost'); void el.offsetWidth; el.classList.add('lost'); }
+    _pwState[id] = ok;
+    if (ok && id !== 'pw-match') score++;
+  });
+  const lvl = PW_LEVELS[p ? score : 0];
+  const meter = document.getElementById('pw-meter'), label = document.getElementById('pw-strength');
+  if (meter) {
+    meter.style.setProperty('--pw-c', lvl.c);
+    [...meter.children].forEach((seg, i) => seg.classList.toggle('on', i < (p ? score : 0)));
+  }
+  if (label) { label.textContent = lvl.t; label.style.color = lvl.c; }
+  const panel = document.getElementById('pw-criteria');
+  if (panel && animate) { panel.classList.remove('scan'); void panel.offsetWidth; panel.classList.add('scan'); }
+}
+
+/* ============================================================
+   NOTE ATTACHMENT PICKER
+============================================================ */
+function noteFileClear() {
+  window._noteFile = null;
+  if (window._noteThumbUrl) { URL.revokeObjectURL(window._noteThumbUrl); window._noteThumbUrl = null; }
+  const input = document.getElementById('note-file-input'), dz = document.getElementById('note-dz'), fc = document.getElementById('note-fc');
+  if (input) input.value = '';
+  if (fc) fc.classList.remove('show');
+  if (dz) dz.style.display = '';
+}
+function noteFileChosen(file) {
+  if (!file) { noteFileClear(); return; }
+  const ext = fileExt(file.name);
+  if (!NOTE_TYPES[ext]) { noteFileClear(); showNoteMsg('Unsupported file type. Use PDF, DOC, DOCX, PNG or JPG.', 'error'); return; }
+  if (file.size === 0 || file.size > NOTE_MAX) { noteFileClear(); showNoteMsg(file.size === 0 ? 'That file is empty.' : 'File is too large (max 10 MB).', 'error'); return; }
+  const msg = document.getElementById('note-modal-msg');
+  if (msg && msg.classList.contains('error')) msg.style.display = 'none';
+  noteFileClear();
+  window._noteFile = file;
+  const k = fileKind(ext), thumb = document.getElementById('note-fc-thumb');
+  thumb.dataset.k = k;
+  thumb.style.backgroundImage = '';
+  thumb.textContent = k === 'img' ? '' : k.toUpperCase();
+  if (k === 'img') { window._noteThumbUrl = URL.createObjectURL(file); thumb.style.backgroundImage = `url("${window._noteThumbUrl}")`; }
+  document.getElementById('note-fc-name').textContent = file.name;
+  document.getElementById('note-fc-name').title = file.name;
+  document.getElementById('note-fc-size').textContent = fmtSize(file.size) + ' \u00B7 ' + ext.toUpperCase();
+  document.getElementById('note-dz').style.display = 'none';
+  document.getElementById('note-fc').classList.add('show');
+}
+async function cancelNoteModal() {
+  const dirty = ['note-title-input', 'note-subject-input', 'note-content-input'].some(id => (document.getElementById(id).value || '').trim()) || !!window._noteFile;
+  if (dirty && !(await askConfirm({ title: 'Discard this note?', message: "What you've written or attached will be lost.", confirmText: 'Discard', cancelText: 'Keep Editing', tone: 'danger', icon: 'trash' }))) return;
+  closeNoteModal();
+}
+(function initNoteDropzone() {
+  const dz = document.getElementById('note-dz');
+  if (!dz) return;
+  ['dragenter', 'dragover'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('drag'); }));
+  ['dragleave', 'dragend'].forEach(ev => dz.addEventListener(ev, () => dz.classList.remove('drag')));
+  dz.addEventListener('drop', e => {
+    e.preventDefault(); dz.classList.remove('drag');
+    const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (f) noteFileChosen(f);
+  });
+})();
+checkPasswordCriteria();
 </script>
 </body>
 </html>
