@@ -3383,8 +3383,8 @@ body {
    Same app, same data — re-laid-out for thumbs.
 ============================================================ */
 .m-only{display:none}
+.m-tabbar,.m-backdrop{display:none}
 .m-menu-btn{display:none}
-.m-logout-btn{display:none}
 @media (max-width:820px){
 :root{--m-bar:62px;--m-top:54px;--m-safe-b:env(safe-area-inset-bottom,0px);--m-safe-t:env(safe-area-inset-top,0px)}
 html,body{height:100%;overscroll-behavior-y:none;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
@@ -3413,8 +3413,9 @@ input,select,textarea{font-size:16px!important}
 .stat-chip .chip-val{font-size:10px!important;white-space:nowrap}
 .stu-topbar,.stu-content,.stu-main>*{flex-shrink:0}
 .stu-hamburger,.m-menu-btn{display:none!important}
-.m-logout-btn{display:flex!important;align-items:center;justify-content:center;margin-left:auto;min-height:40px;padding:0 12px;background:transparent;border:2px solid var(--indigo);color:var(--indigo);font-family:'Press Start 2P',monospace;font-size:9px;letter-spacing:.5px;cursor:pointer;flex:0 0 auto}
-.m-logout-btn:active{background:var(--indigo);color:#fff}
+.m-gear-btn{display:flex!important;align-items:center;justify-content:center;margin-left:auto;width:44px;height:44px;flex:0 0 44px;padding:0;background:var(--moss);border:2px solid var(--indigo);box-shadow:2px 2px 0 var(--indigo);color:#fff;cursor:pointer}
+.m-gear-btn svg{width:22px;height:22px}
+.m-gear-btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--indigo)}
 .stu-content{padding:20px 16px 28px}
 .section-header{margin-bottom:14px}
 .section-title{font-size:13px!important;line-height:1.6}
@@ -3587,6 +3588,74 @@ body.m-adm .m-tabbar#m-tabs-adm .m-tab.active::before{background:var(--moss)}
 }
 
 
+
+/* ============================================================
+   SETTINGS PAGE (shared by student + admin)
+============================================================ */
+.qs{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:22px;font-family:'Lato',sans-serif;color:#2E4053}
+.qs-card{background:#FFFDF6;border:2px solid #2E4053;box-shadow:4px 4px 0 #2E4053;padding:24px}
+.qs-card h3{font-family:'Press Start 2P',monospace;font-size:12px;line-height:1.6;color:#2E4053;margin:0 0 6px;font-weight:400}
+.qs-sub{font-size:13.5px;line-height:1.55;color:rgba(46,64,83,.68);margin-bottom:20px}
+.qs-prof{display:flex;gap:18px;align-items:center;margin-bottom:22px;min-width:0}
+.qs-avatar{width:78px;height:78px;flex:0 0 78px;display:flex;align-items:center;justify-content:center;border:2px solid #2E4053;box-shadow:3px 3px 0 #2E4053;font-family:'Press Start 2P',monospace;font-size:20px;color:#fff;background:#8A9A5B}
+.qs-avatar svg{width:56%;height:56%;display:block}
+.qs-meta{min-width:0}
+.qs-meta .n{font-weight:700;font-size:18px;line-height:1.3;word-break:break-word}
+.qs-meta .e{font-size:13px;color:rgba(46,64,83,.68);word-break:break-all;margin-top:2px}
+.qs-badge{display:inline-block;margin-top:8px;padding:4px 8px;font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:.5px;background:#8A9A5B;color:#fff}
+.qs-field{display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
+.qs-field>label,.qs-lbl{font-size:11.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:rgba(46,64,83,.75)}
+.qs-input{width:100%;min-height:50px;padding:0 14px;font:16px 'Lato',sans-serif;color:#2E4053;background:#fff;border:2px solid #2E4053;border-radius:0;-webkit-appearance:none;appearance:none}
+.qs-input:focus{outline:3px solid rgba(138,154,91,.55);outline-offset:0}
+.qs-pw{position:relative}
+.qs-pw .qs-input{padding-right:70px}
+.qs-eye{position:absolute;right:0;top:0;height:100%;min-width:62px;background:none;border:0;border-left:2px solid #2E4053;font-family:'Press Start 2P',monospace;font-size:8px;color:#2E4053;cursor:pointer}
+.qs-swatches,.qs-icons{display:flex;flex-wrap:wrap;gap:10px}
+.qs-swatch{width:44px;height:44px;border:2px solid #2E4053;cursor:pointer;padding:0}
+.qs-icon{width:48px;height:48px;border:2px solid #2E4053;background:#fff;color:#2E4053;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P',monospace;font-size:11px;padding:0}
+.qs-icon svg{width:26px;height:26px;display:block}
+.qs-swatch[aria-pressed="true"]{outline:3px solid #2E4053;outline-offset:3px}
+.qs-icon[aria-pressed="true"]{background:#2E4053;color:#fff}
+.qs-seg{display:grid;grid-template-columns:repeat(3,1fr);border:2px solid #2E4053;background:#fff}
+.qs-seg button{min-height:54px;background:#fff;color:#2E4053;border:0;border-right:2px solid #2E4053;font-family:'Press Start 2P',monospace;font-size:10px;cursor:pointer;padding:0 6px;display:flex;align-items:center;justify-content:center;gap:8px}
+.qs-seg button:last-child{border-right:0}
+.qs-seg button[aria-pressed="true"]{background:#2E4053;color:#fff}
+.qs-btn{min-height:52px;padding:0 22px;font-family:'Press Start 2P',monospace;font-size:11px;line-height:1.4;color:#fff;background:#6B7A45;border:2px solid #2E4053;box-shadow:3px 3px 0 #2E4053;cursor:pointer}
+.qs-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #2E4053}
+.qs-btn[disabled]{opacity:.6;cursor:wait}
+.qs-btn.danger{background:#C85A42}
+.qs-msg{font-size:13.5px;line-height:1.5;margin-top:14px;min-height:20px}
+.qs-msg.ok{color:#15803d}.qs-msg.err{color:#b91c1c}
+.qs-hint{font-size:12.5px;color:rgba(46,64,83,.62);line-height:1.5;margin:-8px 0 18px}
+.qs-row{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+@media (max-width:820px){
+  .qs{gap:18px}
+  .qs-card{padding:20px 16px}
+  .qs-prof{gap:14px}.qs-avatar{width:68px;height:68px;flex-basis:68px;font-size:17px}
+  .qs-btn{width:100%}
+  .qs-seg button{font-size:9px;min-height:56px;flex-direction:column;gap:6px}
+}
+.stu-avatar,.adm-avatar{display:flex;align-items:center;justify-content:center}
+.stu-avatar svg,.adm-avatar svg{width:58%;height:58%;display:block}
+.m-gear-btn{display:none}
+
+/* ============================================================
+   DARK MODE — inverts the rendered page (everything, incl. landing + login),
+   then re-inverts images / avatars so they keep their real colours.
+============================================================ */
+html[data-theme="dark"]::after{content:"";position:fixed;inset:0;z-index:2147483647;pointer-events:none;
+  -webkit-backdrop-filter:invert(1) hue-rotate(180deg);backdrop-filter:invert(1) hue-rotate(180deg)}
+html[data-theme="dark"] img,html[data-theme="dark"] video,html[data-theme="dark"] canvas,
+html[data-theme="dark"] .qs-avatar,html[data-theme="dark"] .qs-swatch,
+html[data-theme="dark"] .stu-avatar,html[data-theme="dark"] .adm-avatar,
+html[data-theme="dark"] .stu-sidebar,html[data-theme="dark"] .adm-sidebar,html[data-theme="dark"] .m-tabbar,
+html[data-theme="dark"] .stat-chip,html[data-theme="dark"] .qs-btn,html[data-theme="dark"] .qs-badge,
+html[data-theme="dark"] .m-gear-btn{filter:invert(1) hue-rotate(180deg)}
+html[data-theme="dark"] [class*="crystal"]{opacity:.35!important}
+
+.login-back{display:inline-flex;align-items:center;gap:10px;align-self:flex-start;min-height:44px;padding:0 16px;margin-bottom:16px;background:rgba(255,253,246,.85);color:#2E4053;border:2px solid #2E4053;box-shadow:3px 3px 0 #2E4053;font-family:'Press Start 2P',monospace;font-size:10px;letter-spacing:.5px;cursor:pointer}
+.login-back:hover{background:#2E4053;color:#fff}
+.login-back:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #2E4053}
 /* while a saved login is being restored, show a loader instead of flashing the landing page */
 html.ql-boot #page-landing{display:none!important}
 html.ql-boot body::after{content:'LOADING...';position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--parchment,#F4EFE3);color:var(--indigo,#2E4053);font-family:'Press Start 2P',monospace;font-size:11px;letter-spacing:2px;z-index:9998}
@@ -3594,6 +3663,9 @@ html.ql-boot body::after{content:'LOADING...';position:fixed;inset:0;display:fle
 <script>
 /* runs before first paint: if a saved Supabase session exists, don't show the landing page */
 (function(){try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(/^sb-.*-auth-token$/.test(k)){document.documentElement.classList.add('ql-boot');setTimeout(function(){document.documentElement.classList.remove('ql-boot')},12000);break;}}}catch(e){}})();
+</script>
+<script>
+(function(){try{var t=localStorage.getItem('ql_theme')||'light';if(t==='system')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </script>
 </head>
 <body>
@@ -3901,6 +3973,7 @@ html.ql-boot body::after{content:'LOADING...';position:fixed;inset:0;display:fle
   </div>
 
   <div class="login-container">
+    <button type="button" class="login-back" onclick="goToLanding()" aria-label="Back to home page"><span aria-hidden="true">&lt;</span> BACK</button>
     <div class="login-brand">
       <div class="logo-mark">
         <svg width="56" height="56" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -4137,6 +4210,11 @@ html.ql-boot body::after{content:'LOADING...';position:fixed;inset:0;display:fle
         <span class="nav-icon"><svg class="px-icon" viewBox="0 0 10 9" width="16" height="14" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="4" y="0" width="2" height="1"/><rect x="3" y="1" width="4" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="1" y="3" width="8" height="1"/><rect x="0" y="4" width="10" height="1"/><rect x="1" y="5" width="8" height="1"/><rect x="2" y="6" width="6" height="1"/><rect x="3" y="7" width="4" height="1"/><rect x="4" y="8" width="2" height="1"/></g></svg></span> Quests
         <span class="nav-badge" id="stu-quests-nav-badge" style="display:none;"></span>
       </a>
+      <div class="nav-section-label">ACCOUNT</div>
+      <a class="stu-nav-link" onclick="navStu('settings')">
+        <span class="nav-icon"><svg class="px-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" fill-rule="evenodd" xmlns="http://www.w3.org/2000/svg"><path d="M10 2h4l.6 2.7 1.9.8 2.3-1.5 2.8 2.8-1.5 2.3.8 1.9L22 10v4l-2.7.6-.8 1.9 1.5 2.3-2.8 2.8-2.3-1.5-1.9.8L14 22h-4l-.6-2.7-1.9-.8-2.3 1.5-2.8-2.8 1.5-2.3-.8-1.9L2 14v-4l2.7-.6.8-1.9-1.5-2.3 2.8-2.8 2.3 1.5 1.9-.8zM12 8.8a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4z"/></svg></span>
+        Settings
+      </a>
     </nav>
     <div class="stu-sidebar-footer">
       <button class="btn-logout" onclick="confirmLogout()">[ LOGOUT ]</button>
@@ -4342,6 +4420,15 @@ html.ql-boot body::after{content:'LOADING...';position:fixed;inset:0;display:fle
         <div class="quest-list" id="quests-list">
           <div style="text-align:center;padding:32px;font-family:'Lato',sans-serif;color:rgba(46,64,83,0.45);font-size:13px;">Loading quests...</div>
         </div>
+      </div>
+
+      <!-- VIEW: SETTINGS -->
+      <div id="stu-settings" class="stu-view">
+        <div class="section-header">
+          <span class="section-title">YOUR ACCOUNT</span>
+          <span class="section-sub">&gt; Profile, appearance and security</span>
+        </div>
+        <div class="qs-host"></div>
       </div>
 
       <!-- VIEW: CLASS DETAIL -->
@@ -4974,6 +5061,14 @@ _supabase.auth.onAuthStateChange((event, session) => {
 /* ============================================================
    PAGE NAVIGATION
 ============================================================ */
+function goToLanding() {
+  showPage('landing');
+  window.scrollTo(0, 0);
+  const lp = document.getElementById('page-landing');
+  if (lp) lp.scrollTop = 0;
+  if (typeof showLoginError === 'function') showLoginError('');
+}
+
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
@@ -7442,12 +7537,13 @@ checkPasswordCriteria();
   ];
   var stuBadge = {quizzes:'stu-quizzes-nav-badge', quests:'stu-quests-nav-badge'};
   function addStuLogout(){
-    var tb = $('.stu-topbar'); if(!tb || $('.m-logout-btn', tb)) return;
-    var lb = document.createElement('button');
-    lb.className = 'm-logout-btn'; lb.type = 'button'; lb.textContent = 'LOGOUT';
-    lb.onclick = function(){ if (typeof confirmLogout==='function') confirmLogout(); };
+    var tb = $('.stu-topbar'); if(!tb || $('.m-gear-btn', tb)) return;
+    var gb = document.createElement('button');
+    gb.className = 'm-gear-btn'; gb.type = 'button'; gb.setAttribute('aria-label','Settings');
+    gb.innerHTML = '<svg class="px-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" fill-rule="evenodd" xmlns="http://www.w3.org/2000/svg"><path d="M10 2h4l.6 2.7 1.9.8 2.3-1.5 2.8 2.8-1.5 2.3.8 1.9L22 10v4l-2.7.6-.8 1.9 1.5 2.3-2.8 2.8-2.3-1.5-1.9.8L14 22h-4l-.6-2.7-1.9-.8-2.3 1.5-2.8-2.8 1.5-2.3-.8-1.9L2 14v-4l2.7-.6.8-1.9-1.5-2.3 2.8-2.8 2.3 1.5 1.9-.8zM12 8.8a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4z"/></svg>';
+    gb.onclick = function(){ if (typeof navStu==='function') navStu('settings'); };
     var title = $('.topbar-title', tb) || $('#stu-page-title', tb);
-    if (title && title.parentNode === tb) title.insertAdjacentElement('afterend', lb); else tb.appendChild(lb);
+    if (title && title.parentNode === tb) title.insertAdjacentElement('afterend', gb); else tb.appendChild(gb);
   }
 
   function buildStu(){
@@ -7618,6 +7714,212 @@ checkPasswordCriteria();
   wrap('switchStuView', 'student');
   wrap('switchAdmView', 'admin');
   try { _supabase.auth.onAuthStateChange(function(ev){ if (ev === 'SIGNED_OUT') { try { localStorage.removeItem('ql_view'); } catch(e){} } }); } catch(e){}
+})();
+</script>
+<script>
+/* ============================================================
+   SETTINGS — profile, appearance, password, logout
+============================================================ */
+(function(){
+  var $ = function(s, r){ return (r||document).querySelector(s); };
+  var COLORS = ['#8A9A5B','#E2725B','#B8860B','#4F86C6','#8E5BA8','#3A8F7A','#D9638C','#2E4053'];
+  var ICONS = {
+    heart:['.##.##.','#######','#######','.#####.','..###..','...#...'],
+    star:['...#...','...#...','#######','.#####.','..###..','.##.##.','.#...#.'],
+    smile:['.#####.','#######','##.#.##','#######','#.###.#','##...##','.#####.'],
+    bolt:['...###.','..###..','.###...','#######','...###.','..###..','.##....'],
+    ghost:['.#####.','#######','#.###.#','#######','#######','#######','##.#.##'],
+    crown:['#..#..#','#.###.#','#######','#######','.#####.']
+  };
+  function icon(key, color){
+    var rows = ICONS[key]; if(!rows) return '';
+    var r = '';
+    rows.forEach(function(row,y){ for(var x=0;x<row.length;x++) if(row[x]==='#') r += '<rect x="'+x+'" y="'+y+'" width="1" height="1"/>'; });
+    return '<svg viewBox="0 0 '+rows[0].length+' '+rows.length+'" shape-rendering="crispEdges" fill="'+color+'" xmlns="http://www.w3.org/2000/svg">'+r+'</svg>';
+  }
+  function initialsOf(name){
+    var p = String(name||'?').trim().split(/\s+/);
+    return ((p[0]||'?')[0] + (p.length>1 ? p[p.length-1][0] : '')).toUpperCase();
+  }
+  function esc(t){ return String(t==null?'':t).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+
+  /* ---------- avatar prefs (local + saved to the account) ---------- */
+  function prefKey(){ return (typeof currentUser!=='undefined' && currentUser) ? 'ql_prof_'+currentUser.id : null; }
+  function getPrefs(){
+    var d = {color:COLORS[0], icon:'initials'}, k = prefKey();
+    try { if(k) return Object.assign(d, JSON.parse(localStorage.getItem(k)||'{}')); } catch(e){}
+    return d;
+  }
+  function setPrefs(p){ var k = prefKey(); try { if(k) localStorage.setItem(k, JSON.stringify(p)); } catch(e){} }
+  function paintAvatar(el, p, name){
+    if(!el) return;
+    el.style.background = p.color;
+    if (p.icon !== 'initials' && ICONS[p.icon]) el.innerHTML = icon(p.icon, '#fff');
+    else el.textContent = initialsOf(name);
+  }
+  function applyAvatar(){
+    if (typeof currentUser==='undefined' || !currentUser) return;
+    var p = getPrefs(), n = currentUser.name || currentUser.email;
+    paintAvatar($('#stu-avatar-initials'), p, n);
+    paintAvatar($('.adm-avatar'), p, n);
+  }
+  var hydratedFor = null;
+  function hydrate(){
+    if (typeof currentUser==='undefined' || !currentUser || hydratedFor===currentUser.id) return;
+    hydratedFor = currentUser.id;
+    var k = prefKey(); try { if (localStorage.getItem(k) !== null) return; } catch(e){}
+    _supabase.auth.getSession().then(function(r){
+      var u = r && r.data && r.data.session && r.data.session.user, m = (u && u.user_metadata) || {};
+      if (m.avatar_color || m.avatar_icon){ setPrefs({color:m.avatar_color||COLORS[0], icon:m.avatar_icon||'initials'}); applyAvatar(); }
+    }).catch(function(){});
+  }
+  var _uui = window.updateUserUI;
+  if (typeof _uui === 'function') window.updateUserUI = function(){
+    var r = _uui.apply(this, arguments);
+    try { applyAvatar(); hydrate(); } catch(e){}
+    return r;
+  };
+
+  /* ---------- theme ---------- */
+  function getTheme(){ try { return localStorage.getItem('ql_theme') || 'light'; } catch(e){ return 'light'; } }
+  function applyTheme(){
+    var t = getTheme();
+    if (t==='system') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', t);
+    var m = $('meta[name="theme-color"]');
+    if (!m){ m = document.createElement('meta'); m.name = 'theme-color'; document.head.appendChild(m); }
+    m.content = t==='dark' ? '#0A0F17' : '#F5F0E8';
+  }
+  try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(){ if(getTheme()==='system') applyTheme(); }); } catch(e){}
+  applyTheme();
+
+  /* ---------- the page ---------- */
+  function mount(host){
+    if (!host || typeof currentUser==='undefined' || !currentUser) return;
+    var u = currentUser, p = getPrefs(), draft = {color:p.color, icon:p.icon};
+    var roleTxt = u.role==='admin' ? 'TEACHER / ADMIN' : 'STUDENT';
+    host.innerHTML =
+    '<div class="qs">' +
+      '<section class="qs-card"><h3>PROFILE</h3><div class="qs-sub">How you appear across QuizLedge.</div>' +
+        '<div class="qs-prof"><div class="qs-avatar" data-q="prev"></div><div class="qs-meta"><div class="n" data-q="pname"></div><div class="e">'+esc(u.email)+'</div><span class="qs-badge">'+roleTxt+'</span></div></div>' +
+        '<div class="qs-field"><label>Display name</label><input class="qs-input" data-q="name" type="text" maxlength="60" autocomplete="name"></div>' +
+        '<div class="qs-field"><span class="qs-lbl">Avatar colour</span><div class="qs-swatches" data-q="colors"></div></div>' +
+        '<div class="qs-field"><span class="qs-lbl">Avatar style</span><div class="qs-icons" data-q="icons"></div></div>' +
+        '<button class="qs-btn" type="button" data-q="save">SAVE PROFILE</button><div class="qs-msg" data-q="pmsg" role="status"></div>' +
+      '</section>' +
+      '<section class="qs-card"><h3>APPEARANCE</h3><div class="qs-sub">Choose a light or dark look. “Auto” follows your phone or computer.</div>' +
+        '<div class="qs-seg" data-q="theme" role="group" aria-label="Theme">' +
+          '<button type="button" data-t="light" aria-pressed="false">LIGHT</button>' +
+          '<button type="button" data-t="dark" aria-pressed="false">DARK</button>' +
+          '<button type="button" data-t="system" aria-pressed="false">AUTO</button>' +
+        '</div>' +
+      '</section>' +
+      '<section class="qs-card"><h3>PASSWORD</h3><div class="qs-sub">Use at least 8 characters with 1 uppercase letter and 1 number.</div>' +
+        '<div class="qs-field"><label>Current password</label><div class="qs-pw"><input class="qs-input" data-q="cur" type="password" autocomplete="current-password"><button type="button" class="qs-eye" data-eye="cur">SHOW</button></div></div>' +
+        '<div class="qs-field"><label>New password</label><div class="qs-pw"><input class="qs-input" data-q="new" type="password" autocomplete="new-password"><button type="button" class="qs-eye" data-eye="new">SHOW</button></div></div>' +
+        '<div class="qs-field"><label>Confirm new password</label><div class="qs-pw"><input class="qs-input" data-q="conf" type="password" autocomplete="new-password"><button type="button" class="qs-eye" data-eye="conf">SHOW</button></div></div>' +
+        '<button class="qs-btn" type="button" data-q="pw">UPDATE PASSWORD</button><div class="qs-msg" data-q="wmsg" role="status"></div>' +
+      '</section>' +
+      '<section class="qs-card"><h3>SESSION</h3><div class="qs-sub">Sign out of QuizLedge on this device.</div>' +
+        '<button class="qs-btn danger" type="button" data-q="logout">LOG OUT</button>' +
+      '</section>' +
+    '</div>';
+    var q = function(n){ return host.querySelector('[data-q="'+n+'"]'); };
+    q('name').value = u.name || '';
+    q('pname').textContent = u.name || u.email;
+
+    function renderPreview(){
+      var nm = q('name').value.trim() || u.name || u.email;
+      paintAvatar(q('prev'), draft, nm);
+      host.querySelectorAll('[data-c]').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.c===draft.color)); });
+      host.querySelectorAll('[data-i]').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.i===draft.icon)); });
+    }
+    q('colors').innerHTML = COLORS.map(function(c){ return '<button type="button" class="qs-swatch" data-c="'+c+'" style="background:'+c+'" aria-label="Colour '+c+'"></button>'; }).join('');
+    q('icons').innerHTML = '<button type="button" class="qs-icon" data-i="initials" aria-label="Initials">Aa</button>' +
+      Object.keys(ICONS).map(function(k){ return '<button type="button" class="qs-icon" data-i="'+k+'" aria-label="'+k+'">'+icon(k,'currentColor')+'</button>'; }).join('');
+    q('colors').addEventListener('click', function(e){ var b = e.target.closest('[data-c]'); if(b){ draft.color = b.dataset.c; renderPreview(); } });
+    q('icons').addEventListener('click', function(e){ var b = e.target.closest('[data-i]'); if(b){ draft.icon = b.dataset.i; renderPreview(); } });
+    q('name').addEventListener('input', renderPreview);
+    renderPreview();
+
+    function msg(el, kind, text){ el.className = 'qs-msg' + (kind ? ' '+kind : ''); el.textContent = text || ''; }
+
+    q('save').addEventListener('click', async function(){
+      var btn = q('save'), box = q('pmsg');
+      var name = q('name').value.trim().replace(/\s+/g,' ');
+      if (name.length < 2){ msg(box,'err','Please enter a name (at least 2 characters).'); return; }
+      btn.disabled = true; msg(box,'', 'Saving...');
+      try {
+        if (name !== (u.name||'')){
+          var r = await _supabase.from('profiles').update({name:name}).eq('id', u.id).select();
+          if (r.error || !r.data || !r.data.length){
+            msg(box,'err', "Couldn't update your name" + (r.error ? ': '+r.error.message : ' (not permitted).'));
+            btn.disabled = false; return;
+          }
+          currentUser.name = name;
+        }
+        setPrefs({color:draft.color, icon:draft.icon});
+        try { await _supabase.auth.updateUser({data:{name:name, avatar_color:draft.color, avatar_icon:draft.icon}}); } catch(e){}
+        updateUserUI();
+        q('pname').textContent = name;
+        msg(box,'ok','Profile saved.');
+      } catch(e){
+        msg(box,'err','Something went wrong: ' + (e && e.message ? e.message : e));
+      }
+      btn.disabled = false;
+    });
+
+    function syncTheme(){ host.querySelectorAll('[data-t]').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.t===getTheme())); }); }
+    q('theme').addEventListener('click', function(e){
+      var b = e.target.closest('[data-t]'); if(!b) return;
+      try { localStorage.setItem('ql_theme', b.dataset.t); } catch(x){}
+      applyTheme(); syncTheme();
+    });
+    syncTheme();
+
+    host.querySelectorAll('[data-eye]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var inp = q(b.dataset.eye), show = inp.type==='password';
+        inp.type = show ? 'text' : 'password'; b.textContent = show ? 'HIDE' : 'SHOW';
+      });
+    });
+    q('pw').addEventListener('click', async function(){
+      var btn = q('pw'), box = q('wmsg');
+      var cur = q('cur').value, nw = q('new').value, cf = q('conf').value;
+      if (!cur){ msg(box,'err','Enter your current password.'); return; }
+      if (nw.length < 8){ msg(box,'err','New password must be at least 8 characters.'); return; }
+      if (!/[A-Z]/.test(nw)){ msg(box,'err','New password needs at least one uppercase letter.'); return; }
+      if (!/[0-9]/.test(nw)){ msg(box,'err','New password needs at least one number.'); return; }
+      if (nw !== cf){ msg(box,'err','New passwords do not match.'); return; }
+      if (nw === cur){ msg(box,'err','New password must be different from the current one.'); return; }
+      btn.disabled = true; msg(box,'','Updating password...');
+      try {
+        var chk = await _supabase.auth.signInWithPassword({email:u.email, password:cur});
+        if (chk.error){ msg(box,'err','Current password is incorrect.'); btn.disabled = false; return; }
+        var r = await _supabase.auth.updateUser({password:nw});
+        if (r.error){ msg(box,'err','Could not update password: ' + r.error.message); }
+        else { q('cur').value = q('new').value = q('conf').value = ''; msg(box,'ok','Password updated. Use it next time you log in.'); }
+      } catch(e){
+        msg(box,'err','Something went wrong: ' + (e && e.message ? e.message : e));
+      }
+      btn.disabled = false;
+    });
+
+    q('logout').addEventListener('click', function(){ if (typeof confirmLogout==='function') confirmLogout(); });
+  }
+
+  /* ---------- hook into the app's view switching ---------- */
+  try { if (typeof stuTitles==='object') stuTitles.settings = 'SETTINGS'; } catch(e){}
+  function hook(name, view, getHost){
+    var fn = window[name]; if (typeof fn !== 'function') return;
+    window[name] = function(v){
+      var r = fn.apply(this, arguments);
+      if (v === 'settings'){ try { mount(getHost()); } catch(e){ console.error('settings:', e); } }
+      return r;
+    };
+  }
+  hook('switchStuView', 'settings', function(){ return $('#stu-settings .qs-host'); });
+  hook('switchAdmView', 'settings', function(){ return $('#adm-settings .adm-two-col > div:first-child'); });
 })();
 </script>
 </body>
