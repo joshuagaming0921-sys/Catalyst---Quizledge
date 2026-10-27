@@ -3384,6 +3384,7 @@ body {
 ============================================================ */
 .m-only{display:none}
 .m-menu-btn{display:none}
+.m-logout-btn{display:none}
 @media (max-width:820px){
 :root{--m-bar:62px;--m-top:54px;--m-safe-b:env(safe-area-inset-bottom,0px);--m-safe-t:env(safe-area-inset-top,0px)}
 html,body{height:100%;overscroll-behavior-y:none;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
@@ -3411,9 +3412,9 @@ input,select,textarea{font-size:16px!important}
 .stat-chip{flex:1;justify-content:center;padding:8px 10px!important;gap:6px!important}
 .stat-chip .chip-val{font-size:10px!important;white-space:nowrap}
 .stu-topbar,.stu-content,.stu-main>*{flex-shrink:0}
-.stu-hamburger,.m-menu-btn{display:flex!important;flex-direction:column;justify-content:space-between;width:44px;height:44px;flex:0 0 44px;margin:0!important;padding:13px 10px;background:var(--moss);border:2px solid var(--indigo);box-shadow:2px 2px 0 var(--indigo);cursor:pointer;box-sizing:border-box}
-.stu-hamburger span,.m-menu-btn span{display:block;height:3px;width:100%;background:#fff;border-radius:1px}
-.stu-hamburger:active,.m-menu-btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--indigo)}
+.stu-hamburger,.m-menu-btn{display:none!important}
+.m-logout-btn{display:flex!important;align-items:center;justify-content:center;margin-left:auto;min-height:40px;padding:0 12px;background:transparent;border:2px solid var(--indigo);color:var(--indigo);font-family:'Press Start 2P',monospace;font-size:9px;letter-spacing:.5px;cursor:pointer;flex:0 0 auto}
+.m-logout-btn:active{background:var(--indigo);color:#fff}
 .stu-content{padding:20px 16px 28px}
 .section-header{margin-bottom:14px}
 .section-title{font-size:13px!important;line-height:1.6}
@@ -3563,6 +3564,21 @@ body.m-adm .m-tabbar#m-tabs-adm .m-tab.active::before{background:var(--moss)}
 .lp-hero-right{min-height:0}
 .lp-features-grid,.lp-steps,.lp-stats-inner,.lp-roles,.lp-split{grid-template-columns:1fr!important}
 .lp-stats-inner{grid-template-columns:1fr 1fr!important}
+.lp-nav{height:auto!important;min-height:60px;align-items:center}
+.lp-nav-links{border-top:1px solid var(--cr-border);margin-top:4px;padding-top:10px!important;padding-bottom:4px!important}
+.lp-nav-link{font-size:12px!important;padding:6px 0}
+.lp-section{padding:44px 18px!important}
+.lp-divider{margin:0 18px!important}
+.lp-stats{padding:30px 18px!important}
+.lp-cta-banner{margin:0 18px 44px!important}
+.lp-footer{padding:22px 18px calc(22px + var(--m-safe-b))!important;flex-direction:column;gap:10px;text-align:center}
+.lp-step{border-right:none!important;border-bottom:2px solid var(--cr-border);padding:26px 22px!important}
+.lp-step:last-child{border-bottom:none}
+.lp-step-connector{display:none!important}
+.lp-step-title{font-size:9px!important;line-height:1.9!important}
+.lp-step-desc{font-size:14.5px!important}
+.lp-feat-body{padding:20px 18px 24px!important}
+.lp-section-title{line-height:1.5!important}
 }
 @media (max-width:360px){
 .m-tab{font-size:9px}
@@ -3570,7 +3586,15 @@ body.m-adm .m-tabbar#m-tabs-adm .m-tab.active::before{background:var(--moss)}
 .stats-row,.adm-metrics{gap:8px!important}
 }
 
+
+/* while a saved login is being restored, show a loader instead of flashing the landing page */
+html.ql-boot #page-landing{display:none!important}
+html.ql-boot body::after{content:'LOADING...';position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--parchment,#F4EFE3);color:var(--indigo,#2E4053);font-family:'Press Start 2P',monospace;font-size:11px;letter-spacing:2px;z-index:9998}
 </style>
+<script>
+/* runs before first paint: if a saved Supabase session exists, don't show the landing page */
+(function(){try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(/^sb-.*-auth-token$/.test(k)){document.documentElement.classList.add('ql-boot');setTimeout(function(){document.documentElement.classList.remove('ql-boot')},12000);break;}}}catch(e){}})();
+</script>
 </head>
 <body>
 
@@ -4906,25 +4930,44 @@ _supabase.auth.onAuthStateChange((event, session) => {
 // Supabase persists the session in localStorage automatically.
 // We only clear it on explicit logout (goToLogin).
 (async () => {
-  const { data: { session } } = await _supabase.auth.getSession();
-  if (!session || !session.user) return; // no session, stay on landing
+  const done = () => document.documentElement.classList.remove('ql-boot');
+  try {
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (!session || !session.user) return; // no session, stay on landing
 
-  const { data: profile } = await _supabase
-    .from('profiles').select('name, role').eq('id', session.user.id).single();
-  if (!profile) return;
+    // profile lookup — retry, and never fall back to the landing page just because it was slow
+    let profile = null;
+    for (let i = 0; i < 3 && !profile; i++) {
+      const r = await _supabase.from('profiles').select('name, role').eq('id', session.user.id).single();
+      profile = r.data;
+      if (!profile) await new Promise(res => setTimeout(res, 600));
+    }
+    const meta = session.user.user_metadata || {};
+    const restoredRole = detectRole(session.user.email) || (profile && profile.role) || 'student';
+    currentUser = {
+      id: session.user.id, email: session.user.email, role: restoredRole,
+      name: (profile && profile.name) || meta.name || meta.full_name || session.user.email.split('@')[0]
+    };
 
-  const restoredRole = detectRole(session.user.email) || profile.role || 'student';
-  currentUser = { id: session.user.id, email: session.user.email, name: profile.name, role: restoredRole };
+    // remember which screen you were on
+    let saved = null;
+    try { saved = JSON.parse(localStorage.getItem('ql_view') || 'null'); } catch (e) {}
+    const view = (saved && saved.role === restoredRole && saved.view && saved.view !== 'quiz-take') ? saved.view : 'dashboard';
 
-  if (restoredRole === 'admin') {
-    await loadAdminDashboard();
-    showPage('admin');
-    switchAdmView('dashboard');
-  } else {
-    await updateLoginStreak(session.user.id);
-    await loadStudentData();
-    showPage('student');
-    switchStuView('dashboard');
+    if (restoredRole === 'admin') {
+      try { await loadAdminDashboard(); } catch (e) { console.error('restore admin:', e); }
+      showPage('admin');
+      switchAdmView(document.getElementById('adm-' + view) ? view : 'dashboard');
+    } else {
+      try { await updateLoginStreak(session.user.id); } catch (e) { console.error('restore streak:', e); }
+      try { await loadStudentData(); } catch (e) { console.error('restore student:', e); }
+      showPage('student');
+      switchStuView(document.getElementById('stu-' + view) ? view : 'dashboard');
+    }
+  } catch (e) {
+    console.error('session restore failed:', e);
+  } finally {
+    done();
   }
 })();
 
@@ -7398,7 +7441,17 @@ checkPasswordCriteria();
     ['notes','Notes'],['leaderboard','Ranks'],['quests','Quests']
   ];
   var stuBadge = {quizzes:'stu-quizzes-nav-badge', quests:'stu-quests-nav-badge'};
+  function addStuLogout(){
+    var tb = $('.stu-topbar'); if(!tb || $('.m-logout-btn', tb)) return;
+    var lb = document.createElement('button');
+    lb.className = 'm-logout-btn'; lb.type = 'button'; lb.textContent = 'LOGOUT';
+    lb.onclick = function(){ if (typeof confirmLogout==='function') confirmLogout(); };
+    var title = $('.topbar-title', tb) || $('#stu-page-title', tb);
+    if (title && title.parentNode === tb) title.insertAdjacentElement('afterend', lb); else tb.appendChild(lb);
+  }
+
   function buildStu(){
+    addStuLogout();
     if ($('#m-tabs-stu')) return;
     var bar = document.createElement('nav');
     bar.className = 'm-tabbar'; bar.id = 'm-tabs-stu';
@@ -7432,14 +7485,6 @@ checkPasswordCriteria();
       '<span class="m-dot" data-src="adm-notes-nav-badge"></span><span class="m-lbl">More</span></button>';
     bar.innerHTML = html;
     $('#page-admin').insertAdjacentElement('afterend', bar);
-    var atb = $('.adm-topbar');
-    if (atb && !$('.m-menu-btn', atb)){
-      var mb = document.createElement('button');
-      mb.className = 'm-menu-btn'; mb.setAttribute('aria-label','Open menu');
-      mb.innerHTML = '<span></span><span></span><span></span>';
-      mb.onclick = function(){ admDrawer(true); };
-      atb.insertBefore(mb, atb.firstChild);
-    }
     bar.addEventListener('click', function(e){
       var b = e.target.closest('.m-tab'); if(!b) return;
       if (b.dataset.more) return admDrawer(true);
@@ -7559,6 +7604,21 @@ checkPasswordCriteria();
   if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
 
+</script>
+<script>
+(function(){
+  function wrap(name, role){
+    var fn = window[name]; if (typeof fn !== 'function') return;
+    window[name] = function(view){
+      var r = fn.apply(this, arguments);
+      try { if (view && view !== 'quiz-take') localStorage.setItem('ql_view', JSON.stringify({role: role, view: view})); } catch(e){}
+      return r;
+    };
+  }
+  wrap('switchStuView', 'student');
+  wrap('switchAdmView', 'admin');
+  try { _supabase.auth.onAuthStateChange(function(ev){ if (ev === 'SIGNED_OUT') { try { localStorage.removeItem('ql_view'); } catch(e){} } }); } catch(e){}
+})();
 </script>
 </body>
 </html>
