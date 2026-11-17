@@ -4920,9 +4920,9 @@ html.ql-boot body::after{content:'LOADING...';position:fixed;inset:0;display:fle
           <div class="adm-form-title">&#10024; Generate Quiz with AI</div>
           <div id="ai-gen-msg" style="display:none; font-family:'Lato',sans-serif; font-size:12px; padding:8px 12px; border-radius:2px; margin-bottom:8px;"></div>
           <div id="ai-drop" onclick="document.getElementById('ai-files').click()" style="border:2px dashed var(--adm-border); border-radius:8px; padding:22px; text-align:center; cursor:pointer; font-family:'Lato',sans-serif; font-size:13px; color:var(--adm-text-muted);">
-            Drop files here or click to browse<br><span style="font-size:11px;">PDF, DOCX, TXT, MD, PNG, JPG, WEBP &middot; up to 10 MB each</span>
+            Drop files here or click to browse<br><span style="font-size:11px;">PDF (with selectable text), DOCX, TXT, MD &middot; up to 10 MB each</span>
           </div>
-          <input type="file" id="ai-files" multiple accept=".pdf,.docx,.txt,.md,.png,.jpg,.jpeg,.webp" style="display:none" onchange="aiAddFiles(this.files); this.value='';">
+          <input type="file" id="ai-files" multiple accept=".pdf,.docx,.txt,.md" style="display:none" onchange="aiAddFiles(this.files); this.value='';">
           <div id="ai-file-list" style="margin-top:10px; display:flex; flex-wrap:wrap; gap:8px;"></div>
           <div class="adm-form-grid" style="margin-top:14px;">
             <div class="adm-form-group">
@@ -4947,6 +4947,10 @@ html.ql-boot body::after{content:'LOADING...';position:fixed;inset:0;display:fle
               <label class="adm-label">Focus Topic (optional)</label>
               <input class="adm-input" type="text" id="ai-topic" placeholder="e.g. Chapter 3 only, or key definitions">
             </div>
+          </div>
+          <div style="margin-top:14px; display:flex; flex-direction:column; gap:6px; font-family:'Lato',sans-serif; font-size:13px; color:var(--adm-text);">
+            <label><input type="checkbox" id="ai-auto" checked> Generate automatically as soon as I add a file</label>
+            <label><input type="checkbox" id="ai-autosave"> Also save as a draft automatically (select a classroom first)</label>
           </div>
           <div style="margin-top:14px;"><button class="btn-adm-primary" id="ai-gen-btn" onclick="aiGenerateQuiz()">Generate Questions</button></div>
           <div style="margin-top:8px; font-size:11px; color:var(--adm-text-muted); font-family:'Lato',sans-serif;">Generated questions fill the builder below so you can review and edit them before publishing.</div>
@@ -7175,12 +7179,15 @@ function aiRenderFiles() {
 }
 function aiRemoveFile(i) { aiFiles.splice(i, 1); aiRenderFiles(); }
 function aiAddFiles(list) {
+  let added = 0;
   for (const f of list) {
     if (f.size > AI_MAX_BYTES) { aiMsg(`"${f.name}" is over 10 MB.`, true); continue; }
-    if (!/\.(pdf|docx|txt|md|png|jpe?g|webp)$/i.test(f.name)) { aiMsg(`"${f.name}" is not a supported file type.`, true); continue; }
-    aiFiles.push(f);
+    if (!/\.(pdf|docx|txt|md)$/i.test(f.name)) { aiMsg(`"${f.name}" is not a supported file type.`, true); continue; }
+    aiFiles.push(f); added++;
   }
   aiRenderFiles();
+  const auto = document.getElementById('ai-auto');
+  if (added && auto && auto.checked && !window._aiBusy) aiGenerateQuiz();
 }
 (function () {
   const d = document.getElementById('ai-drop');
@@ -7197,6 +7204,26 @@ function aiToBase64(file) {
     r.onerror = () => rej(new Error('Could not read ' + file.name));
     r.readAsDataURL(file);
   });
+}
+async function aiExtractPdf(file) {
+  if (!window.pdfjsLib) {
+    await new Promise((res, rej) => {
+      const s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js';
+      s.onload = res; s.onerror = () => rej(new Error('Could not load the PDF reader.'));
+      document.head.appendChild(s);
+    });
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+  }
+  const pdf = await window.pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise;
+  let out = '';
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    out += content.items.map(it => it.str).join(' ') + '\n';
+    if (out.length > 60000) break;
+  }
+  return out;
 }
 async function aiLoadMammoth() {
   if (window.mammoth) return window.mammoth;
@@ -7228,17 +7255,17 @@ async function aiGenerateQuiz() {
     const files = [], texts = [];
     for (const f of aiFiles) {
       const ext = f.name.split('.').pop().toLowerCase();
-      if (ext === 'pdf') files.push({ mime: 'application/pdf', data: await aiToBase64(f) });
-      else if (['png', 'jpg', 'jpeg', 'webp'].includes(ext)) files.push({ mime: ext === 'jpg' ? 'image/jpeg' : 'image/' + ext, data: await aiToBase64(f) });
+      if (ext === 'pdf') texts.push({ name: f.name, text: await aiExtractPdf(f) });
       else if (ext === 'docx') {
         const m = await aiLoadMammoth();
         const r = await m.extractRawText({ arrayBuffer: await f.arrayBuffer() });
         texts.push({ name: f.name, text: r.value });
       } else texts.push({ name: f.name, text: await f.text() });
     }
+    if (texts.map(t => t.text).join('').trim().length < 50) throw new Error('No readable text found. Scanned PDFs and photos are not supported. Use a PDF with selectable text, DOCX, or TXT.');
     const { data, error } = await _supabase.functions.invoke('generate-quiz', {
       body: {
-        files, texts,
+        texts,
         count: parseInt(document.getElementById('ai-count').value) || 10,
         types,
         difficulty: document.getElementById('ai-difficulty').value,
@@ -7258,9 +7285,14 @@ async function aiGenerateQuiz() {
     qbRenumber();
     const t = document.getElementById('quiz-title-input');
     if (t && !t.value.trim() && data.title) t.value = data.title;
-    aiMsg(`Generated ${data.questions.length} question${data.questions.length === 1 ? '' : 's'}. Review them below, then publish or save as draft.`, false);
+    aiMsg(`Generated ${data.questions.length} question${data.questions.length === 1 ? '' : 's'}. Review them below, then publish or save as draft.` + (data.note ? ' ' + data.note : ''), false);
     showAdminToast('AI quiz generated. Please review before publishing.', 'success');
     list.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const auto = document.getElementById('ai-autosave');
+    if (auto && auto.checked) {
+      if (!document.getElementById('quiz-class-select').value) aiMsg(`Generated ${data.questions.length} questions. Select a classroom, then click Save as Draft.`, false);
+      else await publishQuiz('draft');
+    }
   } catch (e) {
     aiMsg('Generation failed: ' + e.message, true);
   } finally {
