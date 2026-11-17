@@ -1405,6 +1405,7 @@ body {
   gap: 10px;
 }
 
+.lb-avatar svg,.av-chip svg{width:60%;height:60%;display:block}
 .lb-avatar {
   width: 28px;
   height: 28px;
@@ -6314,6 +6315,25 @@ function closeScore() {
 /* ============================================================
    LEADERBOARD — from database
 ============================================================ */
+/* shared avatar helpers (leaderboard, class members) */
+async function fetchAvatarMap(ids) {
+  let r = await _supabase.from('profiles').select('id, name, avatar_color, avatar_icon').in('id', ids);
+  if (r.error) r = await _supabase.from('profiles').select('id, name').in('id', ids); // columns not added yet
+  const m = {}; (r.data || []).forEach(p => { m[p.id] = p; });
+  return m;
+}
+function avatarFor(id, prof, name) {
+  const isMe = currentUser && id === currentUser.id;
+  let color = prof && prof.avatar_color, icon = prof && prof.avatar_icon;
+  if (isMe && window.qlMyPrefs) { const mp = window.qlMyPrefs(); color = mp.color; icon = mp.icon; }
+  const parts = String(name || 'Student').trim().split(/\s+/);
+  const initials = escHtml(((parts[0] || 'S')[0] + (parts.length > 1 ? parts[parts.length - 1][0] : '')).toUpperCase());
+  return {
+    bg: color || (isMe ? 'var(--moss)' : 'var(--indigo)'),
+    inner: window.qlAvatarInner ? window.qlAvatarInner(icon, name) : initials
+  };
+}
+
 async function renderLeaderboard() {
   const el = document.getElementById('leaderboard-rows');
   if (!el || !currentUser) return;
@@ -6330,14 +6350,13 @@ async function renderLeaderboard() {
   }
 
   const studentIds = stats.map(s => s.student_id);
-  const { data: profiles } = await _supabase.from('profiles').select('id, name').in('id', studentIds);
-  const profileMap = {};
-  (profiles || []).forEach(p => { profileMap[p.id] = p.name; });
+  const avatarMap = await fetchAvatarMap(studentIds);
 
   // For the current user, always use live studentState values (DB may lag after XP updates)
   const rows = stats.map(s => ({
     id: s.student_id,
-    name: profileMap[s.student_id] || 'Student',
+    name: (s.student_id === currentUser.id && currentUser.name) || (avatarMap[s.student_id] && avatarMap[s.student_id].name) || 'Student',
+    av: avatarMap[s.student_id],
     xp: s.student_id === currentUser.id ? studentState.xp : (s.xp || 0),
     level: s.student_id === currentUser.id ? studentState.level : (s.level || 1)
   })).sort((a, b) => b.xp - a.xp); // re-sort after substituting live values
@@ -6355,7 +6374,7 @@ async function renderLeaderboard() {
       <div class="lb-row ${isMe ? 'me' : ''}">
         <span class="lb-rank" style="color:${rankColors[i] || 'var(--indigo)'}; font-size:${i < 3 ? '18px' : ''};">${rankDisplay}</span>
         <div class="lb-student">
-          <div class="lb-avatar" style="background:${isMe ? 'var(--moss)' : 'var(--indigo)'};">${initials}</div>
+          <div class="lb-avatar" style="background:${avatarFor(r.id, r.av, r.name).bg};">${avatarFor(r.id, r.av, r.name).inner}</div>
           <span class="lb-name">${short}${isMe ? ' <span style="font-size:10px;color:var(--moss);">(You)</span>' : ''}</span>
         </div>
         <span class="lb-score" style="text-align:center;">LVL ${r.level}</span>
@@ -7268,6 +7287,7 @@ async function renderClassDetailMembers() {
     .in('student_id', studentIds);
   const statsMap = {};
   (stats || []).forEach(s => { statsMap[s.student_id] = s; });
+  const avMap = await fetchAvatarMap(studentIds);
 
   listEl.innerHTML = enrollments.map((e, i) => {
     const profile = e.profiles;
@@ -7275,9 +7295,10 @@ async function renderClassDetailMembers() {
     const name = profile && profile.name ? profile.name : 'Student';
     const initials = escHtml(name.split(/\s+/).filter(Boolean).map(p => p[0]).join('').substring(0,2).toUpperCase());
     const isMe = e.student_id === currentUser.id;
+    const av = avatarFor(e.student_id, avMap[e.student_id], isMe && currentUser.name ? currentUser.name : name);
     return `
       <div style="display:flex;align-items:center;gap:14px;padding:12px 16px;background:#fff;border:2px solid ${isMe ? 'var(--moss)' : 'var(--indigo)'};box-shadow:2px 2px 0px ${isMe ? 'var(--moss-dark)' : 'rgba(46,64,83,0.15)'};margin-bottom:2px;">
-        <div style="width:36px;height:36px;background:${isMe ? 'var(--moss)' : 'var(--indigo)'};display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P',monospace;font-size:10px;color:#fff;flex-shrink:0;">${initials}</div>
+        <div class="av-chip" style="width:36px;height:36px;background:${av.bg};display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P',monospace;font-size:10px;color:#fff;flex-shrink:0;">${av.inner}</div>
         <div style="flex:1;">
           <div style="font-family:'Lato',sans-serif;font-size:14px;font-weight:700;color:var(--indigo);">${escHtml(name)}${isMe ? ' <span style="font-family:\'Press Start 2P\',monospace;font-size:6px;color:var(--moss);letter-spacing:1px;">YOU</span>' : ''}</div>
           <div style="font-family:'Source Code Pro',monospace;font-size:11px;color:rgba(46,64,83,0.5);">Level ${st.level || 1} &nbsp;·&nbsp; ${(st.xp || 0).toLocaleString()} XP</div>
@@ -8001,14 +8022,20 @@ checkPasswordCriteria();
     paintAvatar($('#stu-avatar-initials'), p, n);
     paintAvatar($('.adm-avatar'), p, n);
   }
+  window.qlAvatarInner = function(ic, nm){ return (ic && ic !== 'initials' && ICONS[ic]) ? icon(ic, '#fff') : esc(initialsOf(nm)); };
+  window.qlMyPrefs = getPrefs;
   var hydratedFor = null;
   function hydrate(){
     if (typeof currentUser==='undefined' || !currentUser || hydratedFor===currentUser.id) return;
     hydratedFor = currentUser.id;
-    var k = prefKey(); try { if (localStorage.getItem(k) !== null) return; } catch(e){}
-    _supabase.auth.getSession().then(function(r){
-      var u = r && r.data && r.data.session && r.data.session.user, m = (u && u.user_metadata) || {};
-      if (m.avatar_color || m.avatar_icon){ setPrefs({color:m.avatar_color||COLORS[0], icon:m.avatar_icon||'initials'}); applyAvatar(); }
+    _supabase.from('profiles').select('avatar_color, avatar_icon').eq('id', currentUser.id).maybeSingle().then(function(r){
+      var d = r && r.data;
+      if (d && (d.avatar_color || d.avatar_icon)){ setPrefs({color:d.avatar_color||COLORS[0], icon:d.avatar_icon||'initials'}); applyAvatar(); return; }
+      var k = prefKey(); try { if (localStorage.getItem(k) !== null) return; } catch(e){}
+      return _supabase.auth.getSession().then(function(r2){
+        var u = r2 && r2.data && r2.data.session && r2.data.session.user, m = (u && u.user_metadata) || {};
+        if (m.avatar_color || m.avatar_icon){ setPrefs({color:m.avatar_color||COLORS[0], icon:m.avatar_icon||'initials'}); applyAvatar(); }
+      });
     }).catch(function(){});
   }
   var _uui = window.updateUserUI;
@@ -8097,6 +8124,12 @@ checkPasswordCriteria();
           currentUser.name = name;
         }
         setPrefs({color:draft.color, icon:draft.icon});
+        var ra = await _supabase.from('profiles').update({avatar_color:draft.color, avatar_icon:draft.icon}).eq('id', u.id);
+        if (ra.error){
+          updateUserUI(); q('pname').textContent = name;
+          msg(box,'err','Saved on this device, but others cannot see your avatar yet: ' + ra.error.message);
+          btn.disabled = false; return;
+        }
         try { await _supabase.auth.updateUser({data:{name:name, avatar_color:draft.color, avatar_icon:draft.icon}}); } catch(e){}
         updateUserUI();
         q('pname').textContent = name;
