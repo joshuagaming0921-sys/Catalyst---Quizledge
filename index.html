@@ -3670,6 +3670,25 @@ html[data-theme="dark"] [class*="crystal"]{opacity:.35!important}
 /* while a saved login is being restored, show a loader instead of flashing the landing page */
 html.ql-boot #page-landing{display:none!important}
 html.ql-boot body::after{content:'LOADING...';position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--parchment,#F4EFE3);color:var(--indigo,#2E4053);font-family:'Press Start 2P',monospace;font-size:11px;letter-spacing:2px;z-index:9998}
+/* ===== RESET PASSWORD PAGE ===== */
+#page-reset{background:#F3EEDF;align-items:center;justify-content:center;position:relative;overflow-y:auto}
+#page-reset .login-container{max-width:430px}
+#page-reset .login-card{position:relative;border:3px solid var(--indigo);box-shadow:6px 6px 0 var(--indigo);border-radius:0;padding:30px 28px 24px}
+#page-reset .login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:var(--moss)}
+#page-reset .form-group input{height:48px;padding:0 14px;border-radius:0}
+#page-reset .btn-login{height:50px;border-radius:0;box-shadow:4px 4px 0 var(--moss-dark)}
+.rs-state{display:none;text-align:center}
+.rs-icon{width:64px;height:64px;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;border:2px solid var(--indigo);box-shadow:3px 3px 0 var(--moss-dark);background:#E4E8CF;color:var(--moss-dark)}
+.rs-icon.err{background:#F6D9D1;color:var(--terracotta-dark);box-shadow:3px 3px 0 var(--terracotta-dark)}
+.rs-icon svg{width:30px;height:30px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:square}
+.rs-title{font-family:'Press Start 2P',monospace;font-size:11px;line-height:1.8;color:var(--indigo);margin-bottom:12px}
+.rs-text{font-family:'Lato',sans-serif;font-size:14px;line-height:1.6;color:rgba(46,64,83,.75);margin-bottom:18px}
+.rs-spin{width:34px;height:34px;margin:0 auto 18px;border:4px solid rgba(46,64,83,.15);border-top-color:var(--moss-dark);border-radius:50%;animation:attSpin .8s linear infinite}
+.rs-state .form-group{text-align:left}
+.rs-timer{display:inline-flex;align-items:center;gap:8px;margin:0 0 18px;padding:8px 14px;border:2px dashed var(--indigo);background:#fff;font-family:'Lato',sans-serif;font-size:13px;color:var(--indigo)}
+.rs-timer b{font-family:'Press Start 2P',monospace;font-size:12px;color:var(--moss-dark);letter-spacing:1px}
+.rs-timer.low{border-color:var(--terracotta);background:#F6D9D1}
+.rs-timer.low b{color:var(--terracotta-dark)}
 </style>
 <script>
 /* runs before first paint: if a saved Supabase session exists, don't show the landing page */
@@ -3968,6 +3987,72 @@ html.ql-boot body::after{content:'LOADING...';position:fixed;inset:0;display:fle
 
 </div>
 
+
+<div id="page-reset" class="page">
+  <div class="login-container">
+    <div class="login-brand">
+      <span class="logo-text">QuizLedge</span>
+      <span class="logo-tagline">Password Recovery</span>
+    </div>
+    <div class="login-card">
+
+      <!-- 1. verifying -->
+      <div class="rs-state" id="rs-verifying">
+        <div class="rs-spin"></div>
+        <div class="rs-title">VERIFYING LINK...</div>
+        <div class="rs-text">Please wait while we check your email link.</div>
+      </div>
+
+      <!-- 2. checked -->
+      <div class="rs-state" id="rs-checked">
+        <div class="rs-icon"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></div>
+        <div class="rs-title">EMAIL VERIFIED!</div>
+        <div class="rs-text">Your email has been confirmed. Taking you to set a new password...</div>
+      </div>
+
+      <!-- 3. new password form -->
+      <div class="rs-state" id="rs-form">
+        <div class="rs-title">SET NEW PASSWORD</div>
+        <div class="rs-text">Choose a strong password you haven't used before.</div>
+        <div class="rs-timer" id="rs-timer-wrap" role="timer" aria-live="off">Link expires in <b id="rs-timer">05:00</b></div>
+        <div class="form-group">
+          <label>New Password</label>
+          <div class="pw-wrap"><input type="password" id="rs-pass" placeholder="Create a new password" autocomplete="new-password" oninput="rsCheck()"><button type="button" class="pw-eye" onclick="togglePw('rs-pass', this)" aria-label="Show password" tabindex="-1"><svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10.9 10.9 0 0 1 12 19C5 19 1 12 1 12a18.5 18.5 0 0 1 5.1-5.9"/><path d="M9.9 5.1A10.9 10.9 0 0 1 12 5c7 0 11 7 11 7a18.5 18.5 0 0 1-2.2 3.2"/><path d="M1 1l22 22"/></svg></button></div>
+          <div class="pw-panel">
+            <div class="pw-rule" id="rs-len"><span class="pw-ic"><svg viewBox="0 0 12 12"><path d="M2.5 6.5l2.5 2.5 4.5-5"/></svg></span>At least 8 characters</div>
+            <div class="pw-rule" id="rs-upper"><span class="pw-ic"><svg viewBox="0 0 12 12"><path d="M2.5 6.5l2.5 2.5 4.5-5"/></svg></span>At least 1 uppercase letter</div>
+            <div class="pw-rule" id="rs-num"><span class="pw-ic"><svg viewBox="0 0 12 12"><path d="M2.5 6.5l2.5 2.5 4.5-5"/></svg></span>At least 1 number</div>
+            <div class="pw-rule" id="rs-sym"><span class="pw-ic"><svg viewBox="0 0 12 12"><path d="M2.5 6.5l2.5 2.5 4.5-5"/></svg></span>At least 1 special character</div>
+            <div class="pw-rule" id="rs-match"><span class="pw-ic"><svg viewBox="0 0 12 12"><path d="M2.5 6.5l2.5 2.5 4.5-5"/></svg></span>Passwords match</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <div class="pw-wrap"><input type="password" id="rs-confirm" placeholder="Re-enter new password" autocomplete="new-password" oninput="rsCheck()" onkeydown="if(event.key==='Enter')submitNewPassword()"><button type="button" class="pw-eye" onclick="togglePw('rs-confirm', this)" aria-label="Show password" tabindex="-1"><svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10.9 10.9 0 0 1 12 19C5 19 1 12 1 12a18.5 18.5 0 0 1 5.1-5.9"/><path d="M9.9 5.1A10.9 10.9 0 0 1 12 5c7 0 11 7 11 7a18.5 18.5 0 0 1-2.2 3.2"/><path d="M1 1l22 22"/></svg></button></div>
+        </div>
+        <div id="rs-error-msg" style="display:none;text-align:left;background:rgba(220,38,38,0.08);border:2px solid #b91c1c;color:#b91c1c;font-family:'Lato',sans-serif;font-size:12px;font-weight:700;padding:10px 12px;margin-top:4px;line-height:1.4;"></div>
+        <button type="button" class="btn-login" id="rs-submit" onclick="submitNewPassword()">UPDATE PASSWORD &gt;&gt;</button>
+      </div>
+
+      <!-- 4. done -->
+      <div class="rs-state" id="rs-done">
+        <div class="rs-icon"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></div>
+        <div class="rs-title">PASSWORD UPDATED!</div>
+        <div class="rs-text">Your password was changed successfully. You can now log in with your new password.</div>
+        <button type="button" class="btn-login" onclick="rsGoLogin()">GO TO LOGIN &gt;&gt;</button>
+      </div>
+
+      <!-- 5. error / expired -->
+      <div class="rs-state" id="rs-error">
+        <div class="rs-icon err"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+        <div class="rs-title">LINK NOT VALID</div>
+        <div class="rs-text" id="rs-error-text">This reset link is invalid or has expired.</div>
+        <button type="button" class="btn-login" onclick="rsRequestNew()">REQUEST A NEW LINK &gt;&gt;</button>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <!-- ============================================================
      PAGE: LOGIN
@@ -5017,12 +5102,151 @@ let quizSubmitting = false;
 /* ============================================================
    AUTH STATE CHANGE — handle password reset links
 ============================================================ */
-_supabase.auth.onAuthStateChange((event, session) => {
-  if (event === 'PASSWORD_RECOVERY') {
-    document.getElementById('reset-password-overlay').style.display = 'flex';
-    showPage('login');
+/* ============================================================
+   PASSWORD RECOVERY FLOW
+   email link -> verify (token_hash) -> "verified" -> set new password -> login
+============================================================ */
+const RESET_FLOW = (() => {
+  const q = new URLSearchParams(location.search);
+  const h = new URLSearchParams(location.hash.replace(/^#/, ''));
+  const type = q.get('type') || h.get('type');
+  const tokenHash = q.get('token_hash');
+  const err = h.get('error_description') || q.get('error_description');
+  const code = h.get('error_code') || q.get('error_code');
+  return { type, tokenHash, err, code,
+           active: (type === 'recovery') || !!(h.get('error') || q.get('error')) };
+})();
+
+function showResetPage(state, msg) {
+  showPage('reset');
+  document.querySelectorAll('.rs-state').forEach(e => e.style.display = 'none');
+  const el = document.getElementById('rs-' + state);
+  if (el) el.style.display = 'block';
+  if (state === 'error' && msg) document.getElementById('rs-error-text').textContent = msg;
+  if (state === 'form') rsStartTimer(); else rsStopTimer();
+}
+
+/* 5-minute window to finish setting the new password */
+const RS_LIMIT_SECS = 5 * 60;
+let _rsTimer = null, _rsEndsAt = 0;
+function rsStopTimer() { if (_rsTimer) { clearInterval(_rsTimer); _rsTimer = null; } }
+function rsStartTimer() {
+  if (_rsTimer) return;
+  _rsEndsAt = Date.now() + RS_LIMIT_SECS * 1000;
+  const tick = async () => {
+    const left = Math.max(0, Math.round((_rsEndsAt - Date.now()) / 1000));
+    const el = document.getElementById('rs-timer'), wrap = document.getElementById('rs-timer-wrap');
+    if (el) el.textContent = String(Math.floor(left / 60)).padStart(2, '0') + ':' + String(left % 60).padStart(2, '0');
+    if (wrap) wrap.classList.toggle('low', left <= 60);
+    if (left === 0) {
+      rsStopTimer();
+      document.getElementById('rs-pass').value = '';
+      document.getElementById('rs-confirm').value = '';
+      try { await _supabase.auth.signOut(); } catch (e) {}
+      currentUser = null;
+      showResetPage('error', 'Your reset link has expired (5 minutes). Please request a new one.');
+    }
+  };
+  tick();
+  _rsTimer = setInterval(tick, 1000);
+}
+
+function rsShowError(msg) {
+  const el = document.getElementById('rs-error-msg');
+  if (!el) return;
+  el.textContent = msg || '';
+  el.style.display = msg ? 'block' : 'none';
+}
+
+function rsCheck() {
+  const p = document.getElementById('rs-pass').value || '';
+  const c = document.getElementById('rs-confirm').value || '';
+  const rules = {
+    'rs-len': p.length >= 8,
+    'rs-upper': /[A-Z]/.test(p),
+    'rs-num': /[0-9]/.test(p),
+    'rs-sym': PW_SYM_RE.test(p),
+    'rs-match': p.length > 0 && p === c
+  };
+  Object.keys(rules).forEach(id => document.getElementById(id).classList.toggle('ok', rules[id]));
+  return Object.values(rules).every(Boolean);
+}
+
+async function initPasswordReset() {
+  if (!RESET_FLOW.active) return;
+  const cleanUrl = () => history.replaceState(null, '', location.pathname);
+
+  // Link already expired/used (Supabase put an error in the URL)
+  if (RESET_FLOW.err || RESET_FLOW.code) {
+    cleanUrl();
+    const expired = /expired|invalid|otp/i.test((RESET_FLOW.err || '') + (RESET_FLOW.code || ''));
+    showResetPage('error', expired
+      ? 'This reset link has expired or was already used. Please request a new one.'
+      : (RESET_FLOW.err || 'Something went wrong with this link.'));
+    return;
+  }
+
+  showResetPage('verifying');
+
+  if (RESET_FLOW.tokenHash) {
+    const { error } = await _supabase.auth.verifyOtp({ token_hash: RESET_FLOW.tokenHash, type: 'recovery' });
+    cleanUrl();
+    if (error) { showResetPage('error', 'This reset link has expired or was already used. Please request a new one.'); return; }
+    showResetPage('checked');
+    setTimeout(() => showResetPage('form'), 1600);
+  } else {
+    // legacy #access_token link: wait for Supabase to fire PASSWORD_RECOVERY
+    setTimeout(() => {
+      const v = document.getElementById('rs-verifying');
+      if (v && v.style.display === 'block') showResetPage('error', 'This reset link is not valid. Please request a new one.');
+    }, 6000);
+  }
+}
+
+_supabase.auth.onAuthStateChange((event) => {
+  if (event === 'PASSWORD_RECOVERY' && !RESET_FLOW.tokenHash) {
+    history.replaceState(null, '', location.pathname);
+    showResetPage('checked');
+    setTimeout(() => showResetPage('form'), 1600);
   }
 });
+
+async function submitNewPassword() {
+  if (window._rsBusy) return;
+  const p = document.getElementById('rs-pass').value || '';
+  const c = document.getElementById('rs-confirm').value || '';
+  if (p.length < 8) return rsShowError('Password must be at least 8 characters.');
+  if (!/[A-Z]/.test(p)) return rsShowError('Password must contain at least one uppercase letter.');
+  if (!/[0-9]/.test(p)) return rsShowError('Password must contain at least one number.');
+  if (!PW_SYM_RE.test(p)) return rsShowError('Password must contain at least one special character.');
+  if (p !== c) return rsShowError('Passwords do not match.');
+  rsShowError('');
+  window._rsBusy = true;
+  const btn = document.getElementById('rs-submit'), old = btn.innerHTML;
+  btn.disabled = true; btn.textContent = 'Updating...';
+  const { error } = await _supabase.auth.updateUser({ password: p });
+  window._rsBusy = false; btn.disabled = false; btn.innerHTML = old;
+  if (error) {
+    rsShowError(/different|same/i.test(error.message)
+      ? 'New password must be different from your old password.'
+      : 'Could not update password: ' + error.message);
+    return;
+  }
+  document.getElementById('rs-pass').value = '';
+  document.getElementById('rs-confirm').value = '';
+  await _supabase.auth.signOut();
+  currentUser = null;
+  showResetPage('done');
+}
+
+function rsGoLogin() {
+  showPage('login');
+  switchLoginTab('login', document.querySelector('.login-tab'));
+}
+function rsRequestNew() {
+  showPage('login');
+  switchLoginTab('forgot', null);
+}
 
 // On every page load, check if a valid Supabase session exists and restore it.
 // Supabase persists the session in localStorage automatically.
@@ -5030,7 +5254,7 @@ _supabase.auth.onAuthStateChange((event, session) => {
 (async () => {
   const done = () => document.documentElement.classList.remove('ql-boot');
   try {
-    if (/type=recovery/.test(location.hash + location.search)) return; // reset-link: let PASSWORD_RECOVERY show the reset form
+    if (RESET_FLOW.active) { initPasswordReset(); return; } // password-reset link: show the reset page
     const { data: { session } } = await _supabase.auth.getSession();
     if (!session || !session.user) return; // no session, stay on landing
 
@@ -5409,12 +5633,12 @@ async function handleForgotPassword() {
   if (!email) { showForgotError('Please enter your email address.'); return; }
   showForgotError('');
   showForgotSuccess('Sending reset link...');
-  const { error } = await _supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.href });
+  const { error } = await _supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + window.location.pathname });
   if (error) {
     showForgotSuccess('');
     showForgotError('Failed to send reset email: ' + error.message);
   } else {
-    showForgotSuccess('Reset link sent! Check your inbox (and spam folder).');
+    showForgotSuccess('Reset link sent! Check your inbox (and spam folder). The link expires in 5 minutes.');
     document.getElementById('forgot-email').value = '';
   }
 }
