@@ -3761,6 +3761,20 @@ html.ql-boot body::after{content:'LOADING...';position:fixed;inset:0;display:fle
   .stu-nav-link{margin:2px 8px}
 }
 @media (prefers-reduced-motion:reduce){.pixel-card,.btn-pixel,.btn-adm-primary{transition:none}}
+
+/* ---- Admin: clearer card edges + hover depth ---- */
+.metric-card,.adm-table-card,.adm-form-card,.question-builder{background:#fff!important;border:1.5px solid rgba(46,64,83,.3)!important;box-shadow:0 1px 3px rgba(46,64,83,.1)!important;transition:box-shadow .18s,border-color .18s,transform .18s}
+.metric-card:hover,.adm-table-card:hover,.adm-form-card:hover,.question-builder:hover{border-color:rgba(46,64,83,.55)!important;box-shadow:0 8px 24px rgba(46,64,83,.18)!important}
+.metric-card:hover{transform:translateY(-2px)}
+.adm-table-header{background:#F4F3E4;border-bottom:1.5px solid rgba(46,64,83,.3)}
+.adm-table th{border-bottom:1.5px solid rgba(46,64,83,.22)}
+.adm-table tbody tr{transition:background .12s,box-shadow .12s}
+.adm-table tbody tr:hover td{background:#F3F5EA}
+.adm-table td{border-bottom:1px solid rgba(46,64,83,.12)}
+@media (max-width:600px){
+  .adm-table tr,.adm-table-header{background:#fff!important;border:1.5px solid rgba(46,64,83,.3)!important;box-shadow:0 1px 3px rgba(46,64,83,.1)!important}
+  .adm-table tr:active{box-shadow:0 6px 18px rgba(46,64,83,.18)!important}
+}
 </style>
 <script>
 /* runs before first paint: if a saved Supabase session exists, don't show the landing page */
