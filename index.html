@@ -3258,83 +3258,90 @@ body {
 .attach-tag{display:inline-block;margin-left:6px;font-family:'Press Start 2P',monospace;font-size:6px;color:var(--moss-dark);border:1px solid currentColor;padding:2px 5px}
 #note-view-modal .modal-box{max-width:min(760px,95vw)!important}
 /* ============================================================
-   LOGIN REDESIGN — open layout, no card box
+   LOGIN / SIGNUP — pixel look, matches the rest of the app
 ============================================================ */
-#page-login .login-container{max-width:420px}
-#page-login .login-card{background:transparent;border:none;box-shadow:none;border-radius:0;padding:0}
-#page-login .login-tabs{display:flex;gap:4px;padding:4px;margin-bottom:26px;border:none;background:rgba(46,64,83,.08);border-radius:999px}
-#page-login .login-tab{flex:1;padding:13px 10px;border-radius:999px;opacity:.55;background:transparent;border:none;margin:0;font-size:8px;transition:all .25s}
-#page-login .login-tab:hover{opacity:.85}
-#page-login .login-tab.active,#page-login .login-tab.active:hover{opacity:1;background:#fff;color:var(--indigo);border:none;margin:0;box-shadow:0 4px 14px -4px rgba(46,64,83,.35)}
-#page-login .form-group{margin-bottom:16px}
-#page-login .form-group label,#reset-password-overlay .form-group label{opacity:.75;padding-left:4px;margin-bottom:9px}
-#page-login .form-group input,#reset-password-overlay .form-group input{height:50px;padding:0 16px;background:rgba(255,255,255,.78);border:1.5px solid rgba(46,64,83,.16);border-radius:14px;box-shadow:none;font-size:14px}
-#page-login .form-group input:focus,#reset-password-overlay .form-group input:focus{border-color:var(--moss-dark);background:#fff;box-shadow:0 0 0 4px rgba(138,154,91,.22)}
-#page-login .form-group input::placeholder,#reset-password-overlay .form-group input::placeholder{color:rgba(46,64,83,.38)}
-#page-login .email-field{border:1.5px solid rgba(46,64,83,.16);border-radius:14px;background:rgba(255,255,255,.78);box-shadow:none}
-#page-login .email-field:focus-within{border-color:var(--moss-dark);background:#fff;box-shadow:0 0 0 4px rgba(138,154,91,.22)}
-#page-login .form-group .email-field input,#page-login .form-group .email-field input:focus{height:48px;border:none;background:transparent;box-shadow:none;border-radius:0}
-#page-login .email-domain{border-left:none;background:rgba(46,64,83,.06);margin:6px;border-radius:10px;padding:0 12px;font-size:12px}
-#login-error-msg,#signup-error-msg,#signup-success,#forgot-error-msg,#forgot-success-msg,#reset-error-msg,#reset-success-msg{border-radius:12px !important;padding:11px 14px !important}
-#page-login .btn-login,#reset-password-overlay .btn-login{position:relative;overflow:hidden;height:52px;padding:0 16px;margin-top:14px;border:none;border-radius:14px;background:linear-gradient(180deg,var(--indigo-light),var(--indigo));box-shadow:0 10px 22px -8px rgba(46,64,83,.65),inset 0 1px 0 rgba(255,255,255,.12);font-size:10px;letter-spacing:1.5px;text-transform:none;transition:transform .15s,box-shadow .2s,opacity .2s}
-#page-login .btn-login::after,#reset-password-overlay .btn-login::after{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.2) 50%,transparent 70%);transform:translateX(-120%);transition:transform .6s}
-#page-login .btn-login:hover,#reset-password-overlay .btn-login:hover{transform:translateY(-2px);box-shadow:0 14px 26px -8px rgba(46,64,83,.7),inset 0 1px 0 rgba(255,255,255,.12)}
-#page-login .btn-login:hover::after,#reset-password-overlay .btn-login:hover::after{transform:translateX(120%)}
-#page-login .btn-login:active{transform:translateY(1px);box-shadow:0 5px 12px -6px rgba(46,64,83,.7)}
+#page-login{background:#F3EEDF}
+#page-login::before{background:none}
+#page-login::after{opacity:.06}
+#page-login .lp-crystal-bg{display:none}
+#page-login .login-container{max-width:430px}
+#page-login .logo-mark{filter:none}
+#page-login .login-brand .logo-text{text-shadow:3px 3px 0 rgba(138,154,91,.55)}
+#page-login .login-brand .logo-tagline{opacity:1;letter-spacing:2px;color:var(--moss-dark)}
+#page-login .login-card{position:relative;background:#FAFAF2;border:3px solid var(--indigo);box-shadow:6px 6px 0 var(--indigo);border-radius:0;padding:30px 28px 24px}
+#page-login .login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:var(--moss)}
+#page-login .login-tabs{display:flex;gap:10px;padding:0;margin-bottom:26px;border:none;background:none;border-radius:0}
+#page-login .login-tab{flex:1;padding:12px 8px;border-radius:0;opacity:1;background:#fff;color:var(--indigo);border:2px solid var(--indigo);margin:0;font-size:8px;box-shadow:2px 2px 0 rgba(46,64,83,.25);transition:transform .1s,box-shadow .1s}
+#page-login .login-tab:hover{opacity:1;transform:translate(-1px,-1px);box-shadow:3px 3px 0 rgba(46,64,83,.25)}
+#page-login .login-tab.active,#page-login .login-tab.active:hover{opacity:1;background:var(--indigo);color:#fff;border:2px solid var(--indigo);margin:0;transform:none;box-shadow:3px 3px 0 var(--moss-dark)}
+#page-login .form-group{margin-bottom:18px}
+#page-login .form-group label,#reset-password-overlay .form-group label{opacity:1;padding-left:0;margin-bottom:8px}
+#page-login .form-group input,#reset-password-overlay .form-group input{height:48px;padding:0 14px;background:#fff;border:2px solid var(--indigo);border-radius:0;box-shadow:2px 2px 0 rgba(46,64,83,.15);font-size:14px}
+#page-login .form-group input:focus,#reset-password-overlay .form-group input:focus{border-color:var(--moss-dark);background:#fff;box-shadow:2px 2px 0 var(--moss)}
+#page-login .form-group input::placeholder,#reset-password-overlay .form-group input::placeholder{color:rgba(46,64,83,.35)}
+#page-login .email-field{border:2px solid var(--indigo);border-radius:0;background:#fff;box-shadow:2px 2px 0 rgba(46,64,83,.15)}
+#page-login .email-field:focus-within{border-color:var(--moss-dark);background:#fff;box-shadow:2px 2px 0 var(--moss)}
+#page-login .form-group .email-field input,#page-login .form-group .email-field input:focus{height:44px;border:none;background:transparent;box-shadow:none;border-radius:0}
+#page-login .email-domain{border-left:2px solid var(--indigo);background:var(--parchment-dark);margin:0;border-radius:0;padding:0 12px;font-size:12px}
+#login-error-msg,#signup-error-msg,#signup-success,#forgot-error-msg,#forgot-success-msg,#reset-error-msg,#reset-success-msg{border-radius:0 !important;border-width:2px !important;border-color:currentColor !important;padding:10px 12px !important;font-weight:700}
+#page-login .btn-login,#reset-password-overlay .btn-login{height:50px;padding:0 16px;margin-top:14px;border:2px solid var(--indigo);border-radius:0;background:var(--indigo);box-shadow:4px 4px 0 var(--moss-dark);font-size:9px;letter-spacing:1px;text-transform:uppercase;transition:transform .1s,box-shadow .1s,opacity .2s}
+#page-login .btn-login:hover,#reset-password-overlay .btn-login:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--moss-dark)}
+#page-login .btn-login:active,#reset-password-overlay .btn-login:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--moss-dark)}
 #page-login .btn-login:disabled{opacity:.7;cursor:progress;transform:none}
 /* show / hide password */
 .pw-wrap{position:relative}
 .pw-wrap input{padding-right:50px !important}
-.pw-eye{position:absolute;right:8px;top:7px;width:36px;height:36px;border:none;background:none;border-radius:10px;cursor:pointer;color:rgba(46,64,83,.45);display:flex;align-items:center;justify-content:center;transition:color .15s,background .15s}
-.pw-eye:hover{color:var(--indigo);background:rgba(46,64,83,.07)}
+.pw-eye{position:absolute;right:4px;top:4px;width:40px;height:40px;border:none;background:none;border-radius:0;cursor:pointer;color:rgba(46,64,83,.55);display:flex;align-items:center;justify-content:center}
+.pw-eye:hover{color:var(--indigo);background:var(--parchment-dark)}
 .pw-eye svg{width:18px;height:18px}
 .pw-eye .eye-off{display:none}
 .pw-eye.on .eye-on{display:none}
 .pw-eye.on .eye-off{display:block}
 /* password criteria checker */
-.pw-panel{position:relative;overflow:hidden;margin-top:12px;padding:14px 16px 10px;border-radius:14px;background:rgba(255,255,255,.55);border:1.5px solid rgba(46,64,83,.1)}
-.pw-panel::after{content:'';position:absolute;top:0;bottom:0;left:-50%;width:40%;background:linear-gradient(90deg,transparent,rgba(138,154,91,.28),transparent);pointer-events:none;opacity:0}
-.pw-panel.scan::after{animation:pwScan .7s ease-out}
-@keyframes pwScan{0%{left:-50%;opacity:1}100%{left:115%;opacity:1}}
-.pw-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-family:'Press Start 2P',monospace;font-size:6px;letter-spacing:1px;color:rgba(46,64,83,.55)}
-.pw-head b{font-weight:400;transition:color .3s}
-.pw-meter{display:flex;gap:5px;margin-bottom:10px}
-.pw-meter i{flex:1;height:5px;border-radius:99px;background:rgba(46,64,83,.1);transition:background .35s,transform .35s}
-.pw-meter i.on{background:var(--pw-c,var(--moss));transform:scaleY(1.3)}
-.pw-rule{display:flex;align-items:center;gap:10px;padding:4px 0;font-family:'Lato',sans-serif;font-size:12px;color:rgba(46,64,83,.55);transition:color .3s}
-.pw-ic{flex:none;width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#fff;border:1.5px solid rgba(46,64,83,.25);transition:background .3s,border-color .3s}
-.pw-ic svg{width:10px;height:10px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:14;stroke-dashoffset:14;transition:stroke-dashoffset .35s .1s}
+.pw-panel{position:relative;margin-top:12px;padding:14px 14px 10px;border-radius:0;background:#fff;border:2px dashed rgba(46,64,83,.4)}
+.pw-panel::after{display:none}
+.pw-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-family:'Press Start 2P',monospace;font-size:6px;letter-spacing:1px;color:rgba(46,64,83,.6)}
+.pw-head b{font-weight:400}
+.pw-meter{display:flex;gap:4px;margin-bottom:10px}
+.pw-meter i{flex:1;height:8px;border-radius:0;background:rgba(46,64,83,.12);border:1px solid rgba(46,64,83,.25)}
+.pw-meter i.on{background:var(--pw-c,var(--moss));border-color:var(--indigo)}
+.pw-rule{display:flex;align-items:center;gap:10px;padding:4px 0;font-family:'Lato',sans-serif;font-size:12px;color:rgba(46,64,83,.6)}
+.pw-ic{flex:none;width:16px;height:16px;border-radius:0;display:inline-flex;align-items:center;justify-content:center;background:#fff;border:2px solid rgba(46,64,83,.45)}
+.pw-ic svg{width:10px;height:10px;fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:square;stroke-linejoin:miter;opacity:0}
 .pw-rule.ok{color:var(--moss-dark);font-weight:700}
-.pw-rule.ok .pw-ic{background:var(--moss);border-color:var(--moss);animation:pwPop .45s cubic-bezier(.34,1.56,.64,1)}
-.pw-rule.ok .pw-ic svg{stroke-dashoffset:0}
-.pw-rule.lost .pw-ic{animation:pwShake .35s}
-@keyframes pwPop{0%{transform:scale(.6)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
-@keyframes pwShake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+.pw-rule.ok .pw-ic{background:var(--moss);border-color:var(--indigo)}
+.pw-rule.ok .pw-ic svg{opacity:1}
+@media (max-width:420px){#page-login .login-card{padding:26px 18px 20px;box-shadow:5px 5px 0 var(--indigo)}}
+@media (max-width:360px){#page-login .email-domain{padding:0 8px;font-size:10px}#page-login .login-card{padding:24px 14px 18px}}
 
 /* ============================================================
    CONFIRMATION DIALOG
 ============================================================ */
-#cf-overlay{position:fixed;inset:0;z-index:10050;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(30,42,56,.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
-#cf-overlay.open{display:flex;animation:cfFade .2s ease}
+#cf-overlay{position:fixed;inset:0;z-index:10050;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(46,64,83,.82)}
+#cf-overlay.open{display:flex;animation:cfFade .15s ease}
 @keyframes cfFade{from{opacity:0}to{opacity:1}}
-.cf-box{width:100%;max-width:400px;padding:30px 28px 24px;text-align:center;background:#FBFBF4;border-radius:20px;box-shadow:0 30px 70px -20px rgba(20,30,45,.55),0 0 0 1px rgba(46,64,83,.08);animation:cfPop .32s cubic-bezier(.34,1.56,.64,1)}
-@keyframes cfPop{from{opacity:0;transform:translateY(14px) scale(.92)}to{opacity:1;transform:none}}
-.cf-box[data-tone=primary]{--cf:var(--indigo);--cf-soft:rgba(46,64,83,.1)}
-.cf-box[data-tone=danger]{--cf:var(--terracotta-dark);--cf-soft:rgba(226,114,91,.16)}
-.cf-box[data-tone=warning]{--cf:#B8860B;--cf-soft:rgba(184,134,11,.14)}
-.cf-box[data-tone=success]{--cf:var(--moss-dark);--cf-soft:rgba(138,154,91,.2)}
-.cf-icon{width:60px;height:60px;margin:0 auto 18px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--cf-soft);color:var(--cf)}
-.cf-icon svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.cf-title{font-family:'Press Start 2P',monospace;font-size:11px;line-height:1.7;color:var(--indigo);margin-bottom:12px}
-.cf-msg{font-family:'Lato',sans-serif;font-size:14px;line-height:1.6;color:rgba(46,64,83,.75);white-space:pre-line;margin-bottom:24px}
-.cf-actions{display:flex;gap:10px}
-.cf-btn{flex:1;height:46px;border-radius:12px;border:1.5px solid transparent;font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:transform .12s,box-shadow .2s,background .2s}
-.cf-btn.ghost{background:transparent;border-color:rgba(46,64,83,.25);color:var(--indigo)}
-.cf-btn.ghost:hover{background:rgba(46,64,83,.06)}
-.cf-btn.solid{background:var(--cf);color:#fff;box-shadow:0 8px 18px -8px var(--cf)}
-.cf-btn.solid:hover{transform:translateY(-1px)}
-.cf-btn:active{transform:translateY(1px)}
-.cf-btn:focus-visible{outline:3px solid rgba(138,154,91,.55);outline-offset:2px}
+@keyframes cfPop{from{opacity:0;transform:scale(.82)}to{opacity:1;transform:none}}
+.cf-box{position:relative;width:100%;max-width:400px;padding:34px 28px 24px;text-align:center;background:var(--parchment);border:3px solid var(--indigo);border-radius:0;box-shadow:6px 6px 0 var(--indigo);animation:cfPop .3s cubic-bezier(.34,1.56,.64,1)}
+.cf-box::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:var(--cf)}
+.cf-box[data-tone=primary]{--cf:var(--moss);--cf-dark:var(--moss-dark);--cf-soft:#E4E8CF}
+.cf-box[data-tone=danger]{--cf:var(--terracotta);--cf-dark:var(--terracotta-dark);--cf-soft:#F6D9D1}
+.cf-box[data-tone=warning]{--cf:#B8860B;--cf-dark:#8A6508;--cf-soft:#F2E3B8}
+.cf-box[data-tone=success]{--cf:var(--moss);--cf-dark:var(--moss-dark);--cf-soft:#E4E8CF}
+.cf-icon{width:56px;height:56px;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;background:var(--cf-soft);color:var(--cf-dark);border:2px solid var(--indigo);box-shadow:3px 3px 0 var(--cf-dark)}
+.cf-icon svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:square;stroke-linejoin:miter}
+.cf-title{font-family:'Press Start 2P',monospace;font-size:11px;line-height:1.8;letter-spacing:1px;color:var(--indigo);margin-bottom:14px}
+.cf-msg{font-family:'Lato',sans-serif;font-size:14px;line-height:1.6;color:rgba(46,64,83,.8);white-space:pre-line;margin-bottom:22px;padding-bottom:20px;border-bottom:2px dashed rgba(46,64,83,.2)}
+.cf-actions{display:flex;gap:14px}
+.cf-box:not(:has(.cf-msg[style*="block"])) .cf-title{margin-bottom:22px}
+.cf-btn{flex:1;min-height:46px;padding:10px 8px;border:2px solid var(--indigo);border-radius:0;font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;line-height:1.5;cursor:pointer;transition:transform .1s,box-shadow .1s}
+.cf-btn.ghost{background:#FFFFFF;color:var(--indigo);box-shadow:3px 3px 0 rgba(46,64,83,.35)}
+.cf-btn.solid{background:var(--cf);border-color:var(--indigo);color:#fff;box-shadow:3px 3px 0 var(--indigo)}
+.cf-btn:hover{transform:translate(-1px,-1px)}
+.cf-btn.ghost:hover{box-shadow:4px 4px 0 rgba(46,64,83,.35)}
+.cf-btn.solid:hover{box-shadow:4px 4px 0 var(--indigo)}
+.cf-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--indigo)}
+.cf-btn:focus-visible{outline:3px solid var(--moss);outline-offset:2px}
+@media (max-width:420px){.cf-box{padding:30px 20px 20px}.cf-actions{flex-direction:column-reverse;gap:12px}}
 
 /* ============================================================
    ATTACHMENT — upload dropzone + file card
@@ -3507,7 +3514,11 @@ body.m-quiz .stu-main{padding-bottom:calc(84px + var(--m-safe-b))}
 .metric-card{padding:14px 12px!important}
 .metric-value{font-size:24px!important}
 .metric-icon{top:10px!important;right:10px!important}
-.adm-two-col,.adm-form-row,.adm-grid-2{grid-template-columns:1fr!important}
+.adm-two-col,.adm-form-row,.adm-grid-2,.adm-form-grid,.choices-builder{grid-template-columns:1fr!important}
+.adm-form-group.full{grid-column:auto!important}
+.adm-form-group,.adm-form-group>*,.choice-builder,.choice-builder input{min-width:0}
+.pixel-card{min-width:0}.pixel-card .card-title,.pixel-card .card-meta,.note-title,.submission-title{overflow-wrap:anywhere;word-break:break-word}
+.lb-row{min-width:0}.lb-name{min-width:0;overflow-wrap:anywhere}.lb-xp{white-space:nowrap}
 .adm-form-card{padding:16px 14px!important}
 .adm-input,.adm-select,.adm-textarea,.modal-select,.modal-input,.q-builder-input{min-height:46px}
 .q-toolbar{flex-wrap:wrap}.q-toolbar .adm-select{max-width:none;flex:1 1 100%}
@@ -5019,6 +5030,7 @@ _supabase.auth.onAuthStateChange((event, session) => {
 (async () => {
   const done = () => document.documentElement.classList.remove('ql-boot');
   try {
+    if (/type=recovery/.test(location.hash + location.search)) return; // reset-link: let PASSWORD_RECOVERY show the reset form
     const { data: { session } } = await _supabase.auth.getSession();
     if (!session || !session.user) return; // no session, stay on landing
 
@@ -5411,6 +5423,7 @@ async function handleForgotPassword() {
    USER UI UPDATE
 ============================================================ */
 function getXpForNextLevel(level) { return level * 500; }
+function localDateStr(d) { d = d || new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
 
 function resetStudentState() {
   studentState = { xp:0, streak:0, level:1, classesJoined:0, quizzesTaken:0, totalScore:0, notesShared:0, claimedQuests:[] };
@@ -5477,12 +5490,12 @@ async function updateLoginStreak(userId) {
   const { data: stats } = await _supabase.from('student_stats').select('streak, last_login').eq('student_id', userId).single();
   if (!stats) return;
 
-  const today = new Date().toISOString().slice(0, 10);
+  const today = localDateStr();
   const last = stats.last_login ? stats.last_login.slice(0, 10) : null;
 
   let newStreak = stats.streak || 0;
   if (last === today) return; // already logged in today
-  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  const yesterday = localDateStr(new Date(Date.now() - 86400000));
   if (last === yesterday) {
     newStreak += 1; // consecutive day
   } else {
@@ -5680,14 +5693,14 @@ async function renderStudentDashboard() {
   }
 
   // Get published quizzes for enrolled classes
-  const { data: quizzes } = await _supabase.from('quizzes').select('*').in('classroom_id', classIds).eq('status', 'published').order('created_at', { ascending: false }).limit(4);
+  const { data: quizzes } = await _supabase.from('quizzes').select('*').in('classroom_id', classIds).eq('status', 'published').order('created_at', { ascending: false });
 
   // Get which quizzes this student already submitted
   const { data: submissions } = await _supabase.from('quiz_submissions').select('quiz_id, score').eq('student_id', currentUser.id);
   const submittedIds = new Set((submissions || []).map(s => s.quiz_id));
 
   if (activeDiv) {
-    const pending = (quizzes || []).filter(q => !submittedIds.has(q.id));
+    const pending = (quizzes || []).filter(q => !submittedIds.has(q.id) && (q.questions || []).length > 0).slice(0, 4);
     if (pending.length === 0) {
       activeDiv.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="empty-state-icon"><svg class="px-icon" viewBox="0 0 10 7" width="30" height="21" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="8" y="0" width="2" height="1"/><rect x="7" y="1" width="2" height="1"/><rect x="6" y="2" width="2" height="1"/><rect x="5" y="3" width="2" height="1"/><rect x="0" y="4" width="2" height="1"/><rect x="4" y="4" width="2" height="1"/><rect x="1" y="5" width="4" height="1"/><rect x="2" y="6" width="2" height="1"/></g></svg></span><span class="empty-state-text">ALL CAUGHT UP!<br><span style="font-size:8px;opacity:0.6;font-family:'Lato',sans-serif;font-weight:400;">No pending quizzes</span></span></div>`;
     } else {
@@ -5721,7 +5734,7 @@ async function renderStudentDashboard() {
       <div class="quest-item">
         <div class="quest-icon" style="background:${s.score >= 75 ? 'var(--moss)' : 'var(--terracotta)'};color:#FFF;font-size:10px;display:flex;align-items:center;justify-content:center;"><svg class="px-icon" viewBox="0 0 10 11" width="14" height="15" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="6" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="2" y="6" width="6" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="2" y="8" width="4" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="9" y="9" width="1" height="1"/><rect x="0" y="10" width="10" height="1"/></g></svg></div>
         <div class="quest-info">
-          <span class="quest-name">${allQuizTitles[s.quiz_id] || 'Quiz'}</span>
+          <span class="quest-name">${escHtml(allQuizTitles[s.quiz_id] || 'Quiz')}</span>
           <span class="quest-desc">Score: ${s.score}%</span>
         </div>
         <span class="quest-reward" style="color:${s.score >= 75 ? 'var(--moss)' : 'var(--terracotta)'};">${s.score}%</span>
@@ -5752,13 +5765,13 @@ async function renderStudentClasses() {
     const cls = e.classrooms;
     const teacherName = cls && cls.profiles ? cls.profiles.name : 'Teacher';
     return `
-      <div class="pixel-card moss-accent" style="margin-bottom:12px;cursor:pointer;transition:transform 0.1s,box-shadow 0.1s;" onclick="openClassDetail('${cls ? cls.id : ''}')"
+      <div class="pixel-card moss-accent" style="margin-bottom:12px;cursor:pointer;transition:transform 0.1s,box-shadow 0.1s;" onclick="openClassDetail('${cls ? escHtml(cls.id) : ''}')"
         onmouseover="this.style.transform='translate(-2px,-2px)';this.style.boxShadow='5px 5px 0px var(--moss-dark)'"
         onmouseout="this.style.transform='';this.style.boxShadow=''">
-        <span class="card-tag tag-class">${cls ? cls.code : ''}</span>
-        <span class="card-title">${cls ? cls.name : 'Classroom'}</span>
-        <span class="card-meta">Teacher: ${teacherName}</span>
-        ${cls && cls.description ? `<p style="font-family:'Lato',sans-serif;font-size:12px;color:rgba(46,64,83,0.6);margin-top:8px;">${cls.description}</p>` : ''}
+        <span class="card-tag tag-class">${escHtml(cls ? cls.code : '')}</span>
+        <span class="card-title">${escHtml(cls ? cls.name : 'Classroom')}</span>
+        <span class="card-meta">Teacher: ${escHtml(teacherName)}</span>
+        ${cls && cls.description ? `<p style="font-family:'Lato',sans-serif;font-size:12px;color:rgba(46,64,83,0.6);margin-top:8px;">${escHtml(cls.description)}</p>` : ''}
         <div style="margin-top:12px;font-family:'Press Start 2P',monospace;font-size:6px;color:var(--moss);letter-spacing:1px;opacity:0.7;">CLICK TO OPEN &gt;&gt;</div>
       </div>
     `;
@@ -5839,7 +5852,7 @@ async function renderStudentQuizzes() {
       <div class="pixel-card ${done ? 'moss-accent' : 'terracotta-accent'}" onclick="${done ? '' : `startQuizFromDB('${q.id}')`}" style="${done ? 'opacity:0.75;' : 'cursor:pointer;'}">
         <span class="card-tag ${done ? 'tag-notes' : 'tag-testing'}">${done ? 'COMPLETED' : 'PENDING'}</span>
         <span class="card-title">${escHtml(q.title)}</span>
-        <span class="card-meta">${q.classrooms ? q.classrooms.code + ' — ' + q.classrooms.name : ''}</span>
+        <span class="card-meta">${q.classrooms ? escHtml(q.classrooms.code + ' — ' + q.classrooms.name) : ''}</span>
         <span class="card-meta">${q.time_limit_mins || 30} min &nbsp;·&nbsp; ${(q.questions||[]).length} questions</span>
         ${done
           ? `<div class="card-progress"><div class="progress-label"><span>Your Score</span><span>${score}%</span></div><div class="progress-bar"><div class="progress-fill ${score >= (q.passing_score||75) ? '' : 'terracotta'}" style="width:${score}%"></div></div></div>`
@@ -5867,6 +5880,7 @@ async function startQuizFromDB(quizId) {
     questions: quiz.questions || []
   };
 
+  if (!quizData.questions.length) { askNotice('This quiz has no questions yet. Please check back later.', 'Quiz unavailable'); return; }
   switchStuView('quiz-take');
   initQuiz(quizData);
   startQuizTimer();
@@ -6108,10 +6122,10 @@ async function renderLeaderboard() {
 
   el.innerHTML = rows.map((r, i) => {
     const isMe = r.id === currentUser.id;
-    const parts = r.name.trim().split(/\s+/);
-    const fn = parts[0]; const ln = parts.length > 1 ? parts[parts.length-1] : '';
-    const initials = (fn[0] + (ln ? ln[0] : '')).toUpperCase();
-    const short = fn + (ln ? ' ' + ln[0] + '.' : '');
+    const parts = (r.name || 'Student').trim().split(/\s+/);
+    const fn = parts[0] || 'S'; const ln = parts.length > 1 ? parts[parts.length-1] : '';
+    const initials = escHtml((fn[0] + (ln ? ln[0] : '')).toUpperCase());
+    const short = escHtml(fn + (ln ? ' ' + ln[0] + '.' : ''));
     const rankDisplay = String(i+1).padStart(2,'0');
     return `
       <div class="lb-row ${isMe ? 'me' : ''}">
@@ -6151,7 +6165,7 @@ async function renderStudentNotes() {
     content: n.content,
     subject: n.subject || 'General',
     author: n.profiles ? n.profiles.name : 'Unknown',
-    authorShort: n.profiles ? n.profiles.name.split(' ')[0] : 'Student',
+    authorShort: n.profiles && n.profiles.name ? n.profiles.name.split(' ')[0] : 'Student',
     date: new Date(n.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }),
     file: n.file_path ? { path: n.file_path, name: n.file_name || 'attachment', size: n.file_size || 0 } : null,
     status: n.status,
@@ -6166,12 +6180,12 @@ async function renderStudentNotes() {
     } else {
       grid.innerHTML = approved.map(n => `
         <div class="note-card" onclick="openNoteView('${n.id}')">
-          <span class="note-author">by ${n.authorShort}</span>
-          <span class="note-title">${n.title}</span>
+          <span class="note-author">by ${escHtml(n.authorShort)}</span>
+          <span class="note-title">${escHtml(n.title)}</span>
           <p class="note-preview">${notePreview(n)}</p>
           <div class="note-footer">
-            <span class="note-subject">${n.subject}</span>
-            <span class="note-date">${n.date}</span>
+            <span class="note-subject">${escHtml(n.subject)}</span>
+            <span class="note-date">${escHtml(n.date)}</span>
           </div>
         </div>
       `).join('');
@@ -6194,8 +6208,8 @@ function renderMySubmissions() {
     return `
       <div class="submission-row" onclick="openNoteView('${n.id}')">
         <div class="submission-info">
-          <span class="submission-title">${n.title}</span>
-          <span class="submission-meta">${n.subject} &nbsp;·&nbsp; Submitted ${n.date}</span>
+          <span class="submission-title">${escHtml(n.title)}</span>
+          <span class="submission-meta">${escHtml(n.subject)} &nbsp;·&nbsp; Submitted ${escHtml(n.date)}</span>
         </div>
         <div class="submission-actions">
           <span class="note-status-badge ${statusClass}">${statusLabel}</span>
@@ -6529,13 +6543,13 @@ async function renderAdminClasses() {
 
   tbody.innerHTML = classes.map(c => `
     <tr>
-      <td><code style="font-family:'Source Code Pro',monospace;font-size:12px;">${c.code}</code></td>
-      <td><strong>${c.name}</strong>${c.description ? `<br><small style="color:var(--adm-text-muted);">${c.description}</small>` : ''}</td>
+      <td><code style="font-family:'Source Code Pro',monospace;font-size:12px;">${escHtml(c.code)}</code></td>
+      <td><strong>${escHtml(c.name)}</strong>${c.description ? `<br><small style="color:var(--adm-text-muted);">${escHtml(c.description)}</small>` : ''}</td>
       <td>${enrollCounts[c.id] || 0}</td>
-      <td><span class="badge ${c.status === 'active' ? 'badge-active' : 'badge-inactive'}">${c.status}</span></td>
+      <td><span class="badge ${c.status === 'active' ? 'badge-active' : 'badge-inactive'}">${escHtml(c.status)}</span></td>
       <td>
         <button class="adm-action-btn" onclick="archiveClass('${c.id}', '${c.status}')">${c.status === 'active' ? 'Archive' : 'Activate'}</button>
-        <button class="adm-action-btn danger" onclick="deleteClass('${c.id}', '${c.name}')">Delete</button>
+        <button class="adm-action-btn danger" data-name="${escHtml(c.name)}" onclick="deleteClass('${c.id}', this.dataset.name)">Delete</button>
       </td>
     </tr>
   `).join('');
@@ -6643,12 +6657,12 @@ async function renderAdminStudents() {
     const idNum = String(p.email || '').split('').reduce((a,c) => a+c.charCodeAt(0), 0).toString().slice(-4).padStart(4,'0');
     return `<tr>
       <td><code style="font-family:'Source Code Pro',monospace;font-size:11px;">#STU-${idNum}</code></td>
-      <td><strong>${p.name || 'Unknown'}</strong><br><small style="color:var(--adm-text-muted);">${p.email || ''}</small></td>
-      <td style="font-size:12px;max-width:160px;">${classes}</td>
+      <td><strong>${escHtml(p.name || 'Unknown')}</strong><br><small style="color:var(--adm-text-muted);">${escHtml(p.email || '')}</small></td>
+      <td style="font-size:12px;max-width:160px;">${escHtml(classes)}</td>
       <td>${scores.length}</td>
       <td>${avg}</td>
       <td><span class="badge badge-active">Active</span></td>
-      <td><button class="adm-action-btn danger" onclick="removeStudentFromClasses('${sid}', '${(p.name||'Student').replace(/'/g,"\\'")}')">Remove</button></td>
+      <td><button class="adm-action-btn danger" data-name="${escHtml(p.name || 'Student')}" onclick="removeStudentFromClasses('${sid}', this.dataset.name)">Remove</button></td>
     </tr>`;
   }).join('');
 }
@@ -6691,7 +6705,7 @@ async function renderAdminQuizzes() {
     const avg = qSubs.length > 0 ? Math.round(qSubs.reduce((a,b) => a+b,0)/qSubs.length) + '%' : '—%';
     return `<tr>
       <td><strong>${escHtml(q.title)}</strong></td>
-      <td>${q.classrooms ? q.classrooms.code + ' — ' + q.classrooms.name : '—'}</td>
+      <td>${q.classrooms ? escHtml(q.classrooms.code + ' — ' + q.classrooms.name) : '—'}</td>
       <td>${(q.questions || []).length}</td>
       <td>${qSubs.length}</td>
       <td>${avg}</td>
@@ -6738,7 +6752,7 @@ async function populateClassSelects() {
   const quizSelect = document.getElementById('quiz-class-select');
   const inviteSelect = document.getElementById('invite-classroom-select');
 
-  const opts = (classes || []).map(c => `<option value="${c.id}">${c.code} — ${c.name}</option>`).join('');
+  const opts = (classes || []).map(c => `<option value="${escHtml(c.id)}">${escHtml(c.code)} — ${escHtml(c.name)}</option>`).join('');
   const emptyOpt = '<option value="">— Select a classroom —</option>';
 
   if (quizSelect) quizSelect.innerHTML = emptyOpt + opts;
@@ -6958,7 +6972,7 @@ async function renderClassDetailQuizzes() {
         <span class="card-tag ${done ? 'tag-notes' : 'tag-testing'}">${done ? 'COMPLETED' : 'PENDING'}</span>
         <span class="card-title">${escHtml(q.title)}</span>
         <span class="card-meta">${q.time_limit_mins || 30} min &nbsp;·&nbsp; ${(q.questions||[]).length} questions</span>
-        ${q.instructions ? `<p style="font-family:'Lato',sans-serif;font-size:12px;color:rgba(46,64,83,0.6);margin-top:6px;">${q.instructions}</p>` : ''}
+        ${q.instructions ? `<p style="font-family:'Lato',sans-serif;font-size:12px;color:rgba(46,64,83,0.6);margin-top:6px;">${escHtml(q.instructions)}</p>` : ''}
         ${done
           ? `<div class="card-progress"><div class="progress-label"><span>Your Score</span><span>${score}%</span></div><div class="progress-bar"><div class="progress-fill ${score >= (q.passing_score||75) ? '' : 'terracotta'}" style="width:${score}%"></div></div></div>`
           : `<button class="btn-pixel" style="font-size:7px;padding:8px 14px;width:100%;margin-top:12px;">TAKE QUIZ &gt;&gt;</button>`
@@ -6989,9 +7003,9 @@ async function renderClassDetailNotes() {
 
   grid.innerHTML = notes.map(n => `
     <div class="note-card" onclick="viewNoteFromDetail('${n.id}')" style="cursor:pointer;">
-      <div class="note-subject">${n.subject || 'General'}</div>
-      <div class="note-title">${n.title}</div>
-      <div class="note-author">by ${n.profiles ? n.profiles.name : 'Student'}</div>
+      <div class="note-subject">${escHtml(n.subject || 'General')}</div>
+      <div class="note-title">${escHtml(n.title)}</div>
+      <div class="note-author">by ${escHtml(n.profiles ? n.profiles.name : 'Student')}</div>
       <div class="note-preview">${notePreview(n)}</div>
     </div>
   `).join('');
@@ -7034,14 +7048,14 @@ async function renderClassDetailMembers() {
   listEl.innerHTML = enrollments.map((e, i) => {
     const profile = e.profiles;
     const st = statsMap[e.student_id] || {};
-    const name = profile ? profile.name : 'Student';
-    const initials = name.split(' ').map(p => p[0]).join('').substring(0,2).toUpperCase();
+    const name = profile && profile.name ? profile.name : 'Student';
+    const initials = escHtml(name.split(/\s+/).filter(Boolean).map(p => p[0]).join('').substring(0,2).toUpperCase());
     const isMe = e.student_id === currentUser.id;
     return `
       <div style="display:flex;align-items:center;gap:14px;padding:12px 16px;background:#fff;border:2px solid ${isMe ? 'var(--moss)' : 'var(--indigo)'};box-shadow:2px 2px 0px ${isMe ? 'var(--moss-dark)' : 'rgba(46,64,83,0.15)'};margin-bottom:2px;">
         <div style="width:36px;height:36px;background:${isMe ? 'var(--moss)' : 'var(--indigo)'};display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P',monospace;font-size:10px;color:#fff;flex-shrink:0;">${initials}</div>
         <div style="flex:1;">
-          <div style="font-family:'Lato',sans-serif;font-size:14px;font-weight:700;color:var(--indigo);">${name}${isMe ? ' <span style="font-family:\'Press Start 2P\',monospace;font-size:6px;color:var(--moss);letter-spacing:1px;">YOU</span>' : ''}</div>
+          <div style="font-family:'Lato',sans-serif;font-size:14px;font-weight:700;color:var(--indigo);">${escHtml(name)}${isMe ? ' <span style="font-family:\'Press Start 2P\',monospace;font-size:6px;color:var(--moss);letter-spacing:1px;">YOU</span>' : ''}</div>
           <div style="font-family:'Source Code Pro',monospace;font-size:11px;color:rgba(46,64,83,0.5);">Level ${st.level || 1} &nbsp;·&nbsp; ${(st.xp || 0).toLocaleString()} XP</div>
         </div>
         <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:rgba(46,64,83,0.3);">#${i+1}</div>
@@ -7084,7 +7098,7 @@ async function renderAdminNotes() {
     content: n.content,
     subject: n.subject || 'General',
     author: n.profiles ? n.profiles.name : 'Unknown',
-    authorShort: n.profiles ? n.profiles.name.split(' ')[0] : 'Unknown',
+    authorShort: n.profiles && n.profiles.name ? n.profiles.name.split(' ')[0] : 'Unknown',
     date: new Date(n.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }),
     file: n.file_path ? { path: n.file_path, name: n.file_name || 'attachment', size: n.file_size || 0 } : null,
     status: n.status,
@@ -7111,7 +7125,7 @@ async function renderAdminNotes() {
     const actions = n.status === 'pending'
       ? `<button class="adm-action-btn" onclick="adminViewNote('${n.id}')">View</button><button class="adm-action-btn" style="color:var(--adm-success);border-color:rgba(22,163,74,0.3);" onclick="adminApproveNote('${n.id}')">Approve</button><button class="adm-action-btn danger" onclick="adminRejectNote('${n.id}')">Reject</button>`
       : `<button class="adm-action-btn" onclick="adminViewNote('${n.id}')">View</button><button class="adm-action-btn danger" onclick="adminRemoveNote('${n.id}')">Remove</button>`;
-    return `<tr><td><strong>${escHtml(n.title)}</strong>${n.file ? `<br><span class="attach-tag" style="margin-left:0;">${escHtml(n.file.name)}</span>` : ''}</td><td>${escHtml(n.author)}</td><td>${n.classLabel}</td><td>${n.date}</td><td>${statusBadge}</td><td>${actions}</td></tr>`;
+    return `<tr><td><strong>${escHtml(n.title)}</strong>${n.file ? `<br><span class="attach-tag" style="margin-left:0;">${escHtml(n.file.name)}</span>` : ''}</td><td>${escHtml(n.author)}</td><td>${escHtml(n.classLabel)}</td><td>${escHtml(n.date)}</td><td>${statusBadge}</td><td>${actions}</td></tr>`;
   }).join('');
 }
 
