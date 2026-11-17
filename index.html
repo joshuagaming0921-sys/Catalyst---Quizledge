@@ -3690,6 +3690,77 @@ html.ql-boot body::after{content:'LOADING...';position:fixed;inset:0;display:fle
 .rs-timer b{font-family:'Press Start 2P',monospace;font-size:12px;color:var(--moss-dark);letter-spacing:1px}
 .rs-timer.low{border-color:var(--terracotta);background:#F6D9D1}
 .rs-timer.low b{color:var(--terracotta-dark)}
+
+/* ============================================================
+   MODERN REFRESH (student + admin, desktop + mobile)
+   Keeps the QuizLedge palette and pixel headings; softens the rest.
+============================================================ */
+:root{--r:8px;--line:rgba(46,64,83,.14);--soft:0 1px 2px rgba(46,64,83,.08),0 6px 18px rgba(46,64,83,.08);--ring:0 0 0 3px rgba(138,154,91,.3)}
+
+/* ---- Student: sidebar navigation ---- */
+.stu-sidebar{box-shadow:1px 0 0 rgba(255,255,255,.04),6px 0 24px rgba(46,64,83,.18)}
+.stu-nav-link{margin:2px 10px;padding:10px 12px;border-left:0;border-radius:var(--r);font-size:19px}
+.stu-nav-link:hover{padding-left:12px;background:rgba(255,255,255,.08);color:#fff}
+.stu-nav-link.active{background:rgba(138,154,91,.24);color:#fff;border-left:0}
+.stu-nav-link.active::before{content:"";position:absolute;left:-10px;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:var(--moss)}
+.nav-badge{border-radius:999px;padding:3px 7px;font-size:7px}
+
+/* ---- Student: buttons ---- */
+.btn-pixel{border:0;border-radius:var(--r);padding:12px 18px;letter-spacing:.8px;box-shadow:0 3px 0 var(--moss-dark);transition:transform .12s,box-shadow .12s,background .12s}
+.btn-pixel:hover{transform:translateY(-1px);box-shadow:0 4px 0 var(--moss-dark);background:var(--indigo-light)}
+.btn-pixel:active{transform:translateY(2px);box-shadow:0 1px 0 var(--moss-dark)}
+.btn-pixel.terracotta{box-shadow:0 3px 0 var(--terracotta-dark)}
+.btn-pixel.terracotta:hover{background:var(--terracotta);box-shadow:0 4px 0 var(--terracotta-dark)}
+.btn-pixel:focus-visible{outline:none;box-shadow:var(--ring)}
+.btn-pixel[style*="transparent"]{border:2px solid currentColor;box-shadow:none!important}
+.btn-pixel[style*="transparent"]:hover{background:rgba(46,64,83,.06)}
+.btn-pixel[style*="terracotta"]:not(.terracotta){box-shadow:0 3px 0 var(--terracotta-dark)!important;border:0!important}
+
+/* ---- Student: cards ---- */
+.pixel-card,.quiz-header,.quiz-question{border:1px solid var(--line)!important;border-radius:12px!important;box-shadow:var(--soft)!important}
+.pixel-card{transition:transform .15s,box-shadow .15s}
+.pixel-card:hover{transform:translateY(-2px);box-shadow:0 2px 4px rgba(46,64,83,.1),0 12px 28px rgba(46,64,83,.14)!important}
+
+/* ---- Admin: navigation, topbar, surfaces ---- */
+#page-admin{background:#F3F3EA}
+.adm-sidebar{box-shadow:6px 0 24px rgba(46,64,83,.16)}
+.adm-brand{border-bottom:1px solid rgba(255,255,255,.1)}
+.adm-nav-link{margin:2px 10px;padding:9px 12px;border-left:0;border-radius:6px;font-size:13.5px;letter-spacing:.2px}
+.adm-nav-link:hover{background:rgba(255,255,255,.08)}
+.adm-nav-link.active{background:rgba(138,154,91,.26);border-left:0;box-shadow:inset 3px 0 0 var(--moss)}
+.adm-topbar{background:#fff;border-bottom:1px solid var(--line);box-shadow:0 1px 0 rgba(46,64,83,.04)}
+.metric-card,.adm-table-card,.adm-form-card,.question-builder{background:#fff;border:1px solid var(--line)!important;border-radius:10px!important;box-shadow:0 1px 2px rgba(46,64,83,.06)!important}
+.metric-card:hover{transform:none;box-shadow:0 4px 14px rgba(46,64,83,.1)!important}
+.adm-table th{font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#5b6b7a;background:#F7F7F1;border-bottom:1px solid var(--line)}
+.adm-table td{border-bottom:1px solid rgba(46,64,83,.08)}
+.adm-table tbody tr:hover td{background:#FAFAF5}
+.badge{border-radius:999px;padding:3px 10px;font-size:11px;font-weight:700;letter-spacing:.3px}
+
+/* ---- Admin: buttons and fields ---- */
+.btn-adm-primary,.btn-adm-secondary,.adm-action-btn{border-radius:6px}
+.btn-adm-primary{background:var(--indigo);border:0;box-shadow:0 1px 2px rgba(46,64,83,.25);font-weight:600;letter-spacing:.2px}
+.btn-adm-primary:hover{background:var(--indigo-light);box-shadow:0 4px 12px rgba(46,64,83,.25);transform:translateY(-1px)}
+.btn-adm-secondary{background:#fff;border:1px solid rgba(46,64,83,.25);color:var(--indigo);box-shadow:none}
+.btn-adm-secondary:hover{background:#F7F7F1;border-color:var(--indigo)}
+.adm-action-btn{border:1px solid rgba(46,64,83,.2);background:#fff}
+.adm-action-btn.danger{color:#b4412e;border-color:rgba(180,65,46,.35)}
+.adm-action-btn.danger:hover{background:rgba(226,114,91,.1)}
+.adm-input,.adm-select,.adm-textarea,.q-builder-input{border:1px solid #C9D0D6!important;border-radius:6px!important;background:#fff}
+.adm-input:focus,.adm-select:focus,.adm-textarea:focus,.q-builder-input:focus{border-color:var(--moss)!important;box-shadow:var(--ring)!important;outline:none}
+.q-num-badge{border-radius:0 0 6px 6px}
+
+/* ---- Mobile ---- */
+.m-tabbar{box-shadow:0 -6px 20px rgba(46,64,83,.16)!important;border-top:1px solid rgba(255,255,255,.08)!important}
+.m-tabbar .m-tab{border-radius:10px;margin:6px 3px;transition:background .15s,color .15s}
+.m-tabbar .m-tab.active{background:rgba(138,154,91,.22)}
+@media (max-width:600px){
+  .adm-table tr{border:1px solid var(--line)!important;border-radius:10px;box-shadow:0 1px 2px rgba(46,64,83,.06)!important}
+  .adm-table-header{border:1px solid var(--line)!important;border-radius:10px;background:#fff}
+  .adm-table td::before{font-family:'Lato',sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.6px;color:#5b6b7a}
+  .btn-pixel,.btn-adm-primary,.btn-adm-secondary{min-height:44px}
+  .stu-nav-link{margin:2px 8px}
+}
+@media (prefers-reduced-motion:reduce){.pixel-card,.btn-pixel,.btn-adm-primary{transition:none}}
 </style>
 <script>
 /* runs before first paint: if a saved Supabase session exists, don't show the landing page */
@@ -4202,7 +4273,7 @@ html.ql-boot body::after{content:'LOADING...';position:fixed;inset:0;display:fle
           <span id="nv-subject" class="note-subject" style="font-family:'Press Start 2P',monospace; font-size:6px;"></span>
         </div>
       </div>
-      <button onclick="closeNoteView()" style="background:none; border:none; cursor:pointer; font-size:18px; color:rgba(46,64,83,0.5); flex-shrink:0; line-height:1;">✕</button>
+      <button onclick="closeNoteView()" style="background:none; border:none; cursor:pointer; font-size:18px; color:rgba(46,64,83,0.5); flex-shrink:0; line-height:1;">Close</button>
     </div>
     <div style="border-top:2px solid var(--indigo); margin-bottom:16px;"></div>
     <div class="note-view-modal-body">
@@ -4917,7 +4988,7 @@ html.ql-boot body::after{content:'LOADING...';position:fixed;inset:0;display:fle
         </div>
 
         <div class="adm-form-card" id="ai-gen-card" style="margin-bottom:20px;">
-          <div class="adm-form-title">&#10024; Generate Quiz with AI</div>
+          <div class="adm-form-title">Generate Quiz with AI</div>
           <div id="ai-gen-msg" style="display:none; font-family:'Lato',sans-serif; font-size:12px; padding:8px 12px; border-radius:2px; margin-bottom:8px;"></div>
           <div id="ai-drop" onclick="document.getElementById('ai-files').click()" style="border:2px dashed var(--adm-border); border-radius:8px; padding:22px; text-align:center; cursor:pointer; font-family:'Lato',sans-serif; font-size:13px; color:var(--adm-text-muted);">
             Drop files here or click to browse<br><span style="font-size:11px;">PDF (with selectable text), DOCX, TXT, MD &middot; up to 10 MB each</span>
@@ -5515,6 +5586,10 @@ function setFormMsg(id, msg, isError) {
   el.style.background = isError ? 'rgba(220,38,38,0.08)' : 'rgba(22,163,74,0.08)';
   el.style.border = isError ? '1px solid rgba(220,38,38,0.3)' : '1px solid rgba(22,163,74,0.3)';
   el.style.color = isError ? '#b91c1c' : '#15803d';
+  if (id === 'quiz-create-msg' && msg && isError) {
+    try { showAdminToast(msg, 'danger'); } catch (e) {}
+    try { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+  }
 }
 
 /* ============================================================
@@ -7043,7 +7118,7 @@ async function populateClassSelects() {
   if (inviteSelect) inviteSelect.innerHTML = emptyOpt + opts;
 }
 
-const mbRow = () => `<div class="mb-row"><input class="adm-input mb-l" placeholder="Item"><input class="adm-input mb-r" placeholder="Matching answer"><button type="button" class="adm-action-btn danger" onclick="mbDel(this)">&#10005;</button></div>`;
+const mbRow = () => `<div class="mb-row"><input class="adm-input mb-l" placeholder="Item"><input class="adm-input mb-r" placeholder="Matching answer"><button type="button" class="adm-action-btn danger" onclick="mbDel(this)">Remove</button></div>`;
 function qbBody(t) {
   if (t === 'mcq') return `<div class="choices-builder">${['A','B','C','D'].map(l => `<div class="choice-builder"><div class="choice-letter-badge">${l}</div><input type="text" placeholder="Choice ${l}"><div class="correct-marker" title="Mark as correct" onclick="toggleCorrect(this)"></div></div>`).join('')}</div>`;
   if (t === 'tf') return `<div class="choices-builder">${['True','False'].map(l => `<div class="choice-builder"><div class="choice-letter-badge" style="width:auto;padding:0 10px;">${l}</div><span style="flex:1"></span><div class="correct-marker" title="Mark as correct" onclick="toggleCorrect(this)"></div></div>`).join('')}</div>`;
@@ -7175,7 +7250,7 @@ function aiMsg(msg, isError) { setFormMsg('ai-gen-msg', msg, isError); }
 
 function aiRenderFiles() {
   const box = document.getElementById('ai-file-list');
-  box.innerHTML = aiFiles.map((f, i) => `<span style="display:inline-flex;align-items:center;gap:6px;background:var(--adm-bg);border:1px solid var(--adm-border);border-radius:14px;padding:4px 10px;font-family:'Lato',sans-serif;font-size:12px;color:var(--adm-text);">${escHtml(f.name)}<span style="cursor:pointer;color:var(--adm-danger);font-weight:700;" onclick="aiRemoveFile(${i})">&#10005;</span></span>`).join('');
+  box.innerHTML = aiFiles.map((f, i) => `<span style="display:inline-flex;align-items:center;gap:6px;background:var(--adm-bg);border:1px solid var(--adm-border);border-radius:14px;padding:4px 10px;font-family:'Lato',sans-serif;font-size:12px;color:var(--adm-text);">${escHtml(f.name)}<span style="cursor:pointer;color:var(--adm-danger);font-weight:700;" onclick="aiRemoveFile(${i})">Remove</span></span>`).join('');
 }
 function aiRemoveFile(i) { aiFiles.splice(i, 1); aiRenderFiles(); }
 function aiAddFiles(list) {
