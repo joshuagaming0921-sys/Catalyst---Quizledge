@@ -4916,6 +4916,42 @@ html.ql-boot body::after{content:'LOADING...';position:fixed;inset:0;display:fle
           </div>
         </div>
 
+        <div class="adm-form-card" id="ai-gen-card" style="margin-bottom:20px;">
+          <div class="adm-form-title">&#10024; Generate Quiz with AI</div>
+          <div id="ai-gen-msg" style="display:none; font-family:'Lato',sans-serif; font-size:12px; padding:8px 12px; border-radius:2px; margin-bottom:8px;"></div>
+          <div id="ai-drop" onclick="document.getElementById('ai-files').click()" style="border:2px dashed var(--adm-border); border-radius:8px; padding:22px; text-align:center; cursor:pointer; font-family:'Lato',sans-serif; font-size:13px; color:var(--adm-text-muted);">
+            Drop files here or click to browse<br><span style="font-size:11px;">PDF, DOCX, TXT, MD, PNG, JPG, WEBP &middot; up to 10 MB each</span>
+          </div>
+          <input type="file" id="ai-files" multiple accept=".pdf,.docx,.txt,.md,.png,.jpg,.jpeg,.webp" style="display:none" onchange="aiAddFiles(this.files); this.value='';">
+          <div id="ai-file-list" style="margin-top:10px; display:flex; flex-wrap:wrap; gap:8px;"></div>
+          <div class="adm-form-grid" style="margin-top:14px;">
+            <div class="adm-form-group">
+              <label class="adm-label">Number of Questions</label>
+              <input class="adm-input" type="number" id="ai-count" value="10" min="1" max="50">
+            </div>
+            <div class="adm-form-group">
+              <label class="adm-label">Difficulty</label>
+              <select class="adm-select" id="ai-difficulty"><option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Hard</option></select>
+            </div>
+            <div class="adm-form-group full">
+              <label class="adm-label">Question Types</label>
+              <div style="display:flex; flex-wrap:wrap; gap:14px; font-family:'Lato',sans-serif; font-size:13px; color:var(--adm-text);">
+                <label><input type="checkbox" class="ai-type" value="mcq" checked> Multiple Choice</label>
+                <label><input type="checkbox" class="ai-type" value="tf" checked> True/False</label>
+                <label><input type="checkbox" class="ai-type" value="identification"> Identification</label>
+                <label><input type="checkbox" class="ai-type" value="enumeration"> Enumeration</label>
+                <label><input type="checkbox" class="ai-type" value="matching"> Matching</label>
+              </div>
+            </div>
+            <div class="adm-form-group full">
+              <label class="adm-label">Focus Topic (optional)</label>
+              <input class="adm-input" type="text" id="ai-topic" placeholder="e.g. Chapter 3 only, or key definitions">
+            </div>
+          </div>
+          <div style="margin-top:14px;"><button class="btn-adm-primary" id="ai-gen-btn" onclick="aiGenerateQuiz()">Generate Questions</button></div>
+          <div style="margin-top:8px; font-size:11px; color:var(--adm-text-muted); font-family:'Lato',sans-serif;">Generated questions fill the builder below so you can review and edit them before publishing.</div>
+        </div>
+
         <div class="quiz-builder" id="question-list"></div>
 
         <div style="display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; align-items:center;">
@@ -6981,6 +7017,7 @@ async function deleteQuiz(quizId, title) {
    ADMIN — CREATE QUIZ
 ============================================================ */
 function resetQuizCreate() {
+  aiFiles = []; if (document.getElementById('ai-file-list')) { aiRenderFiles(); aiMsg('', false); }
   const v = (id, val) => { const e = document.getElementById(id); if (e) e.value = val; };
   v('quiz-title-input', ''); v('quiz-timelimit-input', '30'); v('quiz-passing-input', '75'); v('quiz-instructions-input', '');
   setFormMsg('quiz-create-msg', '', false);
@@ -7122,6 +7159,137 @@ async function publishQuiz(status) {
   setFormMsg('quiz-create-msg', `Quiz "${title}" ${status === 'published' ? 'published' : 'saved as draft'}!`, false);
   showAdminToast(`Quiz "${title}" ${status === 'published' ? 'published' : 'saved as draft'}!`, 'success');
   setTimeout(() => { switchAdmView('quizzes'); }, 1500);
+}
+
+/* ============================================================
+   ADMIN — AI QUIZ GENERATION
+============================================================ */
+let aiFiles = [];
+const AI_MAX_BYTES = 10 * 1024 * 1024;
+
+function aiMsg(msg, isError) { setFormMsg('ai-gen-msg', msg, isError); }
+
+function aiRenderFiles() {
+  const box = document.getElementById('ai-file-list');
+  box.innerHTML = aiFiles.map((f, i) => `<span style="display:inline-flex;align-items:center;gap:6px;background:var(--adm-bg);border:1px solid var(--adm-border);border-radius:14px;padding:4px 10px;font-family:'Lato',sans-serif;font-size:12px;color:var(--adm-text);">${escHtml(f.name)}<span style="cursor:pointer;color:var(--adm-danger);font-weight:700;" onclick="aiRemoveFile(${i})">&#10005;</span></span>`).join('');
+}
+function aiRemoveFile(i) { aiFiles.splice(i, 1); aiRenderFiles(); }
+function aiAddFiles(list) {
+  for (const f of list) {
+    if (f.size > AI_MAX_BYTES) { aiMsg(`"${f.name}" is over 10 MB.`, true); continue; }
+    if (!/\.(pdf|docx|txt|md|png|jpe?g|webp)$/i.test(f.name)) { aiMsg(`"${f.name}" is not a supported file type.`, true); continue; }
+    aiFiles.push(f);
+  }
+  aiRenderFiles();
+}
+(function () {
+  const d = document.getElementById('ai-drop');
+  if (!d) return;
+  ['dragover', 'dragenter'].forEach(ev => d.addEventListener(ev, e => { e.preventDefault(); d.style.borderColor = 'var(--adm-accent)'; }));
+  ['dragleave', 'drop'].forEach(ev => d.addEventListener(ev, e => { e.preventDefault(); d.style.borderColor = ''; }));
+  d.addEventListener('drop', e => aiAddFiles(e.dataTransfer.files));
+})();
+
+function aiToBase64(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(String(r.result).split(',')[1]);
+    r.onerror = () => rej(new Error('Could not read ' + file.name));
+    r.readAsDataURL(file);
+  });
+}
+async function aiLoadMammoth() {
+  if (window.mammoth) return window.mammoth;
+  await new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js';
+    s.onload = res; s.onerror = () => rej(new Error('Could not load the DOCX reader.'));
+    document.head.appendChild(s);
+  });
+  return window.mammoth;
+}
+
+async function aiGenerateQuiz() {
+  if (window._aiBusy) return;
+  if (!aiFiles.length) { aiMsg('Add at least one file first.', true); return; }
+  const types = [...document.querySelectorAll('.ai-type:checked')].map(x => x.value);
+  if (!types.length) { aiMsg('Pick at least one question type.', true); return; }
+
+  const hasWork = [...document.querySelectorAll('#question-list .question-builder')].some(d =>
+    [...d.querySelectorAll('input[type=text],textarea')].some(x => x.value.trim()));
+  if (hasWork && !(await askConfirm({ title: 'Replace current questions?', message: 'AI-generated questions will replace what is currently in the builder.', confirmText: 'Replace', tone: 'warning', icon: 'warn' }))) return;
+
+  if (aiFiles.reduce((a, f) => a + f.size, 0) > 14 * 1024 * 1024) { aiMsg('Total file size is over 14 MB. Remove some files or split them into batches.', true); return; }
+  window._aiBusy = true;
+  const btn = document.getElementById('ai-gen-btn');
+  btn.disabled = true; btn.textContent = 'Generating...';
+  aiMsg('Reading your files and writing questions. This can take up to a minute...', false);
+  try {
+    const files = [], texts = [];
+    for (const f of aiFiles) {
+      const ext = f.name.split('.').pop().toLowerCase();
+      if (ext === 'pdf') files.push({ mime: 'application/pdf', data: await aiToBase64(f) });
+      else if (['png', 'jpg', 'jpeg', 'webp'].includes(ext)) files.push({ mime: ext === 'jpg' ? 'image/jpeg' : 'image/' + ext, data: await aiToBase64(f) });
+      else if (ext === 'docx') {
+        const m = await aiLoadMammoth();
+        const r = await m.extractRawText({ arrayBuffer: await f.arrayBuffer() });
+        texts.push({ name: f.name, text: r.value });
+      } else texts.push({ name: f.name, text: await f.text() });
+    }
+    const { data, error } = await _supabase.functions.invoke('generate-quiz', {
+      body: {
+        files, texts,
+        count: parseInt(document.getElementById('ai-count').value) || 10,
+        types,
+        difficulty: document.getElementById('ai-difficulty').value,
+        topic: document.getElementById('ai-topic').value.trim()
+      }
+    });
+    if (error) {
+      let m = error.message;
+      try { const b = await error.context.json(); if (b && b.error) m = b.error; } catch (e) {}
+      throw new Error(m);
+    }
+    if (!data || !data.questions || !data.questions.length) throw new Error((data && data.error) || 'No questions were returned.');
+
+    const list = document.getElementById('question-list');
+    list.innerHTML = '';
+    data.questions.forEach(q => list.appendChild(qbFill(q)));
+    qbRenumber();
+    const t = document.getElementById('quiz-title-input');
+    if (t && !t.value.trim() && data.title) t.value = data.title;
+    aiMsg(`Generated ${data.questions.length} question${data.questions.length === 1 ? '' : 's'}. Review them below, then publish or save as draft.`, false);
+    showAdminToast('AI quiz generated. Please review before publishing.', 'success');
+    list.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (e) {
+    aiMsg('Generation failed: ' + e.message, true);
+  } finally {
+    window._aiBusy = false; btn.disabled = false; btn.textContent = 'Generate Questions';
+  }
+}
+
+function qbFill(q) {
+  const d = qbMake(q.type);
+  d.querySelector('.q-builder-input').value = q.text;
+  if (q.type === 'mcq') {
+    const rows = d.querySelectorAll('.choice-builder');
+    q.choices.forEach((c, i) => { if (rows[i]) rows[i].querySelector('input').value = c; });
+    if (rows[q.correct]) rows[q.correct].querySelector('.correct-marker').classList.add('marked');
+  } else if (q.type === 'tf') {
+    d.querySelectorAll('.correct-marker')[q.correct ? 0 : 1].classList.add('marked');
+  } else if (q.type === 'identification') {
+    d.querySelector('.ib-ans').value = q.answer;
+    d.querySelector('.ib-alt').value = (q.alternates || []).join('; ');
+  } else if (q.type === 'enumeration') {
+    d.querySelector('.eb-ans').value = q.answers.join('\n');
+    d.querySelector('.eb-ordered').checked = !!q.ordered;
+  } else if (q.type === 'matching') {
+    const addBtn = d.querySelector('.q-body > .btn-adm-secondary');
+    while (d.querySelectorAll('.mb-row').length < q.pairs.length && d.querySelectorAll('.mb-row').length < 10) mbAdd(addBtn);
+    const rows = d.querySelectorAll('.mb-row');
+    q.pairs.forEach((p, i) => { if (rows[i]) { rows[i].querySelector('.mb-l').value = p.left; rows[i].querySelector('.mb-r').value = p.right; } });
+  }
+  return d;
 }
 
 resetQuizCreate();
