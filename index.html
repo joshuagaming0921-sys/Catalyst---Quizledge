@@ -3879,6 +3879,20 @@ body[data-adm-view="settings"] .adm-topbar .btn-adm-primary{display:none!importa
 .adm-content{padding:16px 12px 32px!important}
 .stu-content{padding:18px 14px 32px!important}
 }
+
+/* ---- mobile tables: label column + value column, nothing squeezed ---- */
+@media (max-width:820px){
+.adm-table td{display:grid!important;grid-template-columns:minmax(92px,38%) minmax(0,1fr);column-gap:14px;row-gap:4px;align-items:start;text-align:right;max-width:none!important}
+.adm-table td::before{grid-column:1;grid-row:1;max-width:none!important;text-align:left}
+.adm-table td>*{grid-column:2;min-width:0;max-width:100%;justify-self:end;overflow-wrap:anywhere;word-break:break-word}
+.adm-table td br{display:none}
+.adm-table td small{font-size:12.5px;line-height:1.4}
+.adm-table td strong{font-size:15px;line-height:1.35}
+.adm-table td .attach-tag{display:block;margin:4px 0 0!important;padding:5px 7px;font-size:9px!important;line-height:1.7!important;text-align:left;white-space:normal;overflow-wrap:anywhere;word-break:break-all}
+.adm-table td:has(.adm-action-btn),.adm-table td[data-label="Actions"]{display:flex!important;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 12px}
+.adm-table td:has(.adm-action-btn)>*{justify-self:auto}
+.adm-table td[colspan]{display:flex!important;justify-content:center;text-align:center}
+}
 </style>
 <script>
 /* runs before first paint: if a saved Supabase session exists, don't show the landing page */
