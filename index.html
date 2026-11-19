@@ -3775,6 +3775,110 @@ html.ql-boot body::after{content:'LOADING...';position:fixed;inset:0;display:fle
   .adm-table tr,.adm-table-header{background:#fff!important;border:1.5px solid rgba(46,64,83,.3)!important;box-shadow:0 1px 3px rgba(46,64,83,.1)!important}
   .adm-table tr:active{box-shadow:0 6px 18px rgba(46,64,83,.18)!important}
 }
+
+/* ============================================================
+   PLATFORM SETTINGS — working switches (all screen sizes)
+============================================================ */
+.ps-list{display:flex;flex-direction:column;gap:16px}
+.ps-row{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--adm-border)}
+.ps-row.ps-last{padding-bottom:0;border-bottom:0}
+.ps-text{min-width:0}
+.ps-title{font-size:13px;font-weight:600;font-family:'Lato',sans-serif;color:var(--adm-text)}
+.ps-desc{font-size:11px;color:var(--adm-text-muted);font-family:'Lato',sans-serif;margin-top:2px;line-height:1.45}
+.ps-status{font-family:'Lato',sans-serif;font-size:12px;line-height:1.5;margin-top:14px;min-height:18px;color:var(--adm-text-muted)}
+.ps-status.ok{color:#15803d}.ps-status.err{color:#b91c1c}
+.adm-switch{position:relative;display:inline-block;flex:0 0 42px;width:42px;height:22px;cursor:pointer}
+.adm-switch input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer;z-index:1}
+.adm-switch-track{position:absolute;inset:0;background:#C3CBD2;border-radius:999px;transition:background .18s}
+.adm-switch-knob{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .18s}
+.adm-switch input:checked + .adm-switch-track{background:var(--adm-accent)}
+.adm-switch input:checked + .adm-switch-track .adm-switch-knob{transform:translateX(20px)}
+.adm-switch input:focus-visible + .adm-switch-track{outline:3px solid rgba(138,154,91,.55);outline-offset:2px}
+.adm-switch input:disabled{cursor:wait}
+
+/* settings that students feel (applied by the platform-settings script) */
+body.ql-no-lb a.stu-nav-link[onclick*="leaderboard"],
+body.ql-no-lb .m-tab[data-v="leaderboard"],
+body.ql-no-xp a.stu-nav-link[onclick*="quests"],
+body.ql-no-xp .m-tab[data-v="quests"],
+body.ql-no-xp .stu-exp-bar,
+body.ql-no-xp .topbar-stats,
+body.ql-no-lb.ql-no-xp .nav-progress-label{display:none!important}
+
+/* ============================================================
+   MOBILE FIX LAYER  (<= 820px only — desktop is untouched)
+   Loaded last on purpose so it wins the cascade.
+============================================================ */
+@media (max-width:820px){
+
+/* -- 1. one Close button on the note sheet (sticky header, 44px target) -- */
+#note-view-modal .nv-foot,#note-view-modal .nv-rule{display:none!important}
+#note-view-modal .nv-head{position:sticky;top:0;z-index:3;margin:0 -16px 14px!important;padding:12px 16px;background:var(--parchment);border-bottom:2px solid var(--indigo);align-items:center!important}
+#note-view-modal .nv-close-top{min-width:80px;min-height:44px;padding:0 14px;background:#fff!important;border:2px solid var(--indigo)!important;border-radius:8px;color:var(--indigo)!important;font:700 14px/1 'Lato',sans-serif!important}
+#note-view-modal .nv-close-top:active{background:var(--parchment-dark)!important}
+
+/* -- 2. scrolling: one scroller per sheet / page, no heavy paint layers -- */
+.note-view-modal-body{max-height:none!important;overflow:visible!important;padding-right:0!important}
+.modal-box{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.stu-main,.adm-main{overscroll-behavior-y:contain;min-height:0}
+.stu-sidebar,.adm-sidebar{overscroll-behavior:contain}
+.stu-crystal-bg{display:none!important}               /* blurred, animated blobs made iOS scrolling stall */
+#page-admin .lp-crystal-bg,#page-student .lp-crystal-bg{display:none!important}
+
+/* -- 3. no doubled borders / backgrounds on admin lists -- */
+.adm-table-card.adm-table-card,
+.adm-table-card.adm-table-card:hover{background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important;transform:none}
+.adm-table-header{background:#fff!important;border:1.5px solid rgba(46,64,83,.3)!important;border-radius:10px!important;box-shadow:0 1px 3px rgba(46,64,83,.1)!important;margin-bottom:14px!important;padding:14px 16px!important}
+.adm-table tr{background:#fff!important;border:1.5px solid rgba(46,64,83,.3)!important;border-radius:10px!important;box-shadow:0 1px 3px rgba(46,64,83,.1)!important;padding:6px 0!important;overflow:hidden}
+.adm-table tbody{gap:14px!important}
+.adm-table td{padding:12px 16px!important;min-height:44px}
+.adm-table td::before{font-family:'Lato',sans-serif!important;font-size:10.5px!important;font-weight:700;letter-spacing:.6px;color:#5b6b7a!important}
+/* one background layer only: flat page colour + the faint dot grid */
+#page-admin,#page-student{background:var(--parchment)!important}
+/* admin settings: the profile cards use the same look as the rest of admin */
+#adm-settings .qs-card{background:#fff;border:1.5px solid rgba(46,64,83,.3);border-radius:10px;box-shadow:0 1px 3px rgba(46,64,83,.1)}
+
+/* -- 4. admin top bar: compact, search only where it works -- */
+.adm-topbar{padding:calc(10px + var(--m-safe-t)) 16px 12px!important;gap:10px 12px!important}
+.adm-topbar-title{font-size:18px!important;line-height:1.3}
+body:not([data-adm-view="students"]):not([data-adm-view="quizzes"]) .adm-search{display:none!important}
+body[data-adm-view="quiz-create"] .adm-topbar .btn-adm-primary,
+body[data-adm-view="settings"] .adm-topbar .btn-adm-primary{display:none!important}
+
+/* -- 5. breathing room (the old layer packed everything in) -- */
+.adm-content{padding:20px 16px 36px!important}
+.adm-metrics{gap:14px!important}
+.metric-card{padding:18px 16px!important}
+.metric-label{font-size:11px!important;line-height:1.4;padding-right:26px}
+.adm-two-col{gap:18px!important;margin-bottom:18px!important}
+.adm-form-card{padding:20px 16px!important;margin-bottom:0}
+#adm-settings .adm-two-col>div:first-child{margin-bottom:0}
+.adm-form-title{margin-bottom:16px}
+.adm-form-group{margin-bottom:2px}
+.ps-row{gap:14px;padding-bottom:16px}
+.ps-list{gap:18px}
+.ps-title{font-size:14px}
+.ps-desc{font-size:12px}
+.adm-switch{flex-basis:52px;width:52px;height:30px}
+.adm-switch-knob{top:3px;left:3px;width:24px;height:24px}
+.adm-switch input:checked + .adm-switch-track .adm-switch-knob{transform:translateX(22px)}
+
+.stu-topbar{padding:calc(12px + var(--m-safe-t)) 16px 14px!important;gap:12px!important}
+.stu-content{padding:22px 18px 36px!important}
+.section-header{margin-bottom:18px!important}
+.stats-row{gap:14px!important}
+.stat-block{padding:20px 14px!important}
+.card-grid,.notes-grid{gap:18px!important}
+.quest-item{padding:16px 14px!important;gap:12px!important}
+.lb-row{padding:14px 12px!important}
+.qs{gap:20px}
+.qs-card{padding:22px 18px}
+.modal-box{padding:24px 18px calc(24px + var(--m-safe-b))!important}
+}
+@media (max-width:380px){
+.adm-content{padding:16px 12px 32px!important}
+.stu-content{padding:18px 14px 32px!important}
+}
 </style>
 <script>
 /* runs before first paint: if a saved Supabase session exists, don't show the landing page */
@@ -4278,8 +4382,8 @@ html.ql-boot body::after{content:'LOADING...';position:fixed;inset:0;display:fle
 ============================================================ -->
 <div class="modal-overlay" id="note-view-modal">
   <div class="modal-box" style="max-width:560px;">
-    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; gap:12px;">
-      <div style="flex:1;">
+    <div class="nv-head" style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; gap:12px;">
+      <div style="flex:1; min-width:0;">
         <span class="modal-title" id="nv-title" style="margin-bottom:6px; word-break:break-word;"></span>
         <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
           <span style="font-family:'Press Start 2P',monospace; font-size:6px; color:var(--moss); letter-spacing:1px;" id="nv-author"></span>
@@ -4287,14 +4391,14 @@ html.ql-boot body::after{content:'LOADING...';position:fixed;inset:0;display:fle
           <span id="nv-subject" class="note-subject" style="font-family:'Press Start 2P',monospace; font-size:6px;"></span>
         </div>
       </div>
-      <button onclick="closeNoteView()" style="background:none; border:none; cursor:pointer; font-size:18px; color:rgba(46,64,83,0.5); flex-shrink:0; line-height:1;">Close</button>
+      <button class="nv-close-top" onclick="closeNoteView()" style="background:none; border:none; cursor:pointer; font-size:18px; color:rgba(46,64,83,0.5); flex-shrink:0; line-height:1;">Close</button>
     </div>
-    <div style="border-top:2px solid var(--indigo); margin-bottom:16px;"></div>
+    <div class="nv-rule" style="border-top:2px solid var(--indigo); margin-bottom:16px;"></div>
     <div class="note-view-modal-body">
       <div id="nv-attach" style="display:none"></div>
       <div class="note-full-content" id="nv-content"></div>
     </div>
-    <div style="margin-top:18px; text-align:right;">
+    <div class="nv-foot" style="margin-top:18px; text-align:right;">
       <button class="btn-pixel" style="font-size:7px;" onclick="closeNoteView()">CLOSE</button>
     </div>
   </div>
@@ -4384,7 +4488,7 @@ html.ql-boot body::after{content:'LOADING...';position:fixed;inset:0;display:fle
       <a class="stu-nav-link" onclick="navStu('notes')">
         <span class="nav-icon"><svg class="px-icon" viewBox="0 0 10 11" width="16" height="18" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="6" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="2" y="6" width="6" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="2" y="8" width="4" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="9" y="9" width="1" height="1"/><rect x="0" y="10" width="10" height="1"/></g></svg></span> Notes
       </a>
-      <div class="nav-section-label">PROGRESS</div>
+      <div class="nav-section-label nav-progress-label">PROGRESS</div>
       <a class="stu-nav-link" onclick="navStu('leaderboard')">
         <span class="nav-icon"><svg class="px-icon" viewBox="0 0 11 9" width="16" height="13" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="8" y="0" width="3" height="1"/><rect x="8" y="1" width="3" height="1"/><rect x="4" y="2" width="3" height="1"/><rect x="8" y="2" width="3" height="1"/><rect x="4" y="3" width="3" height="1"/><rect x="8" y="3" width="3" height="1"/><rect x="4" y="4" width="3" height="1"/><rect x="8" y="4" width="3" height="1"/><rect x="0" y="5" width="3" height="1"/><rect x="4" y="5" width="3" height="1"/><rect x="8" y="5" width="3" height="1"/><rect x="0" y="6" width="3" height="1"/><rect x="4" y="6" width="3" height="1"/><rect x="8" y="6" width="3" height="1"/><rect x="0" y="7" width="3" height="1"/><rect x="4" y="7" width="3" height="1"/><rect x="8" y="7" width="3" height="1"/><rect x="0" y="8" width="11" height="1"/></g></svg></span> Leaderboard
       </a>
@@ -5150,40 +5254,41 @@ html.ql-boot body::after{content:'LOADING...';position:fixed;inset:0;display:fle
             </div>
           </div>
 
-          <div class="adm-form-card">
+          <div class="adm-form-card" id="ps-card">
             <div class="adm-form-title">Platform Settings</div>
-            <div style="display:flex; flex-direction:column; gap:16px;">
-              <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:12px; border-bottom:1px solid var(--adm-border);">
-                <div>
-                  <div style="font-size:13px; font-weight:600; font-family:'Lato',sans-serif; color:var(--adm-text);">Note Approval Required</div>
-                  <div style="font-size:11px; color:var(--adm-text-muted); font-family:'Lato',sans-serif;">Notes must be reviewed before being visible to students</div>
+            <div class="ps-list">
+              <div class="ps-row">
+                <div class="ps-text">
+                  <div class="ps-title">Note Approval Required</div>
+                  <div class="ps-desc">Notes must be reviewed before being visible to students</div>
                 </div>
-                <label style="cursor:pointer; position:relative; display:inline-block; width:42px; height:22px;">
-                  <input type="checkbox" checked style="opacity:0; width:0; height:0;">
-                  <span style="position:absolute; inset:0; background:var(--adm-accent); border-radius:11px; display:flex; align-items:center; padding:2px;"><span style="width:18px; height:18px; background:#FFF; border-radius:50%; margin-left:auto;"></span></span>
+                <label class="adm-switch" aria-label="Note Approval Required">
+                  <input type="checkbox" data-ps="note_approval" checked>
+                  <span class="adm-switch-track"><span class="adm-switch-knob"></span></span>
                 </label>
               </div>
-              <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:12px; border-bottom:1px solid var(--adm-border);">
-                <div>
-                  <div style="font-size:13px; font-weight:600; font-family:'Lato',sans-serif; color:var(--adm-text);">Leaderboard Visible</div>
-                  <div style="font-size:11px; color:var(--adm-text-muted); font-family:'Lato',sans-serif;">Students can see class rankings</div>
+              <div class="ps-row">
+                <div class="ps-text">
+                  <div class="ps-title">Leaderboard Visible</div>
+                  <div class="ps-desc">Students can see class rankings</div>
                 </div>
-                <label style="cursor:pointer; position:relative; display:inline-block; width:42px; height:22px;">
-                  <input type="checkbox" checked style="opacity:0; width:0; height:0;">
-                  <span style="position:absolute; inset:0; background:var(--adm-accent); border-radius:11px; display:flex; align-items:center; padding:2px;"><span style="width:18px; height:18px; background:#FFF; border-radius:50%; margin-left:auto;"></span></span>
+                <label class="adm-switch" aria-label="Leaderboard Visible">
+                  <input type="checkbox" data-ps="leaderboard_visible" checked>
+                  <span class="adm-switch-track"><span class="adm-switch-knob"></span></span>
                 </label>
               </div>
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div>
-                  <div style="font-size:13px; font-weight:600; font-family:'Lato',sans-serif; color:var(--adm-text);">XP / Gamification Active</div>
-                  <div style="font-size:11px; color:var(--adm-text-muted); font-family:'Lato',sans-serif;">Enable XP, levels, and quests for students</div>
+              <div class="ps-row ps-last">
+                <div class="ps-text">
+                  <div class="ps-title">XP / Gamification Active</div>
+                  <div class="ps-desc">Enable XP, levels, and quests for students</div>
                 </div>
-                <label style="cursor:pointer; position:relative; display:inline-block; width:42px; height:22px;">
-                  <input type="checkbox" checked style="opacity:0; width:0; height:0;">
-                  <span style="position:absolute; inset:0; background:var(--adm-accent); border-radius:11px; display:flex; align-items:center; padding:2px;"><span style="width:18px; height:18px; background:#FFF; border-radius:50%; margin-left:auto;"></span></span>
+                <label class="adm-switch" aria-label="XP / Gamification Active">
+                  <input type="checkbox" data-ps="gamification_active" checked>
+                  <span class="adm-switch-track"><span class="adm-switch-knob"></span></span>
                 </label>
               </div>
             </div>
+            <div class="ps-status" id="ps-status" role="status"></div>
           </div>
         </div>
       </div>
@@ -6700,7 +6805,7 @@ async function submitUploadNote() {
   if (file && (file.size === 0 || file.size > NOTE_MAX)) { showNoteMsg(file.size === 0 ? 'That file is empty.' : 'File is too large (max 10 MB).', 'error'); return; }
   const okNote = await askConfirm({
     title: 'Submit this note?',
-    message: `"${title}" will be sent to your teacher for review. It becomes visible to your classmates once approved.`,
+    message: (window.QL_PLATFORM && window.QL_PLATFORM.note_approval === false) ? `"${title}" will be shared with your class right away.` : `"${title}" will be sent to your teacher for review. It becomes visible to your classmates once approved.`,
     confirmText: 'Submit', tone: 'primary', icon: 'send'
   });
   if (!okNote) return;
@@ -6710,14 +6815,18 @@ async function submitUploadNote() {
     const { data: enrollments } = await _supabase.from('enrollments').select('classroom_id').eq('student_id', currentUser.id).limit(1);
     const classroomId = enrollments && enrollments.length > 0 ? enrollments[0].classroom_id : null;
     if (!classroomId) { showNoteMsg('Join a class first — your teacher reviews notes from their own classes.', 'error'); return; }
-    const row = { title, content, subject, author_id: currentUser.id, classroom_id: classroomId, status: 'pending' };
+    const row = { title, content, subject, author_id: currentUser.id, classroom_id: classroomId, status: (window.QL_PLATFORM && window.QL_PLATFORM.note_approval === false) ? 'approved' : 'pending' };
     if (file) {
       path = `${currentUser.id}/${Date.now()}_${file.name.replace(/[^A-Za-z0-9._-]/g, '_')}`;
       const up = await _supabase.storage.from(NOTE_BUCKET).upload(path, file, { contentType: NOTE_TYPES[ext], upsert: false });
       if (up.error) { path = null; showNoteMsg('File upload failed: ' + up.error.message + (/bucket|policy|security/i.test(up.error.message) ? ' (run supabase_setup.sql first)' : ''), 'error'); return; }
       Object.assign(row, { file_path: path, file_name: file.name, file_type: NOTE_TYPES[ext], file_size: file.size });
     }
-    const { error } = await _supabase.from('notes').insert(row);
+    let { error } = await _supabase.from('notes').insert(row);
+    if (error && row.status === 'approved' && /row-level security|42501/i.test((error.code || '') + ' ' + (error.message || ''))) {
+      row.status = 'pending';
+      ({ error } = await _supabase.from('notes').insert(row));
+    }
     if (error) {
       if (path) await _supabase.storage.from(NOTE_BUCKET).remove([path]);
       showNoteMsg('Failed to upload note: ' + error.message + (/file_(path|name|type|size)|schema cache/i.test(error.message) ? ' (run supabase_setup.sql first)' : ''), 'error');
@@ -6726,7 +6835,7 @@ async function submitUploadNote() {
     studentState.notesShared++;
     await _supabase.from('student_stats').upsert({ student_id: currentUser.id, notes_shared: studentState.notesShared }, { onConflict: 'student_id' });
     updateUserUI();
-    showNoteMsg('Note submitted! It will appear once approved by your teacher.', 'success');
+    showNoteMsg(row.status === 'approved' ? 'Note shared with your class!' : 'Note submitted! It will appear once approved by your teacher.', 'success');
     setTimeout(async () => { closeNoteModal(); await renderStudentNotes(); }, 1800);
   } finally { window._noteBusy = false; }
 }
@@ -8176,6 +8285,7 @@ checkPasswordCriteria();
     if (admOn){
       var ac = ($('.adm-view.active')||{}).id || '';
       var av2 = ac.replace('adm-','');
+      if (document.body.getAttribute('data-adm-view') !== av2) document.body.setAttribute('data-adm-view', av2);
       var m2 = {'quiz-create':'quizzes'};
       var t2 = m2[av2] || av2;
       $$('#m-tabs-adm .m-tab[data-v]').forEach(function(b){ b.classList.toggle('active', b.dataset.v===t2); });
@@ -8480,6 +8590,96 @@ checkPasswordCriteria();
   }
   hook('switchStuView', 'settings', function(){ return $('#stu-settings .qs-host'); });
   hook('switchAdmView', 'settings', function(){ return $('#adm-settings .adm-two-col > div:first-child'); });
+})();
+</script>
+<script>
+/* ============================================================
+   PLATFORM SETTINGS — Note approval, Leaderboard, XP/Gamification.
+   Teacher toggles are saved to Supabase table `platform_settings`
+   (see platform_settings.sql). If the table does not exist yet,
+   the toggles still work and are kept on this device.
+============================================================ */
+(function(){
+  var KEY = 'ql_platform_settings';
+  var DEFAULTS = { note_approval:true, leaderboard_visible:true, gamification_active:true };
+  var loadedAt = 0, loading = null;
+  window.QL_PLATFORM = Object.assign({}, DEFAULTS);
+
+  function readLocal(){ try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch(e){ return null; } }
+  function writeLocal(v){ try { localStorage.setItem(KEY, JSON.stringify(v)); } catch(e){} }
+  function status(text, kind){ var el = document.getElementById('ps-status'); if (el){ el.textContent = text || ''; el.className = 'ps-status' + (kind ? ' ' + kind : ''); } }
+  function isBlocked(view){
+    var p = window.QL_PLATFORM;
+    return (view === 'leaderboard' && p.leaderboard_visible === false) || (view === 'quests' && p.gamification_active === false);
+  }
+  function apply(){
+    var p = window.QL_PLATFORM, b = document.body;
+    b.classList.toggle('ql-no-lb', p.leaderboard_visible === false);
+    b.classList.toggle('ql-no-xp', p.gamification_active === false);
+    document.querySelectorAll('input[data-ps]').forEach(function(i){ i.checked = p[i.dataset.ps] !== false; });
+    var cur = document.querySelector('#page-student.active .stu-view.active');
+    if (cur && isBlocked(cur.id.replace('stu-','')) && typeof window.switchStuView === 'function') window.switchStuView('dashboard');
+  }
+  async function load(force){
+    if (!force && Date.now() - loadedAt < 30000) return loading;
+    loadedAt = Date.now();
+    loading = (async function(){
+      var s = Object.assign({}, DEFAULTS, readLocal() || {});
+      try {
+        var r = await _supabase.from('platform_settings').select('note_approval, leaderboard_visible, gamification_active').eq('id', 1).maybeSingle();
+        if (!r.error && r.data){ s = Object.assign({}, DEFAULTS, r.data); writeLocal(s); }
+      } catch(e){}
+      window.QL_PLATFORM = s; apply();
+    })();
+    return loading;
+  }
+  async function save(key, val, input){
+    if (key === 'note_approval' && val === false && typeof askConfirm === 'function'){
+      var ok = await askConfirm({ title:'Turn off note approval?', message:'Notes students upload will be visible to their class right away, without your review.', confirmText:'Turn Off', cancelText:'Keep On', tone:'warning', icon:'warn' });
+      if (!ok){ input.checked = true; return; }
+    }
+    var next = Object.assign({}, window.QL_PLATFORM); next[key] = val;
+    window.QL_PLATFORM = next; writeLocal(next); apply();
+    input.disabled = true; status('Saving...');
+    try {
+      var row = Object.assign({ id:1, updated_at:new Date().toISOString() }, next);
+      var r = await _supabase.from('platform_settings').upsert(row, { onConflict:'id' });
+      if (r.error) status('Saved on this device only (' + r.error.message + '). Run platform_settings.sql in Supabase so students get it too.', 'err');
+      else status('Saved. Students will see this the next time their screen refreshes.', 'ok');
+    } catch(e){ status('Saved on this device only: ' + (e && e.message ? e.message : e), 'err'); }
+    input.disabled = false;
+  }
+  document.addEventListener('change', function(e){
+    var i = e.target.closest && e.target.closest('input[data-ps]'); if (!i) return;
+    save(i.dataset.ps, i.checked, i);
+  });
+
+  /* hooks into the app's own functions */
+  var _showPage = window.showPage;
+  if (typeof _showPage === 'function') window.showPage = function(id){
+    var r = _showPage.apply(this, arguments);
+    if (id === 'student' || id === 'admin') load(true);
+    return r;
+  };
+  var _stu = window.switchStuView;
+  if (typeof _stu === 'function') window.switchStuView = function(view){
+    if (isBlocked(view)) view = 'dashboard';
+    var r = _stu.call(this, view);
+    load(false);
+    return r;
+  };
+  var _adm = window.switchAdmView;
+  if (typeof _adm === 'function') window.switchAdmView = function(view){
+    var r = _adm.apply(this, arguments);
+    if (view === 'settings') load(true);
+    return r;
+  };
+  var _claim = window.claimQuest;
+  if (typeof _claim === 'function') window.claimQuest = function(){
+    if (window.QL_PLATFORM.gamification_active === false) return;
+    return _claim.apply(this, arguments);
+  };
+  apply();
 })();
 </script>
 </body>
