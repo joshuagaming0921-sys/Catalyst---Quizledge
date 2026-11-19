@@ -3893,32 +3893,6 @@ body[data-adm-view="settings"] .adm-topbar .btn-adm-primary{display:none!importa
 .adm-table td:has(.adm-action-btn)>*{justify-self:auto}
 .adm-table td[colspan]{display:flex!important;justify-content:center;text-align:center}
 }
-
-/* ===== LIVE GAME + FLASHCARDS ===== */
-#lv-ov{display:none;position:fixed;inset:0;z-index:10040;background:var(--indigo);color:#fff;overflow:auto;padding:20px;font-family:'Lato',sans-serif}
-#lv-ov.open{display:block}
-.lv-wrap{max-width:860px;margin:0 auto}
-.lv-top{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:22px;font-family:'Press Start 2P',monospace;font-size:9px;line-height:1.6}
-.lv-c{text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center}
-.lv-pin{font-family:'Press Start 2P',monospace;font-size:clamp(28px,8vw,56px);letter-spacing:8px;color:var(--moss)}
-.lv-q{font-size:clamp(18px,3.5vw,28px);font-weight:700;line-height:1.4}
-.lv-h2{font-family:'Press Start 2P',monospace;font-size:11px;margin-top:6px}
-.lv-names{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
-.lv-names span{background:rgba(255,255,255,.12);padding:6px 12px}
-.lv-ch{width:100%;padding:16px;border:3px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);font-size:18px;text-align:left;cursor:default}
-.lv-ch[onclick]{cursor:pointer}.lv-ch[onclick]:hover{border-color:var(--moss)}
-.lv-ch.sel{border-color:#fff;background:rgba(255,255,255,.25)}
-.lv-ch.ok{background:#16A34A;border-color:#16A34A}
-.lv-ch.bad{background:#DC2626;border-color:#DC2626}
-.lv-ch.dim{opacity:.4}
-.lv-bar{width:100%;height:12px;background:rgba(255,255,255,.2)}.lv-bar i{display:block;height:100%;background:var(--moss)}
-.lv-row{width:100%;display:flex;justify-content:space-between;padding:9px 14px;background:rgba(255,255,255,.1);text-align:left}
-.lv-pod{width:100%;padding:14px;font-weight:700;background:var(--moss);color:var(--indigo)}
-.lv-pod.p1{opacity:.85}.lv-pod.p2{opacity:.7}
-.fc-card{min-height:240px;background:#FAFAF0;color:var(--indigo);border:3px solid var(--moss);box-shadow:6px 6px 0 var(--moss-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:30px;text-align:center;font-size:22px;font-weight:700;cursor:pointer}
-.fc-card small{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--terracotta)}
-.lv-nav{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
-#lv-ov select{padding:6px;margin-left:6px}
 </style>
 <script>
 /* runs before first paint: if a saved Supabase session exists, don't show the landing page */
@@ -4439,7 +4413,7 @@ body[data-adm-view="settings"] .adm-topbar .btn-adm-primary{display:none!importa
       <div class="note-full-content" id="nv-content"></div>
     </div>
     <div class="nv-foot" style="margin-top:18px; text-align:right;">
-      <button class="btn-pixel terracotta" style="font-size:7px;margin-right:8px;" onclick="studyNote()">STUDY AS FLASHCARDS</button><button class="btn-pixel" style="font-size:7px;" onclick="closeNoteView()">CLOSE</button>
+      <button class="btn-pixel" style="font-size:7px;" onclick="closeNoteView()">CLOSE</button>
     </div>
   </div>
 </div>
@@ -4654,7 +4628,6 @@ body[data-adm-view="settings"] .adm-topbar .btn-adm-primary{display:none!importa
           <span class="section-title">QUIZZES</span>
           <span class="section-sub">&gt; School-sanctioned assessments</span>
         </div>
-        <div style="display:flex;gap:10px;align-items:flex-end;margin-bottom:20px;flex-wrap:wrap;"><div style="flex:1;min-width:200px;"><label style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--indigo);display:block;margin-bottom:8px;letter-spacing:1px;">JOIN A LIVE GAME</label><input type="text" id="lv-pin-in" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit PIN" style="width:100%;padding:10px 14px;border:2px solid var(--indigo);background:#FFF;font-family:'Lato',sans-serif;font-size:14px;color:var(--indigo);" onkeydown="if(event.key==='Enter')joinLive()"></div><button class="btn-pixel" style="padding:10px 18px;" onclick="joinLive()">JOIN &gt;&gt;</button></div>
         <div class="card-grid" id="stu-quizzes-grid">
           <div class="empty-state" style="grid-column:1/-1;">
             <span class="empty-state-icon"><svg class="px-icon" viewBox="0 0 9 11" width="30" height="37" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="9" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="3" y="2" width="3" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="6" y="3" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="5" y="5" width="2" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="4" y="6" width="2" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="8" y="9" width="1" height="1"/><rect x="0" y="10" width="9" height="1"/></g></svg></span>
@@ -4744,7 +4717,6 @@ body[data-adm-view="settings"] .adm-topbar .btn-adm-primary{display:none!importa
           <span class="section-title">QUESTS</span>
           <span class="section-sub">&gt; Complete quests to earn XP and level up</span>
         </div>
-        <div class="quest-list" id="quests-recurring"></div>
         <div class="quest-list" id="quests-list">
           <div style="text-align:center;padding:32px;font-family:'Lato',sans-serif;color:rgba(46,64,83,0.45);font-size:13px;">Loading quests...</div>
         </div>
@@ -4794,7 +4766,6 @@ body[data-adm-view="settings"] .adm-topbar .btn-adm-primary{display:none!importa
           <button id="cd-tab-quizzes" onclick="cdSwitchTab('quizzes')" style="font-family:'Press Start 2P',monospace;font-size:7px;padding:9px 16px;background:var(--parchment);border:2px solid var(--indigo);border-bottom:2px solid var(--parchment);margin-bottom:-2px;cursor:pointer;color:var(--indigo);letter-spacing:1px;">QUIZZES</button>
           <button id="cd-tab-notes" onclick="cdSwitchTab('notes')" style="font-family:'Press Start 2P',monospace;font-size:7px;padding:9px 16px;background:transparent;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;cursor:pointer;color:rgba(46,64,83,0.4);letter-spacing:1px;">NOTES</button>
           <button id="cd-tab-members" onclick="cdSwitchTab('members')" style="font-family:'Press Start 2P',monospace;font-size:7px;padding:9px 16px;background:transparent;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;cursor:pointer;color:rgba(46,64,83,0.4);letter-spacing:1px;">MEMBERS</button>
-          <button id="cd-tab-challenges" onclick="cdSwitchTab('challenges')" style="font-family:'Press Start 2P',monospace;font-size:7px;padding:9px 16px;background:transparent;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;cursor:pointer;color:rgba(46,64,83,0.4);letter-spacing:1px;">CHALLENGES</button>
         </div>
 
         <!-- Tab: Quizzes -->
@@ -4811,7 +4782,6 @@ body[data-adm-view="settings"] .adm-topbar .btn-adm-primary{display:none!importa
         </div>
 
         <!-- Tab: Members -->
-        <div id="cd-panel-challenges" style="display:none;"><div id="cd-challenges-list" style="display:flex;flex-direction:column;gap:12px;"></div></div>
         <div id="cd-panel-members" style="display:none;">
           <div id="cd-members-list" style="display:flex;flex-direction:column;gap:8px;"></div>
         </div>
@@ -4821,8 +4791,6 @@ body[data-adm-view="settings"] .adm-topbar .btn-adm-primary{display:none!importa
   </main>
 </div>
 
-
-<div id="lv-ov"></div>
 
 <div class="score-overlay" id="score-overlay">
   <div class="score-box">
@@ -6064,7 +6032,7 @@ const QUESTS = [
   }
 ];
 
-async function renderQuests() { renderRecurringQuests();
+async function renderQuests() {
   const list = document.getElementById('quests-list');
   if (!list || !currentUser) return;
 
@@ -6360,7 +6328,7 @@ async function renderStudentQuizzes() {
         <span class="card-meta">${q.classrooms ? escHtml(q.classrooms.code + ' — ' + q.classrooms.name) : ''}</span>
         <span class="card-meta">${q.time_limit_mins || 30} min &nbsp;·&nbsp; ${(q.questions||[]).length} questions</span>
         ${done
-          ? `<div class="card-progress"><div class="progress-label"><span>Your Score</span><span>${score}%</span></div><div class="progress-bar"><div class="progress-fill ${score >= (q.passing_score||75) ? '' : 'terracotta'}" style="width:${score}%"></div></div></div><button class="btn-pixel" style="font-size:7px;padding:8px 14px;width:100%;margin-top:12px;" onclick="event.stopPropagation();studyQuiz('${q.id}')">STUDY FLASHCARDS</button>`
+          ? `<div class="card-progress"><div class="progress-label"><span>Your Score</span><span>${score}%</span></div><div class="progress-bar"><div class="progress-fill ${score >= (q.passing_score||75) ? '' : 'terracotta'}" style="width:${score}%"></div></div></div>`
           : `<button class="btn-pixel" style="font-size:7px;padding:8px 14px;width:100%;margin-top:12px;">TAKE QUIZ &gt;&gt;</button>`
         }
       </div>
@@ -6760,7 +6728,7 @@ function notePreview(n) {
   return (c ? escHtml(c.substring(0, 160).replace(/\n/g, ' ')) + (c.length > 160 ? '…' : '') : '') + (has ? `<span class="attach-tag">ATTACHMENT · ${escHtml(fileExt(f || '').toUpperCase() || 'FILE')}</span>` : '');
 }
 function nvClearUrl() { if (_nvUrl) { URL.revokeObjectURL(_nvUrl); _nvUrl = null; } }
-function showNote(n) { _nvCur = n;
+function showNote(n) {
   nvClearUrl();
   document.getElementById('nv-title').textContent = n.title;
   document.getElementById('nv-author').textContent = 'by ' + n.authorShort;
@@ -7239,8 +7207,6 @@ async function renderAdminQuizzes() {
       <td><span class="badge ${q.status === 'published' ? 'badge-active' : q.status === 'draft' ? 'badge-pending' : 'badge-inactive'}">${q.status}</span></td>
       <td>
         ${q.status !== 'published' ? `<button class="adm-action-btn" style="color:var(--adm-success);border-color:rgba(22,163,74,0.3);" onclick="toggleQuizStatus('${q.id}','published')">Publish</button>` : `<button class="adm-action-btn" onclick="toggleQuizStatus('${q.id}','draft')">Unpublish</button>`}
-        <button class="adm-action-btn" style="color:var(--adm-success);border-color:rgba(22,163,74,0.3);" onclick="hostLive('${q.id}')">Go Live</button>
-        <button class="adm-action-btn" onclick="challengeQuiz('${q.id}')">Team Challenge</button>
         <button class="adm-action-btn danger" data-title="${escHtml(q.title)}" onclick="deleteQuiz('${q.id}', this.dataset.title)">Delete</button>
       </td>
     </tr>`;
@@ -7609,7 +7575,7 @@ async function openClassDetail(classroomId) {
 }
 
 function cdSwitchTab(tab) {
-  const tabs = ['quizzes','notes','members','challenges'];
+  const tabs = ['quizzes','notes','members'];
   tabs.forEach(t => {
     const btn = document.getElementById('cd-tab-' + t);
     const panel = document.getElementById('cd-panel-' + t);
@@ -7627,7 +7593,6 @@ function cdSwitchTab(tab) {
   if (tab === 'quizzes') renderClassDetailQuizzes();
   if (tab === 'notes') renderClassDetailNotes();
   if (tab === 'members') renderClassDetailMembers();
-  if (tab === 'challenges') renderClassDetailChallenges();
 }
 
 async function renderClassDetailQuizzes() {
@@ -7664,7 +7629,7 @@ async function renderClassDetailQuizzes() {
         <span class="card-meta">${q.time_limit_mins || 30} min &nbsp;·&nbsp; ${(q.questions||[]).length} questions</span>
         ${q.instructions ? `<p style="font-family:'Lato',sans-serif;font-size:12px;color:rgba(46,64,83,0.6);margin-top:6px;">${escHtml(q.instructions)}</p>` : ''}
         ${done
-          ? `<div class="card-progress"><div class="progress-label"><span>Your Score</span><span>${score}%</span></div><div class="progress-bar"><div class="progress-fill ${score >= (q.passing_score||75) ? '' : 'terracotta'}" style="width:${score}%"></div></div></div><button class="btn-pixel" style="font-size:7px;padding:8px 14px;width:100%;margin-top:12px;" onclick="event.stopPropagation();studyQuiz('${q.id}')">STUDY FLASHCARDS</button>`
+          ? `<div class="card-progress"><div class="progress-label"><span>Your Score</span><span>${score}%</span></div><div class="progress-bar"><div class="progress-fill ${score >= (q.passing_score||75) ? '' : 'terracotta'}" style="width:${score}%"></div></div></div>`
           : `<button class="btn-pixel" style="font-size:7px;padding:8px 14px;width:100%;margin-top:12px;">TAKE QUIZ &gt;&gt;</button>`
         }
       </div>
@@ -8730,317 +8695,6 @@ checkPasswordCriteria();
   };
   apply();
 })();
-</script>
-<script>
-/* ============================================================
-   LIVE GAME (speed + streak scoring, green/red feedback) + FLASHCARDS
-   Needs live-game.sql run once in Supabase.
-   Students only receive questions WITHOUT answers; the host's browser
-   grades each question, so answers never reach student devices.
-============================================================ */
-const LV_TYPES = ['mcq','tf','identification'];
-let LV = null, FC = null;
-const lvEl = () => document.getElementById('lv-ov');
-function lvShow(h) { const o = lvEl(); o.innerHTML = '<div class="lv-wrap">' + h + '</div>'; o.classList.add('open'); }
-function lvClose() {
-  if (LV) { clearInterval(LV.timer); LV.ch.forEach(c => _supabase.removeChannel(c)); if (LV.role === 'host' && LV.s.status !== 'ended') _supabase.from('game_sessions').update({ status: 'ended' }).eq('id', LV.s.id); }
-  LV = null; FC = null; const o = lvEl(); o.classList.remove('open'); o.innerHTML = '';
-}
-/* speed + streak: 500-1000 for a correct answer (faster = more), +100 per prior consecutive correct (max +500) */
-const lvScore = (ok, ms, lim, st) => ok ? Math.round(500 + 500 * Math.max(0, 1 - ms / (lim * 1000))) + Math.min(st, 5) * 100 : 0;
-const lvChoices = q => q.type === 'tf' ? ['True', 'False'] : (q.choices || []);
-const lvVal = (q, i) => q.type === 'tf' ? i === 0 : i;
-
-/* ---------- HOST (teacher / projector view) ---------- */
-async function hostLive(quizId) {
-  const { data: q } = await _supabase.from('quizzes').select('title, questions').eq('id', quizId).single();
-  const full = ((q && q.questions) || []).map(x => ({ ...x, type: qType(x) })).filter(x => LV_TYPES.includes(x.type));
-  if (!full.length) { askNotice('Live games support Multiple Choice, True/False and Identification questions. This quiz has none.', 'Cannot go live'); return; }
-  const pub = full.map(x => ({ type: x.type, text: x.text, choices: x.choices || null }));
-  const pin = String(Math.floor(100000 + Math.random() * 900000));
-  const { data: s, error } = await _supabase.from('game_sessions').insert({ pin, quiz_id: quizId, teacher_id: currentUser.id, status: 'lobby', q_index: -1, q_limit: 20, questions_public: pub }).select().single();
-  if (error) { askNotice('Could not start the live game: ' + error.message + '\n\nHave you run live-game.sql in Supabase?', 'Live game'); return; }
-  LV = { role: 'host', s, full, pub, title: q.title, players: [], ch: [], lim: 20 };
-  LV.ch.push(_supabase.channel('gh' + s.id)
-    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'game_players', filter: 'session_id=eq.' + s.id }, lvPlayers)
-    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'game_answers', filter: 'session_id=eq.' + s.id }, lvHostAnswered)
-    .subscribe());
-  await lvPlayers();
-}
-async function lvPlayers() {
-  if (!LV) return;
-  const { data } = await _supabase.from('game_players').select('*').eq('session_id', LV.s.id).order('points', { ascending: false });
-  LV.players = data || [];
-  if (LV.s.status === 'lobby' || LV.s.status === 'ended') lvHostRender(); else lvHostAnswered();
-}
-async function lvHostAnswered() {
-  if (!LV || LV.s.status !== 'question') return;
-  const { count } = await _supabase.from('game_answers').select('*', { count: 'exact', head: true }).eq('session_id', LV.s.id).eq('q_index', LV.s.q_index);
-  const e = document.getElementById('lv-cnt'); if (e) e.textContent = count + ' / ' + LV.players.length + ' answered';
-  if (LV.players.length && count >= LV.players.length) lvReveal();
-}
-async function lvSet(u) {
-  const { data } = await _supabase.from('game_sessions').update(u).eq('id', LV.s.id).select().single();
-  if (data) LV.s = data; lvHostRender();
-}
-async function lvNext() {
-  const i = LV.s.q_index + 1;
-  if (i >= LV.full.length) { clearInterval(LV.timer); await lvSet({ status: 'ended' }); return; }
-  if (i === 0) { const l = document.getElementById('lv-lim'); LV.lim = l ? +l.value : 20; }
-  await lvSet({ status: 'question', q_index: i, q_limit: LV.lim, q_started_at: new Date().toISOString(), reveal: null });
-  clearInterval(LV.timer); LV.t0 = Date.now();
-  LV.timer = setInterval(() => {
-    const left = LV.lim - (Date.now() - LV.t0) / 1000, b = document.getElementById('lv-bar');
-    if (b) b.style.width = Math.max(0, left / LV.lim * 100) + '%';
-    if (left <= 0) lvReveal();
-  }, 200);
-  lvHostAnswered();
-}
-async function lvReveal() {
-  if (!LV || LV.s.status !== 'question' || LV.busy) return;
-  LV.busy = 1; clearInterval(LV.timer);
-  const i = LV.s.q_index, q = LV.full[i], lim = LV.lim;
-  const { data: as } = await _supabase.from('game_answers').select('*').eq('session_id', LV.s.id).eq('q_index', i);
-  await Promise.all(LV.players.map(async p => {
-    const a = (as || []).find(x => x.student_id === p.student_id);
-    const ok = !!a && gradeQuestion(q, a.answer) > 0;
-    const pts = lvScore(ok, a ? Math.min(Math.max(a.ms || 0, 0), lim * 1000) : 0, lim, p.streak);
-    p.points += pts; p.streak = ok ? p.streak + 1 : 0; p.correct += ok ? 1 : 0;
-    if (a) await _supabase.from('game_answers').update({ is_correct: ok, points: pts }).eq('id', a.id);
-    await _supabase.from('game_players').update({ points: p.points, streak: p.streak, correct: p.correct }).eq('id', p.id);
-  }));
-  LV.players.sort((a, b) => b.points - a.points);
-  LV.busy = 0;
-  await lvSet({ status: 'reveal', reveal: { c: q.type === 'identification' ? q.answer : q.correct } });
-}
-function lvHostRender() {
-  if (!LV) return;
-  const s = LV.s, P = LV.players, T = LV.full.length, pq = LV.pub[s.q_index];
-  const board = n => P.slice(0, n).map((p, i) => `<div class="lv-row"><span>${i + 1}. ${escHtml(p.name)}${p.streak > 1 ? ' &middot; streak ' + p.streak : ''}</span><b>${p.points}</b></div>`).join('') || '<div class="lv-row">No players yet</div>';
-  const head = `<div class="lv-top"><span>${escHtml(LV.title)}</span><span><button class="btn-pixel" onclick="document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()">FULLSCREEN</button> <button class="btn-pixel terracotta" onclick="lvClose()">${s.status === 'ended' ? 'CLOSE' : 'END GAME'}</button></span></div>`;
-  let b;
-  if (s.status === 'lobby') {
-    b = `<div class="lv-c"><div class="lv-h2">JOIN WITH PIN</div><div class="lv-pin">${s.pin}</div><div>${P.length} player${P.length === 1 ? '' : 's'} joined</div><div class="lv-names">${P.map(p => `<span>${escHtml(p.name)}</span>`).join('')}</div><label>Seconds per question <select id="lv-lim"><option>10</option><option selected>20</option><option>30</option><option>45</option></select></label><button class="btn-pixel" onclick="lvNext()" ${P.length ? '' : 'disabled'}>START GAME</button></div>`;
-  } else if (s.status === 'ended') {
-    b = `<div class="lv-c"><div class="lv-h2">FINAL RESULTS</div>${P.slice(0, 3).map((p, i) => `<div class="lv-pod p${i}">${['1ST', '2ND', '3RD'][i]} &middot; ${escHtml(p.name)} &middot; ${p.points}</div>`).join('')}${board(15)}</div>`;
-  } else {
-    const rv = s.status === 'reveal';
-    b = `<div class="lv-c"><div class="lv-h2">QUESTION ${s.q_index + 1} / ${T}</div><div class="lv-q">${escHtml(pq.text)}</div>` +
-      (pq.type === 'identification'
-        ? (rv ? `<div class="lv-ch ok">${escHtml(s.reveal.c)}</div>` : '<div class="lv-ch dim">Students are typing their answers...</div>')
-        : lvChoices(pq).map((c, i) => `<div class="lv-ch ${rv ? (s.reveal.c === lvVal(pq, i) ? 'ok' : 'dim') : ''}">${escHtml(c)}</div>`).join('')) +
-      (rv ? `<div class="lv-h2">LEADERBOARD</div>${board(5)}<button class="btn-pixel" onclick="lvNext()">${s.q_index + 1 >= T ? 'FINISH' : 'NEXT QUESTION'}</button>`
-          : `<div class="lv-bar"><i id="lv-bar" style="width:100%"></i></div><div id="lv-cnt">0 / ${P.length} answered</div><button class="btn-pixel" onclick="lvReveal()">SKIP TIMER</button>`) + '</div>';
-  }
-  lvShow(head + b);
-}
-
-/* ---------- STUDENT ---------- */
-async function joinLive() {
-  const pin = (document.getElementById('lv-pin-in').value || '').trim();
-  const { data: s } = await _supabase.from('game_sessions').select('*').eq('pin', pin).neq('status', 'ended').order('created_at', { ascending: false }).limit(1).maybeSingle();
-  if (!s) { askNotice('No live game is open with that PIN.', 'Join game'); return; }
-  await _supabase.from('game_players').upsert({ session_id: s.id, student_id: currentUser.id, name: currentUser.name || currentUser.email || 'Player' }, { onConflict: 'session_id,student_id', ignoreDuplicates: true });
-  const { data: me } = await _supabase.from('game_players').select('*').eq('session_id', s.id).eq('student_id', currentUser.id).single();
-  if (!me) { askNotice('Could not join the game.', 'Join game'); return; }
-  LV = { role: 'stu', s: {}, me, ch: [] };
-  LV.ch.push(_supabase.channel('gs' + s.id).on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'game_sessions', filter: 'id=eq.' + s.id }, p => lvStuUpdate(p.new)).subscribe());
-  lvStuUpdate(s);
-}
-function lvStuUpdate(n) {
-  const prev = LV.s; LV.s = n;
-  if (n.status === 'question' && (prev.status !== 'question' || prev.q_index !== n.q_index)) {
-    LV.mine = undefined; LV.res = null; LV.t0 = Date.now(); clearInterval(LV.timer);
-    LV.timer = setInterval(() => { const b = document.getElementById('lv-bar'); if (b) b.style.width = Math.max(0, 100 - (Date.now() - LV.t0) / (LV.s.q_limit * 10)) + '%'; }, 200);
-  }
-  if (n.status === 'reveal' || n.status === 'ended') lvStuSync(); else lvStuRender();
-}
-async function lvStuSync() {
-  const s = LV.s;
-  if (s.status === 'reveal') {
-    const { data: a } = await _supabase.from('game_answers').select('is_correct, points').eq('session_id', s.id).eq('student_id', currentUser.id).eq('q_index', s.q_index).maybeSingle();
-    LV.res = a;
-  }
-  const { data: p } = await _supabase.from('game_players').select('*').eq('id', LV.me.id).single(); if (p) LV.me = p;
-  if (s.status === 'ended') {
-    const { data: all } = await _supabase.from('game_players').select('student_id').eq('session_id', s.id).order('points', { ascending: false });
-    LV.rank = (all || []).findIndex(x => x.student_id === currentUser.id) + 1; lvAward();
-  }
-  lvStuRender();
-}
-async function lvAward() {
-  if (LV.paid) return; LV.paid = 1; lsInc('ql_lv_' + dayKey());
-  const xp = Math.round(LV.me.points / 20); if (!xp) return;
-  studentState.xp += xp; while (studentState.xp >= getXpForNextLevel(studentState.level)) studentState.level++;
-  await _supabase.from('student_stats').update({ xp: studentState.xp, level: studentState.level }).eq('student_id', currentUser.id);
-  updateUserUI();
-}
-async function lvAnswer(v) {
-  if (LV.mine !== undefined || v === '' || v == null) return;
-  LV.mine = v; const ms = Date.now() - LV.t0; lvStuRender();
-  const { error } = await _supabase.from('game_answers').insert({ session_id: LV.s.id, student_id: currentUser.id, q_index: LV.s.q_index, answer: v, ms });
-  if (error) { LV.mine = undefined; lvStuRender(); }
-}
-function lvStuRender() {
-  if (!LV) return;
-  const s = LV.s, me = LV.me, pq = (s.questions_public || [])[s.q_index];
-  const head = `<div class="lv-top"><span>${escHtml(me.name)} &middot; ${me.points} pts${me.streak > 1 ? ' &middot; streak ' + me.streak : ''}</span><button class="btn-pixel terracotta" onclick="lvClose()">LEAVE</button></div>`;
-  let b;
-  if (s.status === 'lobby') b = '<div class="lv-c"><div class="lv-h2">YOU ARE IN!</div><div>Waiting for your teacher to start...</div></div>';
-  else if (s.status === 'ended') b = `<div class="lv-c"><div class="lv-h2">GAME OVER</div><div>Rank <b>#${LV.rank || '-'}</b> &middot; ${me.points} points &middot; ${me.correct} correct</div><div>+${Math.round(me.points / 20)} XP</div><button class="btn-pixel" onclick="lvClose()">CONTINUE</button></div>`;
-  else if (!pq) return;
-  else {
-    const rv = s.status === 'reveal', m = LV.mine, locked = m !== undefined, good = !!(LV.res && LV.res.is_correct);
-    let inner;
-    if (pq.type === 'identification') {
-      inner = rv ? `<div class="lv-ch ${good ? 'ok' : 'bad'}">${escHtml(m == null ? '(no answer)' : m)}</div>${good ? '' : `<div class="lv-ch ok">${escHtml(s.reveal.c)}</div>`}`
-        : locked ? '<div class="lv-ch dim">Answer locked in...</div>'
-        : '<input id="lv-id" class="modal-input" autocomplete="off" placeholder="Type your answer..."><button class="btn-pixel" onclick="lvAnswer(document.getElementById(\'lv-id\').value.trim())">SUBMIT</button>';
-    } else {
-      inner = lvChoices(pq).map((c, i) => {
-        const v = lvVal(pq, i); let k = '';
-        if (rv) k = s.reveal.c === v ? 'ok' : (m === v ? 'bad' : 'dim'); else if (locked) k = m === v ? 'sel' : 'dim';
-        return `<div class="lv-ch ${k}" ${rv || locked ? '' : `onclick="lvAnswer(${v})"`}>${escHtml(c)}</div>`;
-      }).join('');
-    }
-    b = `<div class="lv-c"><div class="lv-h2">QUESTION ${s.q_index + 1} / ${s.questions_public.length}</div><div class="lv-q">${escHtml(pq.text)}</div>${inner}` +
-      (rv ? `<div class="lv-h2">${good ? '+' + LV.res.points + ' POINTS' : 'NO POINTS'}</div>` : '<div class="lv-bar"><i id="lv-bar" style="width:100%"></i></div>') + '</div>';
-  }
-  lvShow(head + b);
-}
-
-/* ---------- FLASHCARDS (built from quizzes the student already completed) ---------- */
-async function studyQuiz(id) {
-  const { data: q } = await _supabase.from('quizzes').select('title, questions').eq('id', id).single();
-  const c = [];
-  ((q && q.questions) || []).forEach(x => {
-    const t = qType(x);
-    if (t === 'mcq') c.push([x.text, x.choices[x.correct]]);
-    else if (t === 'tf') c.push([x.text, x.correct ? 'True' : 'False']);
-    else if (t === 'identification') c.push([x.text, x.answer]);
-    else if (t === 'enumeration') c.push([x.text, x.answers.map(a => String(a).split('|')[0]).join(', ')]);
-    else if (t === 'matching') x.pairs.forEach(p => c.push([p.left, p.right]));
-  });
-  if (!c.length) { askNotice('This quiz has no cards to study.', 'Flashcards'); return; }
-  lsInc('ql_fc_' + dayKey()); FC = { t: q.title, c, i: 0, f: false, k: new Set() }; fcRender();
-}
-function fcRender() {
-  const c = FC.c[FC.i];
-  lvShow(`<div class="lv-top"><span>${escHtml(FC.t)} &middot; ${FC.i + 1}/${FC.c.length} &middot; known ${FC.k.size}</span><button class="btn-pixel terracotta" onclick="lvClose()">CLOSE</button></div><div class="fc-card" onclick="FC.f=!FC.f;fcRender()"><small>${FC.f ? 'ANSWER' : 'QUESTION'}</small><div>${escHtml(FC.f ? c[1] : c[0])}</div><small>click to flip</small></div><div class="lv-nav"><button class="btn-pixel" onclick="fcGo(-1)">PREV</button><button class="btn-pixel" onclick="fcKnow()">${FC.k.has(FC.i) ? 'MARKED KNOWN' : 'I KNOW IT'}</button><button class="btn-pixel" onclick="fcGo(1)">NEXT</button><button class="btn-pixel" onclick="FC.c=shuffle(FC.c);FC.i=0;FC.f=false;FC.k=new Set();fcRender()">SHUFFLE</button></div>`);
-}
-function fcGo(d) { FC.i = (FC.i + d + FC.c.length) % FC.c.length; FC.f = false; fcRender(); }
-function fcKnow() { FC.k.has(FC.i) ? FC.k.delete(FC.i) : FC.k.add(FC.i); fcRender(); }
-</script>
-<script>
-/* ============================================================
-   STUDY FROM NOTES + DAILY/WEEKLY QUESTS + TEAM CHALLENGES
-   Team challenges need team-challenges.sql run once in Supabase.
-============================================================ */
-let _nvCur = null;
-/* ---------- study from a shared note ---------- */
-async function studyNote() {
-  const n = _nvCur; if (!n) return;
-  showAdminToast('Building flashcards...', 'success');
-  let t = n.content || '';
-  if (n.file) {
-    try {
-      const f = new File([await nvBlob()], n.file.name), ext = fileExt(n.file.name);
-      if (ext === 'pdf') t += '\n' + await aiExtractPdf(f);
-      else if (ext === 'docx') { const m = await aiLoadMammoth(); t += '\n' + (await m.extractRawText({ arrayBuffer: await f.arrayBuffer() })).value; }
-    } catch (e) {}
-  }
-  t = t.trim();
-  if (t.length < 50) { askNotice('This note has no readable text to study (images and scanned files are not supported).', 'Flashcards'); return; }
-  let c = [];
-  try {
-    const { data, error } = await _supabase.functions.invoke('generate-quiz', { body: { texts: [{ name: n.title, text: t }], count: 12, types: ['identification', 'mcq'], difficulty: 'medium', topic: '' } });
-    if (!error && data && data.questions) data.questions.forEach(x => { if (x.type === 'mcq') c.push([x.text, x.choices[x.correct]]); else if (x.type === 'identification') c.push([x.text, x.answer]); });
-  } catch (e) {}
-  if (!c.length) t.split(/\n+/).forEach(l => { const m = l.match(/^(.{2,60}?)\s*(?::|\s-\s|\s–\s)\s*(.{4,})$/); if (m) c.push([m[1].trim(), m[2].trim()]); });
-  if (!c.length) { askNotice('Could not build cards from this note. Notes written as "term: definition" lines work best.', 'Flashcards'); return; }
-  lsInc('ql_fc_' + dayKey());
-  FC = { t: n.title, c, i: 0, f: false, k: new Set() }; fcRender();
-}
-
-/* ---------- daily + weekly quests (rotating) ---------- */
-const dayKey = () => localDateStr();
-function weekKey() { const d = new Date(); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return localDateStr(d); }
-const lsGet = k => { try { return +localStorage.getItem(k) || 0; } catch (e) { return 0; } };
-const lsInc = k => { try { localStorage.setItem(k, lsGet(k) + 1); } catch (e) {} };
-const RQ_D = [
-  { id: 'quiz', name: 'DAILY QUIZ', desc: 'Complete a quiz today', xp: 20, t: 1, v: c => c.dq },
-  { id: 'sharp', name: 'SHARP MIND', desc: 'Score 80%+ on a quiz today', xp: 30, t: 1, v: c => c.d80 },
-  { id: 'study', name: 'STUDY TIME', desc: 'Study a flashcard deck today', xp: 15, t: 1, v: c => c.dfc },
-  { id: 'live', name: 'GAME ON', desc: 'Finish a live game today', xp: 25, t: 1, v: c => c.dlv },
-  { id: 'login', name: 'SHOW UP', desc: 'Log in today', xp: 10, t: 1, v: () => 1 }];
-const RQ_W = [
-  { id: 'three', name: 'QUIZ MARATHON', desc: 'Complete 3 quizzes this week', xp: 60, t: 3, v: c => c.wq },
-  { id: 'note', name: 'KNOWLEDGE SHARER', desc: 'Share a note this week', xp: 50, t: 1, v: c => c.wn },
-  { id: 'ace', name: 'ACE STREAK', desc: 'Score 80%+ on 2 quizzes this week', xp: 80, t: 2, v: c => c.w80 },
-  { id: 'cram', name: 'CRAM CREW', desc: 'Study flashcards on 3 days this week', xp: 40, t: 3, v: c => c.wfc }];
-const rqPick = (a, n, s) => Array.from({ length: n }, (_, i) => a[(s + i) % a.length]);
-async function renderRecurringQuests() {
-  const box = document.getElementById('quests-recurring'); if (!box || !currentUser) return;
-  const dk = dayKey(), wk = weekKey(), since = new Date(wk + 'T00:00:00').toISOString();
-  const [{ data: subs }, { data: ns }] = await Promise.all([
-    _supabase.from('quiz_submissions').select('score, submitted_at').eq('student_id', currentUser.id).gte('submitted_at', since),
-    _supabase.from('notes').select('id').eq('author_id', currentUser.id).gte('created_at', since)]);
-  const S = subs || [], td = S.filter(s => localDateStr(new Date(s.submitted_at)) === dk);
-  let wfc = 0; for (const d = new Date(wk + 'T00:00:00'); localDateStr(d) <= dk; d.setDate(d.getDate() + 1)) wfc += lsGet('ql_fc_' + localDateStr(d)) > 0 ? 1 : 0;
-  const c = { dq: td.length, d80: td.filter(s => s.score >= 80).length, dfc: lsGet('ql_fc_' + dk), dlv: lsGet('ql_lv_' + dk), wq: S.length, wn: (ns || []).length, w80: S.filter(s => s.score >= 80).length, wfc };
-  const claimed = studentState.claimedQuests || [];
-  const row = (q, key, tag) => {
-    const id = tag + '_' + q.id + '_' + key, cur = Math.min(q.v(c), q.t), done = cur >= q.t, got = claimed.includes(id);
-    return `<div class="quest-item ${got ? 'claimed' : done ? 'completed' : ''}"><div class="quest-info" style="flex:1;"><span class="quest-name">${q.name}</span><span class="quest-desc">${q.desc} (${cur}/${q.t})</span></div>` +
-      (got ? '<span class="quest-reward" style="color:#aaa;border-color:#ccc;background:#f5f5f5;">CLAIMED</span>' : done ? `<button class="btn-claim-quest" onclick="claimQuest('${id}',${q.xp})">CLAIM +${q.xp} XP</button>` : `<span class="quest-reward">+${q.xp} XP</span>`) + '</div>';
-  };
-  const hd = t => `<div class="section-header"><span class="section-title" style="font-size:10px;">${t}</span></div>`;
-  box.innerHTML = hd('DAILY QUESTS &middot; reset at midnight') + rqPick(RQ_D, 3, Math.floor(Date.now() / 864e5)).map(q => row(q, dk, 'd')).join('') +
-    hd('WEEKLY QUESTS &middot; reset on Monday') + rqPick(RQ_W, 3, Math.floor(Date.now() / 6048e5)).map(q => row(q, wk, 'w')).join('') + hd('ONE-TIME QUESTS');
-}
-
-/* ---------- team challenges (inside one classroom) ---------- */
-const CH_NAMES = ['Red', 'Blue', 'Green', 'Gold', 'Purple', 'Orange'];
-async function challengeQuiz(quizId) {
-  const { data: ex } = await _supabase.from('team_challenges').select('id').eq('quiz_id', quizId).order('created_at', { ascending: false }).limit(1).maybeSingle();
-  if (ex) return chStandings(ex.id, true);
-  lvShow(`<div class="lv-top"><span>NEW TEAM CHALLENGE</span><button class="btn-pixel terracotta" onclick="lvClose()">CANCEL</button></div><div class="lv-c"><input id="ch-t" class="modal-input" placeholder="Challenge name"><label>Teams <select id="ch-n"><option>2</option><option>3</option><option>4</option></select></label><label>Open for <select id="ch-d"><option value="1">1 day</option><option value="3">3 days</option><option value="7" selected>7 days</option></select></label><div>Students in this quiz's class are split randomly into teams. A team's score is the average quiz score of its members (a quiz not taken counts as 0).</div><button class="btn-pixel" onclick="chCreate('${quizId}')">START CHALLENGE</button></div>`);
-}
-async function chCreate(quizId) {
-  const { data: q } = await _supabase.from('quizzes').select('title, classroom_id').eq('id', quizId).single();
-  const { data: en } = await _supabase.from('enrollments').select('student_id').eq('classroom_id', q.classroom_id);
-  const ids = shuffle((en || []).map(e => e.student_id)), n = +document.getElementById('ch-n').value;
-  if (ids.length < n) { askNotice('You need at least ' + n + ' students enrolled in this class.', 'Team challenge'); return; }
-  const teams = CH_NAMES.slice(0, n).map(name => ({ name, members: [] })); ids.forEach((id, i) => teams[i % n].members.push(id));
-  const { data, error } = await _supabase.from('team_challenges').insert({ classroom_id: q.classroom_id, teacher_id: currentUser.id, quiz_id: quizId, title: document.getElementById('ch-t').value.trim() || q.title + ' Challenge', teams, ends_at: new Date(Date.now() + (+document.getElementById('ch-d').value) * 864e5).toISOString() }).select().single();
-  if (error) { askNotice(error.message + '\n\nHave you run team-challenges.sql in Supabase?', 'Team challenge'); return; }
-  chStandings(data.id, true);
-}
-async function chStandings(id, host) {
-  const { data: c } = await _supabase.from('team_challenges').select('*').eq('id', id).single(); if (!c) return;
-  const { data: sc } = await _supabase.rpc('challenge_scores', { cid: id });
-  const { data: pr } = await _supabase.from('profiles').select('id, name').in('id', c.teams.flatMap(t => t.members));
-  const nm = {}, sm = {}; (pr || []).forEach(p => nm[p.id] = p.name); (sc || []).forEach(s => sm[s.student_id] = +s.score);
-  const rows = c.teams.map(t => ({ t, avg: Math.round(t.members.reduce((a, m) => a + (sm[m] || 0), 0) / t.members.length), done: t.members.filter(m => sm[m] != null).length })).sort((a, b) => b.avg - a.avg);
-  const mine = rows.find(r => r.t.members.includes(currentUser.id)), open = new Date(c.ends_at) > new Date();
-  lvShow(`<div class="lv-top"><span>${escHtml(c.title)}</span><button class="btn-pixel terracotta" onclick="lvClose()">CLOSE</button></div><div class="lv-c"><div>${open ? 'Ends ' + new Date(c.ends_at).toLocaleString() : 'Challenge ended'}</div>` +
-    rows.map((r, i) => `<div class="lv-pod p${Math.min(i, 2)}" ${mine === r ? 'style="outline:3px solid #fff"' : ''}>${i + 1}. ${escHtml(r.t.name)} team &middot; ${r.avg}% avg &middot; ${r.done}/${r.t.members.length} done<div style="font-weight:400;font-size:13px;margin-top:6px">${r.t.members.map(m => escHtml(nm[m] || 'Student') + (sm[m] != null ? ' (' + sm[m] + '%)' : '')).join(', ')}</div></div>`).join('') +
-    (host ? `<button class="btn-pixel terracotta" onclick="chDelete('${id}')">DELETE CHALLENGE</button>` : '') + '</div>');
-}
-async function chDelete(id) {
-  if (!(await askConfirm({ title: 'Delete this challenge?', message: 'Teams and standings will be removed. Quiz scores are kept.', confirmText: 'Delete', tone: 'danger', icon: 'trash' }))) return;
-  await _supabase.from('team_challenges').delete().eq('id', id); lvClose();
-}
-async function renderClassDetailChallenges() {
-  const box = document.getElementById('cd-challenges-list'); if (!box || !currentClassDetailId) return;
-  const { data: cs } = await _supabase.from('team_challenges').select('*').eq('classroom_id', currentClassDetailId).order('created_at', { ascending: false });
-  const { data: sub } = await _supabase.from('quiz_submissions').select('quiz_id').eq('student_id', currentUser.id);
-  const done = new Set((sub || []).map(s => s.quiz_id));
-  box.innerHTML = (cs || []).map(c => {
-    const t = c.teams.find(t => t.members.includes(currentUser.id)), open = new Date(c.ends_at) > new Date();
-    return `<div style="background:#fff;border:2px solid var(--indigo);box-shadow:3px 3px 0 rgba(46,64,83,.15);padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;"><div><b>${escHtml(c.title)}</b><div style="font-size:12px;color:rgba(46,64,83,.6)">${t ? 'You are on the ' + escHtml(t.name) + ' team' : 'You are not on a team'} &middot; ${open ? 'ends ' + new Date(c.ends_at).toLocaleDateString() : 'ended'}</div></div><div style="display:flex;gap:8px"><button class="btn-pixel" style="font-size:7px;padding:8px 12px;" onclick="chStandings('${c.id}',false)">STANDINGS</button>${open && t && !done.has(c.quiz_id) ? `<button class="btn-pixel terracotta" style="font-size:7px;padding:8px 12px;" onclick="startQuizFromDB('${c.quiz_id}')">TAKE QUIZ</button>` : ''}</div></div>`;
-  }).join('') || '<div class="empty-state"><span class="empty-state-text">NO CHALLENGES YET<br><span style="font-size:8px;opacity:.6;font-family:\'Lato\',sans-serif;font-weight:400;">Your teacher can start a team challenge</span></span></div>';
-}
 </script>
 </body>
 </html>
