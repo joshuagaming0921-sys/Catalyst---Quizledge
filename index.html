@@ -3904,7 +3904,7 @@ body[data-adm-view="settings"] .adm-topbar .btn-adm-primary{display:none!importa
 html{scrollbar-width:thin;scrollbar-color:rgba(46,64,83,.3) transparent}
 
 /* rounded, chunky cards (your offset-shadow look, softened) */
-.pixel-card,.stat-block,.note-card,.quest-item,.join-form,.lb-row,.login-card,.metric-card,.adm-table-card,.adm-form-card,.form-panel,.pw-panel,.qs-card,.score-box,.class-item,.submission-row,.lp-feat-card,.lp-role-card,.lp-quiz-card,.lp-step,.empty-state{border-radius:var(--rd)!important}
+.pixel-card,.stat-block,.note-card,.quest-item,.join-form,.login-card,.metric-card,.adm-table-card,.adm-form-card,.form-panel,.pw-panel,.qs-card,.score-box,.class-item,.lp-feat-card,.lp-role-card,.lp-quiz-card,.lp-step,.empty-state{border-radius:var(--rd)!important}
 .modal-box,.cf-box{border-radius:16px!important}
 .pixel-card,.note-card,.class-item,.lp-feat-card,.lp-role-card,.stat-block,.metric-card{transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
 .pixel-card:hover,.note-card:hover,.class-item:hover,.lp-feat-card:hover,.lp-role-card:hover{transform:translateY(-3px)}
@@ -3922,7 +3922,7 @@ input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),
 .stu-nav-link,.adm-nav-link{border-radius:10px;transition:background .15s,color .15s,padding-left .15s}
 .stu-nav-link:hover,.adm-nav-link:hover{background:rgba(255,255,255,.08)}
 .stat-chip{border-radius:999px!important}
-.card-tag,.badge,.role-pill,.note-status-badge,.class-status,.attach-chip,.attach-tag,.qs-badge,.nav-badge,.adm-nav-badge,.lp-pill,.lp-hero-eyebrow{border-radius:999px!important}
+.card-tag,.badge,.role-pill,.note-status-badge,.class-status,.qs-badge,.nav-badge,.adm-nav-badge,.lp-pill,.lp-hero-eyebrow{border-radius:999px!important}
 .stu-avatar{border-radius:12px!important}
 .q-choice{border-radius:10px!important;transition:transform .12s var(--ease),border-color .15s,background .15s}
 .q-choice:active{transform:scale(.985)}
@@ -3945,6 +3945,25 @@ input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),
   .stu-sidebar{border-radius:0 20px 20px 0}
 }
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ---- edge fixes: accent bars/borders stay crisp inside rounded cards ---- */
+.pixel-card,.note-card,.lp-role-card,#page-login .login-card,#page-reset .login-card{overflow:hidden}
+.attach-chip{border-radius:10px!important}
+.lb-row,.lb-row.me,.submission-row{border-radius:0!important}
+.leaderboard{border-radius:var(--rd);box-shadow:4px 4px 0 var(--indigo)}
+
+/* ---- leaderboard additions ---- */
+.lb-switch{display:flex;gap:10px;margin:0 0 14px;flex-wrap:wrap}
+.lb-switch .btn-pixel{font-size:8px;padding:10px 16px;background:transparent;color:var(--indigo);border:2px solid var(--indigo);box-shadow:3px 3px 0 rgba(46,64,83,.2)}
+.lb-switch .btn-pixel.on{background:var(--indigo);color:#fff;box-shadow:3px 3px 0 var(--moss-dark)}
+.lb-note{font-size:12px;color:rgba(46,64,83,.55);margin:10px 2px 0}
+#lp-leaderboard .leaderboard{max-width:760px;margin:28px auto 0}
+.lb-empty{padding:24px;text-align:center;font-size:13px;color:rgba(46,64,83,.5)}
+@media(max-width:560px){.leaderboard-header,.lb-row{grid-template-columns:32px 1fr 56px 74px;gap:8px;padding-left:12px;padding-right:12px}}
+
+/* notes viewer: one close control (compact X) */
+#note-view-modal .nv-close-top{min-width:40px!important;width:40px;height:40px;min-height:40px!important;padding:0!important;display:inline-flex;align-items:center;justify-content:center;font-size:16px!important;border-radius:10px!important;border:2px solid var(--indigo)!important;background:#fff!important;color:var(--indigo)!important;box-shadow:2px 2px 0 rgba(46,64,83,.2);transition:transform .12s,box-shadow .12s}
+#note-view-modal .nv-close-top:active{transform:translate(1px,1px);box-shadow:none}
 </style>
 <script>
 /* runs before first paint: if a saved Supabase session exists, don't show the landing page */
@@ -4021,6 +4040,7 @@ input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),
       <a class="lp-nav-link" onclick="document.getElementById('lp-features').scrollIntoView({behavior:'smooth'})">Features</a>
       <a class="lp-nav-link" onclick="document.getElementById('lp-how').scrollIntoView({behavior:'smooth'})">How It Works</a>
       <a class="lp-nav-link" onclick="document.getElementById('lp-roles').scrollIntoView({behavior:'smooth'})">Who It's For</a>
+      <a class="lp-nav-link" id="lp-nav-lb" style="display:none" onclick="document.getElementById('lp-leaderboard').scrollIntoView({behavior:'smooth'})">Leaderboard</a>
       <button class="lp-nav-cta" onclick="goToRole()">Login</button>
     </div>
   </nav>
@@ -4224,6 +4244,18 @@ input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),
   </section>
 
   <!-- CTA BANNER -->
+  <section class="lp-section" id="lp-leaderboard" style="display:none;">
+    <span class="lp-section-label">Leaderboard</span>
+    <h2 class="lp-section-title">Top Players on QuizLedge</h2>
+    <div class="leaderboard">
+      <div class="leaderboard-header">
+        <span class="lb-col">#</span><span class="lb-col">Student</span>
+        <span class="lb-col" style="text-align:center;">Level</span><span class="lb-col" style="text-align:center;">XP</span>
+      </div>
+      <div id="lp-lb-rows"></div>
+    </div>
+  </section>
+
   <div class="lp-cta-banner">
     <div class="lp-cta-text-group">
       <div class="lp-cta-text-title">Ready to Level Up Your Classroom?</div>
@@ -4457,15 +4489,12 @@ input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),
           <span id="nv-subject" class="note-subject" style="font-family:'Press Start 2P',monospace; font-size:6px;"></span>
         </div>
       </div>
-      <button class="nv-close-top" onclick="closeNoteView()" style="background:none; border:none; cursor:pointer; font-size:18px; color:rgba(46,64,83,0.5); flex-shrink:0; line-height:1;">Close</button>
+      <button class="nv-close-top" onclick="closeNoteView()" aria-label="Close" title="Close" style="background:none; border:none; cursor:pointer; font-size:18px; color:rgba(46,64,83,0.5); flex-shrink:0; line-height:1;">&#10005;</button>
     </div>
     <div class="nv-rule" style="border-top:2px solid var(--indigo); margin-bottom:16px;"></div>
     <div class="note-view-modal-body">
       <div id="nv-attach" style="display:none"></div>
       <div class="note-full-content" id="nv-content"></div>
-    </div>
-    <div class="nv-foot" style="margin-top:18px; text-align:right;">
-      <button class="btn-pixel" style="font-size:7px;" onclick="closeNoteView()">CLOSE</button>
     </div>
   </div>
 </div>
@@ -4750,6 +4779,10 @@ input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),
           <span class="section-title">LEADERBOARD</span>
           <span class="section-sub">&gt; Class Rankings — by XP</span>
         </div>
+        <div class="lb-switch">
+          <button class="btn-pixel on" id="lb-scope-class" onclick="lbSetScope('class')">MY CLASS</button>
+          <button class="btn-pixel" id="lb-scope-public" onclick="lbSetScope('public')">EVERYONE</button>
+        </div>
         <div id="lb-class-wrap" style="margin:0 0 12px;display:none;">
           <select id="lb-class-select" class="modal-select" onchange="lbPickClass(this.value)" aria-label="Choose a class"></select>
         </div>
@@ -4821,6 +4854,7 @@ input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),
           <button id="cd-tab-quizzes" onclick="cdSwitchTab('quizzes')" style="font-family:'Press Start 2P',monospace;font-size:7px;padding:9px 16px;background:var(--parchment);border:2px solid var(--indigo);border-bottom:2px solid var(--parchment);margin-bottom:-2px;cursor:pointer;color:var(--indigo);letter-spacing:1px;">QUIZZES</button>
           <button id="cd-tab-notes" onclick="cdSwitchTab('notes')" style="font-family:'Press Start 2P',monospace;font-size:7px;padding:9px 16px;background:transparent;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;cursor:pointer;color:rgba(46,64,83,0.4);letter-spacing:1px;">NOTES</button>
           <button id="cd-tab-members" onclick="cdSwitchTab('members')" style="font-family:'Press Start 2P',monospace;font-size:7px;padding:9px 16px;background:transparent;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;cursor:pointer;color:rgba(46,64,83,0.4);letter-spacing:1px;">MEMBERS</button>
+          <button id="cd-tab-leaderboard" onclick="cdSwitchTab('leaderboard')" style="font-family:'Press Start 2P',monospace;font-size:7px;padding:9px 16px;background:transparent;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;cursor:pointer;color:rgba(46,64,83,0.4);letter-spacing:1px;">LEADERBOARD</button>
         </div>
 
         <!-- Tab: Quizzes -->
@@ -4834,6 +4868,18 @@ input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),
         <div id="cd-panel-notes" style="display:none;">
           <div class="notes-grid" id="cd-notes-grid"></div>
           <div id="cd-notes-empty" class="empty-state" style="display:none;"><span class="empty-state-icon"><svg class="px-icon" viewBox="0 0 10 11" width="30" height="33" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="0" y="0" width="10" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="9" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="9" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="6" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="9" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="2" y="6" width="6" height="1"/><rect x="9" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="9" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/><rect x="2" y="8" width="4" height="1"/><rect x="9" y="8" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="9" y="9" width="1" height="1"/><rect x="0" y="10" width="10" height="1"/></g></svg></span><span class="empty-state-text">NO APPROVED NOTES FOR THIS CLASS</span></div>
+        </div>
+
+
+        <!-- Tab: Leaderboard -->
+        <div id="cd-panel-leaderboard" style="display:none;">
+          <div class="leaderboard">
+            <div class="leaderboard-header">
+              <span class="lb-col">#</span><span class="lb-col">Student</span>
+              <span class="lb-col" style="text-align:center;">Level</span><span class="lb-col" style="text-align:center;">XP</span>
+            </div>
+            <div id="cd-lb-rows"></div>
+          </div>
         </div>
 
         <!-- Tab: Members -->
@@ -6576,6 +6622,7 @@ function lbPickClass(id) { lbClassId = id; renderLeaderboard(); }
 async function renderLeaderboard() {
   const el = document.getElementById('leaderboard-rows');
   if (!el || !currentUser) return;
+  if (lbScope === 'public') { const w = document.getElementById('lb-class-wrap'); if (w) w.style.display = 'none'; return renderPublicLeaderboard(el); }
   const wrap = document.getElementById('lb-class-wrap');
   const sel = document.getElementById('lb-class-select');
   const msg = t => `<div style="padding:24px;text-align:center;font-family:'Lato',sans-serif;font-size:12px;color:rgba(46,64,83,0.45);">${t}</div>`;
@@ -6632,6 +6679,72 @@ async function renderLeaderboard() {
     `;
   }).join('');
 }
+
+
+/* ============================================================
+   LEADERBOARDS — class tab + public (shared row renderer)
+============================================================ */
+let lbScope = 'class';
+function lbRowsHtml(list, meId) {
+  const rankColors = ['#B8860B','#6B7280','#8B4513'];
+  return list.map((r, i) => {
+    const isMe = !!meId && r.id === meId;
+    const parts = String(r.name || 'Student').trim().split(/\s+/);
+    const ln = parts.length > 1 ? parts[parts.length - 1] : '';
+    const short = escHtml(parts[0] + (ln ? ' ' + ln[0] + '.' : ''));
+    const av = avatarFor(r.id, { avatar_color: r.avatar_color, avatar_icon: r.avatar_icon }, r.name);
+    return `<div class="lb-row ${isMe ? 'me' : ''}">
+      <span class="lb-rank" style="color:${rankColors[i] || 'var(--indigo)'}; font-size:${i < 3 ? '18px' : ''};">${String(i + 1).padStart(2, '0')}</span>
+      <div class="lb-student"><div class="lb-avatar" style="background:${av.bg};">${av.inner}</div>
+        <span class="lb-name">${short}${isMe ? ' <span style="font-size:10px;color:var(--moss);">(You)</span>' : ''}</span></div>
+      <span class="lb-score" style="text-align:center;">LVL ${r.level || 1}</span>
+      <span class="lb-xp">${(r.xp || 0).toLocaleString()} XP</span></div>`;
+  }).join('');
+}
+function lbSetScope(sc) {
+  lbScope = sc;
+  document.getElementById('lb-scope-class').classList.toggle('on', sc === 'class');
+  document.getElementById('lb-scope-public').classList.toggle('on', sc === 'public');
+  const sub = document.querySelector('#stu-leaderboard .section-sub');
+  if (sub) sub.textContent = sc === 'public' ? '> Top students across QuizLedge — by XP' : '> Class Rankings — by XP';
+  renderLeaderboard();
+}
+async function renderClassLeaderboard() {
+  const el = document.getElementById('cd-lb-rows');
+  if (!el || !currentClassDetailId) return;
+  el.innerHTML = '<div class="lb-empty">Loading rankings…</div>';
+  const { data, error } = await _supabase.rpc('get_class_leaderboard', { p_classroom_id: currentClassDetailId });
+  if (error) { el.innerHTML = '<div class="lb-empty">Could not load the leaderboard.</div>'; return; }
+  if (!data || !data.length) { el.innerHTML = '<div class="lb-empty">No students ranked in this class yet.</div>'; return; }
+  el.innerHTML = lbRowsHtml(data, currentUser && currentUser.id);
+}
+async function fetchPublicLeaderboard(limit) {
+  try {
+    const ps = await _supabase.from('platform_settings').select('leaderboard_visible').eq('id', 1).maybeSingle();
+    if (ps && ps.data && ps.data.leaderboard_visible === false) return { hidden: true, rows: [] };
+  } catch (e) {}
+  const { data, error } = await _supabase.rpc('get_public_leaderboard', { p_limit: limit || 20 });
+  return { error, rows: data || [] };
+}
+async function renderPublicLeaderboard(el) {
+  el.innerHTML = '<div class="lb-empty">Loading top students…</div>';
+  const r = await fetchPublicLeaderboard(20);
+  if (r.hidden) { el.innerHTML = '<div class="lb-empty">The leaderboard is turned off right now.</div>'; return; }
+  if (r.error) { el.innerHTML = '<div class="lb-empty">Could not load the public leaderboard.</div>'; return; }
+  if (!r.rows.length) { el.innerHTML = '<div class="lb-empty">No students on the leaderboard yet.</div>'; return; }
+  el.innerHTML = lbRowsHtml(r.rows, currentUser && currentUser.id);
+}
+async function renderLandingLeaderboard() {
+  const sec = document.getElementById('lp-leaderboard'), el = document.getElementById('lp-lb-rows');
+  if (!sec || !el) return;
+  const r = await fetchPublicLeaderboard(10);
+  if (r.hidden || r.error || !r.rows.length) return;       // stays hidden until there is data
+  el.innerHTML = lbRowsHtml(r.rows, null);
+  sec.style.display = '';
+  const n = document.getElementById('lp-nav-lb'); if (n) n.style.display = '';
+}
+document.addEventListener('DOMContentLoaded', renderLandingLeaderboard);
+if (document.readyState !== 'loading') renderLandingLeaderboard();
 
 /* ============================================================
    NOTES — STUDENT SIDE
@@ -7575,7 +7688,7 @@ async function openClassDetail(classroomId) {
 }
 
 function cdSwitchTab(tab) {
-  const tabs = ['quizzes','notes','members'];
+  const tabs = ['quizzes','notes','members','leaderboard'];
   tabs.forEach(t => {
     const btn = document.getElementById('cd-tab-' + t);
     const panel = document.getElementById('cd-panel-' + t);
@@ -7593,6 +7706,7 @@ function cdSwitchTab(tab) {
   if (tab === 'quizzes') renderClassDetailQuizzes();
   if (tab === 'notes') renderClassDetailNotes();
   if (tab === 'members') renderClassDetailMembers();
+  if (tab === 'leaderboard') renderClassLeaderboard();
 }
 
 async function renderClassDetailQuizzes() {
