@@ -4696,7 +4696,10 @@ body[data-adm-view="settings"] .adm-topbar .btn-adm-primary{display:none!importa
       <div id="stu-leaderboard" class="stu-view">
         <div class="section-header">
           <span class="section-title">LEADERBOARD</span>
-          <span class="section-sub">&gt; Global Rankings — All Students by XP</span>
+          <span class="section-sub">&gt; Class Rankings — by XP</span>
+        </div>
+        <div id="lb-class-wrap" style="margin:0 0 12px;display:none;">
+          <select id="lb-class-select" class="modal-select" onchange="lbPickClass(this.value)" aria-label="Choose a class"></select>
         </div>
         <div class="leaderboard">
           <div class="leaderboard-header">
@@ -5791,13 +5794,6 @@ async function _doLogin() {
   // Keep the stored profile in sync if it drifted from the email format.
   if (profile.role !== role) {
     await _supabase.from('profiles').update({ role }).eq('id', data.user.id);
-    if (role === 'student') {
-      const { data: existing } = await _supabase
-        .from('student_stats').select('student_id').eq('student_id', data.user.id).maybeSingle();
-      if (!existing) {
-        await _supabase.from('student_stats').insert({ student_id: data.user.id, xp:0, level:1, streak:0, quizzes_taken:0, total_score_pct:0, notes_shared:0, claimed_quests:[], last_login: new Date().toISOString().slice(0,10) });
-      }
-    }
   }
 
   currentUser = { id: data.user.id, email, name: profile.name, role };
@@ -5854,10 +5850,7 @@ async function _doSignup(btn) {
   const { error: profileError } = await _supabase.from('profiles').insert({ id: data.user.id, name, role, email });
   if (profileError) { showSignupError('Account created but profile save failed: ' + profileError.message); return; }
 
-  // Init student stats
-  if (role === 'student') {
-    await _supabase.from('student_stats').insert({ student_id: data.user.id, xp:0, level:1, streak:0, quizzes_taken:0, total_score_pct:0, notes_shared:0, claimed_quests:[], last_login: new Date().toISOString().slice(0,10) });
-  }
+  // (the student_stats row is created by the database on first login)
 
   showSignupError('');
   const successEl = document.getElementById('signup-success');
@@ -5960,22 +5953,9 @@ function updateUserUI() {
    STREAK — update on login
 ============================================================ */
 async function updateLoginStreak(userId) {
-  const { data: stats } = await _supabase.from('student_stats').select('streak, last_login').eq('student_id', userId).single();
-  if (!stats) return;
-
-  const today = localDateStr();
-  const last = stats.last_login ? stats.last_login.slice(0, 10) : null;
-
-  let newStreak = stats.streak || 0;
-  if (last === today) return; // already logged in today
-  const yesterday = localDateStr(new Date(Date.now() - 86400000));
-  if (last === yesterday) {
-    newStreak += 1; // consecutive day
-  } else {
-    newStreak = 1; // reset
-  }
-
-  await _supabase.from('student_stats').update({ streak: newStreak, last_login: today }).eq('student_id', userId);
+  // The database creates the stats row and counts the streak (see security_hardening.sql).
+  const { error } = await _supabase.rpc('touch_login');
+  if (error) console.error('touch_login:', error);
 }
 
 /* ============================================================
@@ -6025,7 +6005,7 @@ const QUESTS = [
   {
     id: 'top_class',
     name: 'TOP OF THE CLASS',
-    desc: 'Reach Rank #1 on the leaderboard',
+    desc: 'Reach Rank #1 in one of your classes',
     icon: `<svg class="px-icon" viewBox="0 0 11 10" width="20" height="18" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="#FFFFFF"><rect x="4" y="0" width="2" height="1"/><rect x="3" y="1" width="4" height="1"/><rect x="2" y="2" width="6" height="1"/><rect x="0" y="3" width="10" height="1"/><rect x="1" y="4" width="8" height="1"/><rect x="2" y="5" width="6" height="1"/><rect x="2" y="6" width="6" height="1"/><rect x="1" y="7" width="2" height="1"/><rect x="7" y="7" width="2" height="1"/><rect x="0" y="8" width="2" height="1"/><rect x="8" y="8" width="2" height="1"/></g></svg>`,
     xp: 500,
     check: (s) => ({ current: Math.min(s.rank1 || 0, 1), target: 1 })
@@ -6039,10 +6019,9 @@ async function renderQuests() {
   // Use cached claimed quests from studentState (loaded at login, updated on claim)
   const claimed = studentState.claimedQuests || [];
 
-  // Check leaderboard rank
-  const { data: allStats } = await _supabase.from('student_stats').select('student_id, xp').order('xp', { ascending: false });
-  const rank = allStats ? allStats.findIndex(s => s.student_id === currentUser.id) : -1;
-  const extendedState = { ...studentState, rank1: rank === 0 ? 1 : 0 };
+  // Rank #1 in a class is worked out by the database
+  const { data: isLeader } = await _supabase.rpc('my_rank1');
+  const extendedState = { ...studentState, rank1: isLeader === true ? 1 : 0 };
 
   let claimableCount = 0;
 
@@ -6086,32 +6065,21 @@ async function renderQuests() {
 
 async function claimQuest(questId, xpReward) {
   if (!currentUser) return;
+  if (studentState.claimedQuests.includes(questId)) return;   // quick UI guard; the database is the real check
 
-  // Guard: don't allow double-claim
-  if (studentState.claimedQuests.includes(questId)) return;
-
-  // Update local state immediately
-  studentState.claimedQuests = [...studentState.claimedQuests, questId];
-  studentState.xp += xpReward;
-  while (studentState.xp >= getXpForNextLevel(studentState.level)) { studentState.level++; }
-
-  // Persist to DB
-  const { error } = await _supabase.from('student_stats').update({
-    xp: studentState.xp,
-    level: studentState.level,
-    claimed_quests: studentState.claimedQuests
-  }).eq('student_id', currentUser.id);
-
-  if (error) {
-    // Rollback on failure
-    studentState.claimedQuests = studentState.claimedQuests.filter(id => id !== questId);
-    studentState.xp -= xpReward;
-    askNotice('Failed to save claim. Please try again.', 'Claim failed');
+  const { data, error } = await _supabase.rpc('claim_quest', { p_quest_id: questId });
+  if (error || !data) {
+    askNotice((error && error.message) || 'Failed to save claim. Please try again.', 'Claim failed');
+    await renderQuests();
     return;
   }
 
+  studentState.xp = data.xp;
+  studentState.level = data.level;
+  studentState.claimedQuests = Array.isArray(data.claimed_quests) ? data.claimed_quests : [...studentState.claimedQuests, questId];
+
   updateUserUI();
-  showAdminToast(`+${xpReward} XP claimed!`, 'success');
+  showAdminToast(`+${data.awarded} XP claimed!`, 'success');
   await renderQuests();
 }
 
@@ -6436,22 +6404,7 @@ function renderNavDots() {
 const QTYPES = { mcq:'Multiple Choice', tf:'True or False', identification:'Identification', enumeration:'Enumeration', matching:'Matching Type' };
 const qType = q => q.type || 'mcq';
 const norm = v => String(v == null ? '' : v).normalize('NFKC').toLowerCase().replace(/\s+/g, ' ').trim().replace(/[.!?]+$/, '');
-function qPoints(q) { const t = qType(q); return t === 'enumeration' ? (q.answers || []).length : t === 'matching' ? (q.pairs || []).length : 1; }
 function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
-function gradeQuestion(q, a) {
-  const t = qType(q);
-  if (t === 'mcq' || t === 'tf') return a === q.correct ? 1 : 0;
-  if (t === 'identification') { const g = norm(a); return g && [q.answer, ...(q.alternates || [])].some(x => norm(x) === g) ? 1 : 0; }
-  if (t === 'enumeration') {
-    const given = (Array.isArray(a) ? a : []).map(norm), key = q.answers.map(l => String(l).split('|').map(norm));
-    if (q.ordered) return key.reduce((s, alts, i) => s + (given[i] && alts.includes(given[i]) ? 1 : 0), 0);
-    const used = new Set(); let pts = 0;
-    given.forEach(g => { if (!g) return; const k = key.findIndex((alts, i) => !used.has(i) && alts.includes(g)); if (k > -1) { used.add(k); pts++; } });
-    return pts;
-  }
-  if (t === 'matching') { const sel = Array.isArray(a) ? a : []; return q.pairs.reduce((s, p, i) => s + (sel[i] != null && q.pairs[sel[i]] && norm(q.pairs[sel[i]].right) === norm(p.right) ? 1 : 0), 0); }
-  return 0;
-}
 function isAnswered(i) {
   const a = quizAnswers[i];
   if (a === undefined || a === null) return false;
@@ -6464,11 +6417,11 @@ function renderAnswerUI(q, el) {
   else if (t === 'tf') el.innerHTML = [true, false].map(v => `<div class="q-choice ${a === v ? 'selected' : ''}" onclick="selectTF(${v})"><div class="choice-letter">${v ? 'T' : 'F'}</div>${v ? 'True' : 'False'}</div>`).join('');
   else if (t === 'identification') el.innerHTML = `<input class="modal-input" type="text" autocomplete="off" placeholder="Type your answer..." value="${escHtml(a || '')}" oninput="setAnswer(this.value)">`;
   else if (t === 'enumeration') {
-    const n = q.answers.length, arr = Array.isArray(a) ? a : [];
+    const n = q.n, arr = Array.isArray(a) ? a : [];
     el.innerHTML = `<span class="q-hint">List ${n} item${n > 1 ? 's' : ''}${q.ordered ? ' in the correct order' : ' (any order)'}.</span>` + Array.from({ length: n }, (_, i) => `<input class="modal-input" type="text" autocomplete="off" placeholder="${i + 1}." value="${escHtml(arr[i] || '')}" oninput="setListAnswer(${i}, this.value)">`).join('');
   } else if (t === 'matching') {
-    const order = matchOrders[currentQuestionIndex] || (matchOrders[currentQuestionIndex] = shuffle(q.pairs.map((_, i) => i))), sel = Array.isArray(a) ? a : [];
-    el.innerHTML = `<span class="q-hint">Match each item with its pair.</span>` + q.pairs.map((p, i) => `<div class="match-row"><div class="match-left">${i + 1}. ${escHtml(p.left)}</div><select class="modal-select" onchange="setMatch(${i}, this.value)"><option value="">— choose —</option>${order.map(k => `<option value="${k}" ${sel[i] === k ? 'selected' : ''}>${escHtml(q.pairs[k].right)}</option>`).join('')}</select></div>`).join('');
+    const order = matchOrders[currentQuestionIndex] || (matchOrders[currentQuestionIndex] = shuffle(q.rights.map((_, i) => i))), sel = Array.isArray(a) ? a : [];
+    el.innerHTML = `<span class="q-hint">Match each item with its pair.</span>` + q.lefts.map((left, i) => `<div class="match-row"><div class="match-left">${i + 1}. ${escHtml(left)}</div><select class="modal-select" onchange="setMatch(${i}, this.value)"><option value="">— choose —</option>${order.map(k => `<option value="${k}" ${sel[i] === k ? 'selected' : ''}>${escHtml(q.rights[k])}</option>`).join('')}</select></div>`).join('');
   }
 }
 function selectChoice(i) { quizAnswers[currentQuestionIndex] = i; renderQuizQuestion(); }
@@ -6478,8 +6431,8 @@ function setSlot(i, v, n, blank) {
   const cur = quizAnswers[currentQuestionIndex], a = Array.isArray(cur) ? cur : Array(n).fill(blank);
   a[i] = v; quizAnswers[currentQuestionIndex] = a; renderNavDots();
 }
-function setListAnswer(i, v) { setSlot(i, v, currentQuizData.questions[currentQuestionIndex].answers.length, ''); }
-function setMatch(i, v) { setSlot(i, v === '' ? null : parseInt(v, 10), currentQuizData.questions[currentQuestionIndex].pairs.length, null); }
+function setListAnswer(i, v) { setSlot(i, v, currentQuizData.questions[currentQuestionIndex].n, ''); }
+function setMatch(i, v) { setSlot(i, v === '' ? null : parseInt(v, 10), currentQuizData.questions[currentQuestionIndex].lefts.length, null); }
 
 function quizNext() {
   if (!currentQuizData) return;
@@ -6499,47 +6452,30 @@ async function submitQuiz() {
   if (quizSubmitting) return;
   quizSubmitting = true;
   stopQuizTimer();
-  let correct = 0, total = 0;
-  if (currentQuizData) currentQuizData.questions.forEach((q, i) => { correct += gradeQuestion(q, quizAnswers[i]); total += qPoints(q); });
-  total = total || 1;
-  const pct = Math.round((correct / total) * 100);
-  const xp = Math.round(pct * 1.5);
 
-  // Save to database
-  if (currentQuizData && currentQuizData.id && currentUser) {
-    const { error: subErr } = await _supabase.from('quiz_submissions').upsert({
-      submitted_at: new Date().toISOString(),
-      quiz_id: currentQuizData.id,
-      student_id: currentUser.id,
-      answers: quizAnswers,
-      score: pct,
-      correct_count: correct,
-      total_questions: total,
-      xp_earned: xp
-    }, { onConflict: 'quiz_id,student_id' });
-    if (subErr) { console.error('Quiz submission failed:', subErr); askNotice('Your score could not be saved: ' + subErr.message, 'Score not saved'); }
-
-    // Update student stats
-    studentState.quizzesTaken++;
-    studentState.totalScore += pct;
-    studentState.xp += xp;
-    while (studentState.xp >= getXpForNextLevel(studentState.level)) { studentState.level++; }
-
-    await _supabase.from('student_stats').upsert({
-      student_id: currentUser.id,
-      xp: studentState.xp,
-      level: studentState.level,
-      streak: studentState.streak,
-      quizzes_taken: studentState.quizzesTaken,
-      total_score_pct: studentState.totalScore,
-      notes_shared: studentState.notesShared
-    }, { onConflict: 'student_id' });
-  } else {
-    studentState.quizzesTaken++;
-    studentState.totalScore += pct;
-    studentState.xp += xp;
-    while (studentState.xp >= getXpForNextLevel(studentState.level)) { studentState.level++; }
+  if (!currentQuizData || !currentQuizData.id || !currentUser) {
+    quizSubmitting = false;
+    askNotice('This quiz could not be submitted. Please reopen it from your quiz list.', 'Score not saved');
+    return;
   }
+
+  // Grading, XP and levels are done by the database. The browser only sends the answers.
+  const { data: res, error: subErr } = await _supabase.rpc('submit_quiz', {
+    p_quiz_id: currentQuizData.id,
+    p_answers: quizAnswers
+  });
+  if (subErr || !res) {
+    console.error('Quiz submission failed:', subErr);
+    quizSubmitting = !!(subErr && /already submitted/i.test(subErr.message || ''));
+    askNotice('Your score could not be saved: ' + ((subErr && subErr.message) || 'unknown error'), 'Score not saved');
+    return;
+  }
+
+  const pct = res.score, correct = res.correct_count, total = res.total, xp = res.xp_earned;
+  studentState.xp = res.xp;
+  studentState.level = res.level;
+  studentState.quizzesTaken = res.quizzes_taken;
+  studentState.totalScore = res.total_score_pct;
 
   updateUserUI();
 
@@ -6582,32 +6518,45 @@ function avatarFor(id, prof, name) {
   };
 }
 
+let lbClassId = null;
+function lbPickClass(id) { lbClassId = id; renderLeaderboard(); }
+
 async function renderLeaderboard() {
   const el = document.getElementById('leaderboard-rows');
   if (!el || !currentUser) return;
+  const wrap = document.getElementById('lb-class-wrap');
+  const sel = document.getElementById('lb-class-select');
+  const msg = t => `<div style="padding:24px;text-align:center;font-family:'Lato',sans-serif;font-size:12px;color:rgba(46,64,83,0.45);">${t}</div>`;
 
-  // Fetch ALL students globally, ranked by XP
-  const { data: stats } = await _supabase
-    .from('student_stats')
-    .select('student_id, xp, level')
-    .order('xp', { ascending: false });
+  // Rankings are per class: only classmates are ever loaded.
+  const { data: enr } = await _supabase
+    .from('enrollments')
+    .select('classroom_id, classrooms(id, name, code)')
+    .eq('student_id', currentUser.id);
+  const classes = (enr || []).map(e => e.classrooms).filter(Boolean);
 
-  if (!stats || stats.length === 0) {
-    el.innerHTML = `<div style="padding:24px;text-align:center;font-family:'Lato',sans-serif;font-size:12px;color:rgba(46,64,83,0.45);">No students on the leaderboard yet.</div>`;
+  if (!classes.length) {
+    if (wrap) wrap.style.display = 'none';
+    el.innerHTML = msg('Join a class to see your class rankings.');
     return;
   }
+  if (!classes.some(c => c.id === lbClassId)) lbClassId = classes[0].id;
+  if (sel) {
+    sel.innerHTML = classes.map(c => `<option value="${escHtml(c.id)}" ${c.id === lbClassId ? 'selected' : ''}>${escHtml(c.code + ' — ' + c.name)}</option>`).join('');
+  }
+  if (wrap) wrap.style.display = classes.length > 1 ? 'block' : 'none';
 
-  const studentIds = stats.map(s => s.student_id);
-  const avatarMap = await fetchAvatarMap(studentIds);
+  const { data: rowsData, error } = await _supabase.rpc('get_class_leaderboard', { p_classroom_id: lbClassId });
+  if (error) { el.innerHTML = msg('Could not load the leaderboard.'); return; }
+  if (!rowsData || rowsData.length === 0) { el.innerHTML = msg('No students on the leaderboard yet.'); return; }
 
-  // For the current user, always use live studentState values (DB may lag after XP updates)
-  const rows = stats.map(s => ({
-    id: s.student_id,
-    name: (s.student_id === currentUser.id && currentUser.name) || (avatarMap[s.student_id] && avatarMap[s.student_id].name) || 'Student',
-    av: avatarMap[s.student_id],
-    xp: s.student_id === currentUser.id ? studentState.xp : (s.xp || 0),
-    level: s.student_id === currentUser.id ? studentState.level : (s.level || 1)
-  })).sort((a, b) => b.xp - a.xp); // re-sort after substituting live values
+  const rows = rowsData.map(s => ({
+    id: s.id,
+    name: (s.id === currentUser.id && currentUser.name) || s.name || 'Student',
+    av: { avatar_color: s.avatar_color, avatar_icon: s.avatar_icon },
+    xp: s.xp || 0,
+    level: s.level || 1
+  }));
 
   const rankColors = ['#B8860B','#6B7280','#8B4513'];
 
@@ -6615,14 +6564,14 @@ async function renderLeaderboard() {
     const isMe = r.id === currentUser.id;
     const parts = (r.name || 'Student').trim().split(/\s+/);
     const fn = parts[0] || 'S'; const ln = parts.length > 1 ? parts[parts.length-1] : '';
-    const initials = escHtml((fn[0] + (ln ? ln[0] : '')).toUpperCase());
     const short = escHtml(fn + (ln ? ' ' + ln[0] + '.' : ''));
     const rankDisplay = String(i+1).padStart(2,'0');
+    const av = avatarFor(r.id, r.av, r.name);
     return `
       <div class="lb-row ${isMe ? 'me' : ''}">
         <span class="lb-rank" style="color:${rankColors[i] || 'var(--indigo)'}; font-size:${i < 3 ? '18px' : ''};">${rankDisplay}</span>
         <div class="lb-student">
-          <div class="lb-avatar" style="background:${avatarFor(r.id, r.av, r.name).bg};">${avatarFor(r.id, r.av, r.name).inner}</div>
+          <div class="lb-avatar" style="background:${av.bg};">${av.inner}</div>
           <span class="lb-name">${short}${isMe ? ' <span style="font-size:10px;color:var(--moss);">(You)</span>' : ''}</span>
         </div>
         <span class="lb-score" style="text-align:center;">LVL ${r.level}</span>
@@ -6846,8 +6795,7 @@ async function submitUploadNote() {
       showNoteMsg('Failed to upload note: ' + error.message + (/file_(path|name|type|size)|schema cache/i.test(error.message) ? ' (run supabase_setup.sql first)' : ''), 'error');
       return;
     }
-    studentState.notesShared++;
-    await _supabase.from('student_stats').upsert({ student_id: currentUser.id, notes_shared: studentState.notesShared }, { onConflict: 'student_id' });
+    studentState.notesShared++;   // the database counts it too (trigger); this keeps the UI current
     updateUserUI();
     showNoteMsg(row.status === 'approved' ? 'Note shared with your class!' : 'Note submitted! It will appear once approved by your teacher.', 'success');
     setTimeout(async () => { closeNoteModal(); await renderStudentNotes(); }, 1800);
