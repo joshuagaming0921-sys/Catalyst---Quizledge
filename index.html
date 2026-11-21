@@ -3670,7 +3670,14 @@ html[data-theme="dark"] [class*="crystal"]{opacity:.35!important}
 .login-back:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #2E4053}
 /* while a saved login is being restored, show a loader instead of flashing the landing page */
 html.ql-boot #page-landing{display:none!important}
-html.ql-boot body::after{content:'LOADING...';position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--parchment,#F4EFE3);color:var(--indigo,#2E4053);font-family:'Press Start 2P',monospace;font-size:11px;letter-spacing:2px;z-index:9998}
+/* boot loader: the logo's four-colour ring spins around the logo centre */
+html.ql-boot body::after{content:none}
+#ql-boot{display:none}
+html.ql-boot #ql-boot{display:flex;position:fixed;inset:0;z-index:9998;align-items:center;justify-content:center;background:var(--parchment,#F4EFE3)}
+#ql-boot svg{width:88px;height:88px;overflow:visible}
+#ql-boot .ql-ring{transform-origin:21px 21px;animation:qlSpin 1.1s linear infinite}
+@keyframes qlSpin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){#ql-boot .ql-ring{animation-duration:3s}}
 /* ===== RESET PASSWORD PAGE ===== */
 #page-reset{background:#F3EEDF;align-items:center;justify-content:center;position:relative;overflow-y:auto}
 #page-reset .login-container{max-width:430px}
@@ -3974,6 +3981,7 @@ input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),
 </script>
 </head>
 <body>
+<div id="ql-boot" role="status" aria-label="Loading"><svg viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg"><g class="ql-ring"><path d="M21 3 A18 18 0 0 1 39 21" stroke="#2E4053" stroke-width="4" stroke-linecap="round"/><path d="M39 21 A18 18 0 0 1 21 39" stroke="#8A9A5B" stroke-width="4" stroke-linecap="round"/><path d="M21 39 A18 18 0 0 1 3 21" stroke="#E2725B" stroke-width="4" stroke-linecap="round"/><path d="M3 21 A18 18 0 0 1 21 3" stroke="#B8860B" stroke-width="4" stroke-linecap="round"/></g><circle cx="21" cy="21" r="12" fill="#2E4053"/><rect x="14" y="20" width="4" height="7" rx="0.5" fill="#8A9A5B"/><rect x="19" y="16" width="4" height="11" rx="0.5" fill="#fff"/><rect x="24" y="23" width="4" height="4" rx="0.5" fill="#E2725B"/></svg></div>
 
 <!-- CONFIRMATION DIALOG (used by askConfirm / askNotice) -->
 <div id="cf-overlay" role="dialog" aria-modal="true" aria-labelledby="cf-title" aria-describedby="cf-msg">
