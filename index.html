@@ -3658,7 +3658,7 @@ body.m-adm .m-tabbar#m-tabs-adm .m-tab.active::before{background:var(--moss)}
    then re-inverts images / avatars so they keep their real colours.
 ============================================================ */
 html[data-theme="dark"]::after{content:"";position:fixed;inset:0;z-index:2147483647;pointer-events:none;
-  -webkit-backdrop-filter:invert(1) hue-rotate(180deg);backdrop-filter:invert(1) hue-rotate(180deg)}
+  -webkit-backdrop-filter:invert(.88) hue-rotate(180deg) contrast(.9) sepia(.12);backdrop-filter:invert(.88) hue-rotate(180deg) contrast(.9) sepia(.12)}
 html[data-theme="dark"] img,html[data-theme="dark"] video,html[data-theme="dark"] canvas,
 html[data-theme="dark"] .qs-avatar,html[data-theme="dark"] .qs-swatch,
 html[data-theme="dark"] .stu-avatar,html[data-theme="dark"] .adm-avatar,
