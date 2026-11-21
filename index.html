@@ -9740,8 +9740,10 @@ checkPasswordCriteria();
     z.pick = i; const ok = q.o[i] === q.a;
     document.querySelectorAll('.fx-opt').forEach((b, k) => { b.disabled = true; if (q.o[k] === q.a) b.classList.add('good'); else if (k === i) b.classList.add('bad'); });
     if (ok) { z.score++; z.streak++; } else z.streak = 0;
-    const last = z.i + 1 === z.qs.length;
-    $('fx-fb').innerHTML = `<div class="fx-fbin ${ok ? 'good' : 'bad'}"><div><b>${ok ? 'Correct!' : 'Not quite'}</b>${ok ? 'Nice work, keep going.' : 'The correct answer is highlighted in green.'}</div><button class="fx-btn pri" onclick="fxNext()">${last ? 'Finish' : 'Continue'} &gt;&gt;</button></div>`;
+    const last = z.i + 1 === z.qs.length, at = z.i;
+    $('fx-fb').innerHTML = `<div class="fx-fbin ${ok ? 'good' : 'bad'}"><div><b>${ok ? 'Correct!' : 'Not quite'}</b>${ok ? (last ? 'Nice work. Showing your results...' : 'Nice work, next question...') : 'The correct answer is highlighted in green.'}</div></div>`;
+    /* auto-continue: quick after a right answer, a bit longer after a wrong one so the green answer can be read */
+    setTimeout(() => { if (S.v === 'quiz' && S.qz === z && z.i === at) fxNext(); }, ok ? 900 : 1900);
   };
   window.fxNext = function () {
     const z = S.qz; if (z.pick == null) return; z.i++; z.pick = null;
