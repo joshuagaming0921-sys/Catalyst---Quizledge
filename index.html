@@ -4803,7 +4803,7 @@ input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),
       <div id="stu-quests" class="stu-view">
         <div class="section-header">
           <span class="section-title">QUESTS</span>
-          <span class="section-sub">&gt; Complete quests to earn XP and level up</span>
+          <span class="section-sub">&gt; Daily and weekly quests rotate. One-time quests stay.</span>
         </div>
         <div class="quest-list" id="quests-list">
           <div style="text-align:center;padding:32px;font-family:'Lato',sans-serif;color:rgba(46,64,83,0.45);font-size:13px;">Loading quests...</div>
@@ -6110,6 +6110,55 @@ const QUESTS = [
   }
 ];
 
+/* ---- Rotating daily / weekly quests (picked and verified by the database) ---- */
+const ROT_ICON = {
+  daily:  '<svg class="px-icon" viewBox="0 0 7 8" width="16" height="18" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="#FFFFFF"><rect x="3" y="0" width="3" height="1"/><rect x="2" y="1" width="3" height="1"/><rect x="1" y="2" width="3" height="1"/><rect x="1" y="3" width="5" height="1"/><rect x="3" y="4" width="2" height="1"/><rect x="2" y="5" width="2" height="1"/><rect x="1" y="6" width="2" height="1"/></g></svg>',
+  weekly: '<svg class="px-icon" viewBox="0 0 9 9" width="18" height="18" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><g fill="#FFFFFF"><rect x="2" y="0" width="1" height="2"/><rect x="6" y="0" width="1" height="2"/><rect x="0" y="1" width="9" height="1"/><rect x="0" y="2" width="1" height="6"/><rect x="8" y="2" width="1" height="6"/><rect x="0" y="8" width="9" height="1"/><rect x="2" y="4" width="2" height="1"/><rect x="5" y="4" width="2" height="1"/><rect x="2" y="6" width="2" height="1"/></g></svg>'
+};
+function questHdr(title, sub, first) {
+  return `<div class="section-header" style="margin:${first ? '0' : '22px'} 0 12px;"><span class="section-title" style="font-size:10px;">${title}</span>${sub ? `<span class="section-sub">&gt; ${sub}</span>` : ''}</div>`;
+}
+function questResetsIn(iso) {
+  const ms = Math.max(0, new Date(iso) - Date.now()), h = Math.floor(ms / 36e5), m = Math.floor(ms % 36e5 / 6e4);
+  return h >= 24 ? Math.floor(h / 24) + 'd ' + (h % 24) + 'h' : h + 'h ' + m + 'm';
+}
+async function buildRotatingQuests() {
+  const out = { html: '', claimable: 0 };
+  try {
+    const { data, error } = await _supabase.rpc('get_rotating_quests');
+    if (error || !data || !data.length) return out;      // SQL not installed yet → one-time quests only
+    [['daily', 'DAILY QUESTS'], ['weekly', 'WEEKLY QUESTS']].forEach(([kind, title]) => {
+      const items = data.filter(q => q.kind === kind);
+      if (!items.length) return;
+      out.html += questHdr(title, 'New quests in ' + questResetsIn(items[0].ends_at), out.html === '');
+      out.html += items.map(q => {
+        const done = q.progress >= q.target;
+        if (done && !q.claimed) out.claimable++;
+        const pct = Math.round((q.progress / q.target) * 100);
+        const bar = q.target > 1 ? `<div class="quest-progress-bar"><div class="quest-progress-fill" style="width:${pct}%"></div></div>` : '';
+        const right = q.claimed
+          ? `<span class="quest-reward" style="color:#aaa;border-color:#ccc;background:#f5f5f5;">CLAIMED</span>`
+          : done ? `<button class="btn-claim-quest" onclick="claimRotatingQuest('${escHtml(q.id)}')">CLAIM +${q.xp} XP</button>`
+                 : `<span class="quest-reward">+${q.xp} XP</span>`;
+        return `<div class="quest-item ${q.claimed ? 'claimed' : done ? 'completed' : ''}">
+          <div class="quest-icon">${ROT_ICON[kind]}</div>
+          <div class="quest-info" style="flex:1;"><span class="quest-name">${escHtml(q.name)}</span>
+            <span class="quest-desc">${escHtml(q.descr)} (${q.progress}/${q.target})</span>${bar}</div>${right}</div>`;
+      }).join('');
+    });
+  } catch (e) { console.warn('Rotating quests unavailable:', e); }
+  return out;
+}
+async function claimRotatingQuest(id) {
+  if (!currentUser) return;
+  const { data, error } = await _supabase.rpc('claim_rotating_quest', { p_quest_id: id });
+  if (error || !data) { askNotice((error && error.message) || 'Failed to save claim. Please try again.', 'Claim failed'); await renderQuests(); return; }
+  studentState.xp = data.xp; studentState.level = data.level;
+  updateUserUI();
+  showAdminToast(`+${data.awarded} XP claimed!`, 'success');
+  await renderQuests();
+}
+
 async function renderQuests() {
   const list = document.getElementById('quests-list');
   if (!list || !currentUser) return;
@@ -6121,9 +6170,10 @@ async function renderQuests() {
   const { data: isLeader } = await _supabase.rpc('my_rank1');
   const extendedState = { ...studentState, rank1: isLeader === true ? 1 : 0 };
 
-  let claimableCount = 0;
+  const rot = await buildRotatingQuests();
+  let claimableCount = rot.claimable;
 
-  list.innerHTML = QUESTS.map(q => {
+  const oneTimeHtml = QUESTS.map(q => {
     const { current, target } = q.check(extendedState);
     const isClaimed = claimed.includes(q.id);
     const isComplete = current >= target;
@@ -6152,6 +6202,7 @@ async function renderQuests() {
         ${rightSide}
       </div>`;
   }).join('');
+  list.innerHTML = rot.html + (rot.html ? questHdr('ONE-TIME QUESTS', '', false) : '') + oneTimeHtml;
 
   // Update quests nav badge
   const qBadge = document.getElementById('stu-quests-nav-badge');
