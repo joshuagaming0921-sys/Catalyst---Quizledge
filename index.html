@@ -4451,93 +4451,99 @@ html[data-theme="dark"] [class*="crystal"]{opacity:.10!important}
 html[data-theme="dark"] .email-domain,html[data-theme="dark"] #page-login .email-domain{background:#12151a!important;color:#9aa4b1}
 
 /* ============================================================
-   FLASHCARDS (Notes tab) — all selectors prefixed fx-
+   FLASHCARDS (Notes tab) — all selectors prefixed fx-  (matches the QuizLedge pixel theme)
 ============================================================ */
-.fx-tabs{display:inline-flex;gap:2px;padding:4px;margin:0 0 20px;background:rgba(46,64,83,.08);border-radius:14px}
-.fx-tabs button{font:600 14px/1 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;padding:10px 22px;border:0;border-radius:11px;background:transparent;color:#475569;cursor:pointer;transition:.2s}
-.fx-tabs button.on{background:#fff;color:#2E4053;box-shadow:0 1px 3px rgba(0,0,0,.12),0 4px 12px rgba(0,0,0,.06)}
-html[data-theme="dark"] .fx-tabs{background:rgba(255,255,255,.08)}
-html[data-theme="dark"] .fx-tabs button{color:#94a3b8}html[data-theme="dark"] .fx-tabs button.on{background:#262c38;color:#fff}
-#fx-panel{--ink:#0f172a;--mut:#64748b;--bg:#fff;--soft:#f1f5f9;--line:#e2e8f0;--pri:#4f46e5;--pri2:#7c3aed;--ok:#10b981;--okbg:#d1fae5;--no:#ef4444;--nobg:#fee2e2;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
-html[data-theme="dark"] #fx-panel{--ink:#e5e7eb;--mut:#94a3b8;--bg:#12151c;--soft:#1a1e27;--line:#262c38;--pri:#818cf8;--pri2:#a78bfa;--okbg:rgba(16,185,129,.18);--nobg:rgba(239,68,68,.18)}
+.fx-tabs{display:flex;gap:10px;margin:0 0 22px;flex-wrap:wrap}
+.fx-tabs button{font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:1px;padding:12px 18px;background:transparent;color:var(--indigo);border:2px solid var(--indigo);box-shadow:3px 3px 0 rgba(46,64,83,.2);cursor:pointer;transition:transform .1s,box-shadow .1s}
+.fx-tabs button.on{background:var(--indigo);color:#fff;box-shadow:3px 3px 0 var(--moss-dark)}
+.fx-tabs button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--moss-dark)}
+html[data-theme="dark"] .fx-tabs button{color:#b0b9c4;border-color:#475466;box-shadow:3px 3px 0 #212731}
+html[data-theme="dark"] .fx-tabs button.on{background:#1b2028;color:#e5e7eb;box-shadow:3px 3px 0 #212731}
+#fx-panel{--ink:#2E4053;--bd:#2E4053;--sh:#2E4053;--card:#FAFAF0;--soft:rgba(46,64,83,.08);--ok:#6B7A45;--okbg:rgba(138,154,91,.24);--no:#C85A42;--nobg:rgba(226,114,91,.22);--mut:rgba(46,64,83,.6);font-family:'Lato',sans-serif;color:var(--ink)}
+html[data-theme="dark"] #fx-panel{--ink:#b0b9c4;--bd:#475466;--sh:#212731;--card:#0b0d10;--soft:rgba(255,255,255,.06);--ok:#a9b97a;--okbg:rgba(138,154,91,.2);--no:#ef8a73;--nobg:rgba(226,114,91,.2);--mut:#8a94a2}
 #fx-panel *{box-sizing:border-box}
-.fx-in{animation:fxIn .35s cubic-bezier(.2,.8,.3,1) both}@keyframes fxIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.fx-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
-.fx-h{font-size:22px;font-weight:800;letter-spacing:-.02em}.fx-sub{font-size:14px;color:var(--mut)}
-.fx-btn{font:600 14px/1 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;padding:12px 20px;border-radius:14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;transition:.18s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
-.fx-btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(15,23,42,.1)}.fx-btn:active{transform:scale(.97)}
-.fx-btn.pri{background:linear-gradient(135deg,var(--pri),var(--pri2));border-color:transparent;color:#fff;box-shadow:0 6px 18px rgba(79,70,229,.35)}
-.fx-btn.ok{background:var(--ok);border-color:transparent;color:#fff}.fx-btn.no{background:var(--nobg);border-color:transparent;color:var(--no)}
+.fx-in{animation:fxIn .25s ease both}@keyframes fxIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.fx-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.fx-h{font-family:'Press Start 2P',monospace;font-size:12px;line-height:1.6;color:var(--ink);text-shadow:2px 2px 0 rgba(138,154,91,.2)}
+.fx-sub{font-family:'VT323',monospace;font-size:19px;color:var(--ok);letter-spacing:.5px}
+.fx-btn{font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:1px;line-height:1.4;padding:13px 16px;background:var(--card);color:var(--ink);border:2px solid var(--bd);box-shadow:3px 3px 0 var(--sh);cursor:pointer;transition:transform .1s,box-shadow .1s;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-transform:uppercase}
+.fx-btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--sh)}.fx-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--sh)}
+.fx-btn.pri{background:var(--indigo);border-color:var(--indigo);color:#fff;box-shadow:3px 3px 0 var(--moss-dark)}
+html[data-theme="dark"] .fx-btn.pri{background:#1b2028;border-color:#475466;color:#e5e7eb;box-shadow:3px 3px 0 #212731}
+.fx-btn.ok{background:var(--moss);border-color:var(--moss-dark);color:#fff;box-shadow:3px 3px 0 var(--moss-dark)}
+.fx-btn.no{background:var(--terracotta);border-color:var(--terracotta-dark);color:#fff;box-shadow:3px 3px 0 var(--terracotta-dark)}
 .fx-btn:disabled{opacity:.4;pointer-events:none}
-.fx-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.fx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px}
-.fx-deck{background:var(--bg);border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 2px 12px rgba(15,23,42,.06);transition:.25s}
-.fx-deck:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(15,23,42,.14)}
-.fx-dh{height:84px;padding:12px;display:flex;gap:6px;align-items:flex-start;background:linear-gradient(135deg,hsl(var(--h) 75% 58%),hsl(calc(var(--h) + 45) 75% 48%))}
-.fx-chipw{font-size:11px;font-weight:700;color:#fff;background:rgba(255,255,255,.22);backdrop-filter:blur(6px);padding:5px 10px;border-radius:99px}
-.fx-db{padding:16px 18px 18px;display:flex;flex-direction:column;gap:12px}
-.fx-dt{font-size:16px;font-weight:700;line-height:1.3;word-break:break-word}.fx-meta{font-size:12px;color:var(--mut);font-weight:600}
-.fx-bar{height:8px;border-radius:99px;background:var(--soft);overflow:hidden}.fx-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--pri),var(--pri2));border-radius:99px;transition:width .5s cubic-bezier(.3,.8,.3,1)}
-.fx-row{display:flex;gap:8px}.fx-row .fx-btn{flex:1;padding:11px 8px;font-size:13px}.fx-x{flex:0 0 42px!important;color:var(--mut)}
-.fx-empty{text-align:center;padding:56px 20px;border-radius:26px;background:linear-gradient(160deg,var(--soft),var(--bg));border:1px dashed var(--line)}
-.fx-ic{width:68px;height:68px;margin:0 auto 16px;border-radius:22px;background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px rgba(79,70,229,.35)}
-.fx-ic svg{width:30px;height:30px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.fx-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:square}
+.fx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.fx-deck{background:var(--card);border:2px solid var(--bd);box-shadow:4px 4px 0 var(--sh);position:relative;transition:transform .15s,box-shadow .15s}
+.fx-deck::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--ac,var(--moss))}
+.fx-deck:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--sh)}
+.fx-dh{display:flex;gap:6px;flex-wrap:wrap;padding:18px 18px 0}
+.fx-chipw{font-family:'Press Start 2P',monospace;font-size:6px;letter-spacing:1px;padding:5px 7px;border:1px solid var(--ok);color:var(--ok)}
+.fx-db{padding:12px 18px 18px;display:flex;flex-direction:column;gap:12px}
+.fx-dt{font-family:'VT323',monospace;font-size:24px;line-height:1.1;color:var(--ink);word-break:break-word}
+.fx-meta{font-family:'Press Start 2P',monospace;font-size:6px;letter-spacing:1px;color:var(--mut)}
+.fx-bar{height:8px;background:var(--soft);border:1px solid var(--bd);overflow:hidden}.fx-bar i{display:block;height:100%;background:var(--moss);transition:width .5s ease}
+.fx-row{display:flex;gap:8px}.fx-row .fx-btn{flex:1;padding:12px 6px}.fx-x{flex:0 0 42px!important;padding:12px 0!important}
+.fx-empty{text-align:center;padding:48px 20px;border:2px dashed var(--bd);background:var(--card)}
+.fx-ic{width:60px;height:60px;margin:0 auto 18px;background:var(--indigo);color:#fff;border:2px solid var(--indigo);box-shadow:4px 4px 0 var(--moss-dark);display:flex;align-items:center;justify-content:center}
+html[data-theme="dark"] .fx-ic{background:#1b2028;border-color:#475466;box-shadow:4px 4px 0 #212731}
+.fx-ic svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:square}
 .fx-wrap{max-width:760px;margin:0 auto}
 .fx-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
-.fx-top .fx-btn{padding:11px;width:44px;height:44px;border-radius:14px}.fx-ghost{width:44px}
-.fx-seg{display:flex;padding:4px;background:var(--soft);border-radius:14px}
-.fx-seg button{font:600 13px/1 system-ui,sans-serif;padding:10px 18px;border:0;border-radius:11px;background:transparent;color:var(--mut);cursor:pointer;transition:.2s}
-.fx-seg button.on{background:var(--bg);color:var(--ink);box-shadow:0 1px 4px rgba(15,23,42,.14)}.fx-seg button:disabled{opacity:.4}
-.fx-stats{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700;margin:12px 2px 0;color:var(--mut)}
+.fx-top>.fx-btn{width:42px;height:42px;padding:0}.fx-ghost{width:42px}
+.fx-seg{display:flex;border:2px solid var(--bd);box-shadow:3px 3px 0 var(--sh);background:var(--card)}
+.fx-seg button{font-family:'Press Start 2P',monospace;font-size:7px;letter-spacing:1px;padding:12px 14px;border:0;background:transparent;color:var(--ink);cursor:pointer;text-transform:uppercase}
+.fx-seg button.on{background:var(--indigo);color:#fff}html[data-theme="dark"] .fx-seg button.on{background:#1b2028;color:#e5e7eb}.fx-seg button:disabled{opacity:.4}
+.fx-stats{display:flex;justify-content:space-between;align-items:center;font-family:'Press Start 2P',monospace;font-size:7px;letter-spacing:1px;margin:12px 0 0;color:var(--mut);text-transform:uppercase}
 .fx-stats .l{color:var(--no)}.fx-stats .k{color:var(--ok)}
-.fx-card{perspective:1600px;height:clamp(260px,46vh,400px);margin:18px 0;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:pan-y;user-select:none}
-.fx-ci{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.3,.8,.3,1);transform-style:preserve-3d}
+.fx-card{perspective:1600px;height:clamp(260px,46vh,380px);margin:20px 0;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:pan-y;user-select:none}
+.fx-ci{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.3,.8,.3,1);transform-style:preserve-3d}
 .fx-card.flip .fx-ci{transform:rotateY(180deg)}
-.fx-face{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:34px 28px;text-align:center;border-radius:28px;background:var(--bg);border:1px solid var(--line);box-shadow:0 20px 50px rgba(15,23,42,.12);-webkit-backface-visibility:hidden;backface-visibility:hidden;overflow:auto}
-.fx-face.b{transform:rotateY(180deg);background:linear-gradient(160deg,var(--bg),var(--soft));border-color:var(--pri)}
-.fx-lbl{position:absolute;top:18px;left:22px;font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--pri);background:var(--soft);padding:5px 10px;border-radius:99px}
-.fx-txt{font-size:clamp(18px,3.6vw,28px);font-weight:700;line-height:1.45;letter-spacing:-.01em;word-break:break-word;margin:auto 0}
-.fx-hint{position:absolute;bottom:16px;font-size:12px;font-weight:600;color:var(--mut)}
-.fx-acts{display:flex;gap:12px}.fx-acts .fx-btn{flex:1;padding:17px 10px;font-size:15px;border-radius:16px}
-.fx-keys{text-align:center;font-size:12px;color:var(--mut);margin-top:14px}
-.fx-qcard{margin:18px 0 16px;padding:30px 26px;border-radius:26px;background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;box-shadow:0 18px 44px rgba(79,70,229,.32)}
-html[data-theme="dark"] .fx-qcard{color:#0b0d12}
-.fx-qcard small{display:block;font-size:11px;font-weight:800;letter-spacing:.12em;opacity:.8;margin-bottom:10px}
-.fx-q{font-size:clamp(18px,3.4vw,26px);font-weight:700;line-height:1.45;letter-spacing:-.01em;word-break:break-word}
-.fx-opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.fx-opt{display:flex;align-items:center;gap:12px;text-align:left;padding:16px;font:600 15px/1.4 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;border-radius:18px;border:2px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;transition:.15s;word-break:break-word}
-.fx-opt b{flex:0 0 30px;height:30px;border-radius:10px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--mut)}
-.fx-opt:not(:disabled):hover{border-color:var(--pri);transform:translateY(-2px)}
+.fx-face{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:44px 26px 38px;text-align:center;background:var(--card);border:3px solid var(--bd);box-shadow:6px 6px 0 var(--sh);-webkit-backface-visibility:hidden;backface-visibility:hidden;overflow:auto}
+.fx-face.b{transform:rotateY(180deg);background:linear-gradient(var(--okbg),var(--okbg)),var(--card)}
+.fx-lbl{position:absolute;top:14px;left:16px;font-family:'Press Start 2P',monospace;font-size:7px;letter-spacing:1px;color:var(--terracotta)}
+.fx-face.b .fx-lbl{color:var(--ok)}
+.fx-txt{font-family:'Lato',sans-serif;font-size:clamp(17px,3.4vw,24px);font-weight:600;line-height:1.5;word-break:break-word;margin:auto 0}
+.fx-hint{position:absolute;bottom:12px;font-family:'VT323',monospace;font-size:17px;color:var(--mut)}
+.fx-acts{display:flex;gap:14px}.fx-acts .fx-btn{flex:1;padding:18px 8px;font-size:9px}
+.fx-keys{text-align:center;font-family:'VT323',monospace;font-size:17px;color:var(--mut);margin-top:16px}
+.fx-qcard{background:var(--card);border:2px solid var(--bd);box-shadow:4px 4px 0 var(--sh);padding:24px;margin:18px 0 16px}
+.fx-qcard small{display:block;font-family:'Press Start 2P',monospace;font-size:7px;letter-spacing:1px;color:var(--terracotta);margin-bottom:12px}
+.fx-q{font-family:'Lato',sans-serif;font-size:clamp(17px,3.2vw,21px);font-weight:600;line-height:1.5;word-break:break-word}
+.fx-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fx-opt{display:flex;align-items:center;gap:12px;text-align:left;padding:13px 14px;font-family:'Lato',sans-serif;font-size:14px;line-height:1.4;border:2px solid var(--bd);background:var(--card);color:var(--ink);cursor:pointer;transition:all .12s;word-break:break-word}
+.fx-opt b{flex:0 0 26px;height:26px;background:var(--indigo);color:#fff;font-family:'Press Start 2P',monospace;font-size:8px;display:flex;align-items:center;justify-content:center}
+html[data-theme="dark"] .fx-opt b{background:#1b2028;border:1px solid #475466;color:#b0b9c4}
+.fx-opt:not(:disabled):hover{border-color:var(--moss);background:rgba(138,154,91,.1);transform:translateX(3px)}
 .fx-opt:disabled{cursor:default}
-.fx-opt.good{border-color:var(--ok);background:var(--okbg)}.fx-opt.good b{background:var(--ok);color:#fff}
-.fx-opt.bad{border-color:var(--no);background:var(--nobg);animation:fxShake .4s}.fx-opt.bad b{background:var(--no);color:#fff}
-@keyframes fxShake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
-.fx-fb{margin-top:16px;min-height:60px}
-.fx-fbin{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:18px;animation:fxIn .25s both}
-.fx-fbin.good{background:var(--okbg);color:var(--ok)}.fx-fbin.bad{background:var(--nobg);color:var(--no)}
-.fx-fbin div{flex:1;font-size:14px;font-weight:600}.fx-fbin div b{display:block;font-size:16px;font-weight:800}.fx-fbin .fx-btn{flex:0 0 auto}
-.fx-res{text-align:center;padding:34px 18px;background:var(--bg);border:1px solid var(--line);border-radius:28px;box-shadow:0 20px 50px rgba(15,23,42,.1)}
-.fx-ring{width:150px;height:150px;border-radius:50%;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;background:conic-gradient(var(--pri) calc(var(--p)*1%),var(--soft) 0)}
-.fx-ring span{width:116px;height:116px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:800;color:var(--pri)}
-.fx-pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
-.fx-pill{font-size:13px;font-weight:700;padding:8px 14px;border-radius:99px;background:var(--soft);color:var(--ink)}
-.fx-pill.xp{background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff}.fx-pill.best{background:var(--okbg);color:var(--ok)}
-.fx-res .fx-row{margin-top:22px;flex-wrap:wrap}.fx-res .fx-row .fx-btn{flex:1 1 150px;padding:14px 10px}
+.fx-opt.good{border-color:var(--moss-dark);background:var(--okbg);box-shadow:3px 3px 0 var(--moss-dark)}.fx-opt.good b{background:var(--moss-dark);color:#fff}
+.fx-opt.bad{border-color:var(--terracotta-dark);background:var(--nobg);box-shadow:3px 3px 0 var(--terracotta-dark);animation:fxShake .35s}.fx-opt.bad b{background:var(--terracotta-dark);color:#fff}
+@keyframes fxShake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+.fx-fb{margin-top:16px;min-height:56px}
+.fx-fbin{display:flex;align-items:center;gap:12px;padding:12px 14px;border:2px solid;animation:fxIn .2s both;background:var(--card)}
+.fx-fbin.good{border-color:var(--moss-dark);box-shadow:3px 3px 0 var(--moss-dark)}.fx-fbin.bad{border-color:var(--terracotta-dark);box-shadow:3px 3px 0 var(--terracotta-dark)}
+.fx-fbin div{flex:1;font-size:14px;color:var(--ink)}.fx-fbin div b{display:block;font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:1px;margin-bottom:6px;text-transform:uppercase}
+.fx-fbin.good b{color:var(--ok)}.fx-fbin.bad b{color:var(--no)}.fx-fbin .fx-btn{flex:0 0 auto}
+.fx-res{text-align:center;padding:32px 18px;background:var(--card);border:3px solid var(--bd);box-shadow:6px 6px 0 var(--sh)}
+.fx-score{display:inline-block;font-family:'Press Start 2P',monospace;font-size:30px;color:var(--ink);padding:18px 24px;margin-bottom:18px;border:2px solid var(--bd);background:var(--okbg);box-shadow:4px 4px 0 var(--moss-dark)}
+.fx-pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.fx-pill{font-family:'Press Start 2P',monospace;font-size:7px;letter-spacing:1px;padding:8px 10px;border:1px solid var(--bd);color:var(--ink)}
+.fx-pill.xp{background:var(--moss);border-color:var(--moss-dark);color:#fff}.fx-pill.best{border-color:var(--ok);color:var(--ok)}
+.fx-res .fx-row{margin-top:22px;flex-wrap:wrap}.fx-res .fx-row .fx-btn{flex:1 1 140px;padding:14px 8px}
 #fx-gen-modal .modal-box{max-width:520px;max-height:92vh;overflow-y:auto}
 .fx-chips{display:flex;flex-direction:column;gap:6px;margin:8px 0 12px}
-.fx-chip{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:rgba(79,70,229,.1);font:700 12px 'Lato',sans-serif;color:var(--indigo)}
+.fx-chip{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--moss-dark);background:rgba(138,154,91,.14);font:700 12px 'Lato',sans-serif;color:var(--indigo)}
 .fx-chip span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.fx-chip b{cursor:pointer;padding:0 4px}
-.fx-spin{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:fxSp .7s linear infinite}@keyframes fxSp{to{transform:rotate(360deg)}}
+.fx-spin{display:inline-block;width:12px;height:12px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:fxSp .7s linear infinite}@keyframes fxSp{to{transform:rotate(360deg)}}
 @media (max-width:820px){
-  .fx-tabs{display:flex;width:100%}.fx-tabs button{flex:1}
+  .fx-tabs button{flex:1}
   .fx-grid{grid-template-columns:1fr}.fx-head .fx-btn{width:100%}
   .fx-opts{grid-template-columns:1fr}.fx-keys{display:none}
-  .fx-acts .fx-btn{padding:18px 8px}.fx-seg button{padding:10px 14px}
-  .fx-qcard{padding:24px 20px}
+  .fx-seg button{padding:12px 10px}.fx-qcard{padding:20px 16px}
   .fx-wrap{padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   #fx-panel{padding-bottom:calc(20px + env(safe-area-inset-bottom,0px))}
   .fx-fb{position:sticky;bottom:calc(78px + env(safe-area-inset-bottom,0px));z-index:5}
-  .fx-fbin{box-shadow:0 10px 30px rgba(15,23,42,.2)}
 }
 @media (prefers-reduced-motion:reduce){.fx-ci,.fx-in,.fx-opt.bad{transition:none;animation:none}}
 </style>
@@ -9675,9 +9681,9 @@ checkPasswordCriteria();
   const hue = s => { let h = 0; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) % 360; return h; };
   function pct(d) { const k = Object.values(d.m || {}).filter(x => x === 1).length; return Math.round(k / d.cards.length * 100); }
   function vDecks() {
-    if (!S.decks.length) return `<div class="fx-empty fx-in"><div class="fx-ic">${IC.cards}</div><div class="fx-h">Turn your notes into flashcards</div><p class="fx-sub" style="margin:8px 0 22px">Import a PDF, DOCX or text file and get a ready-made reviewer and practice quiz.</p><button class="fx-btn pri" onclick="fxOpenGen()">${IC.plus} Create your first deck</button></div>`;
-    return `<div class="fx-head fx-in"><div><div class="fx-h">My flashcards</div><div class="fx-sub">${S.decks.length} deck${S.decks.length > 1 ? 's' : ''}</div></div><button class="fx-btn pri" onclick="fxOpenGen()">${IC.plus} New deck</button></div><div class="fx-grid fx-in">` +
-      S.decks.map(d => `<div class="fx-deck"><div class="fx-dh" style="--h:${hue(d.title)}"><span class="fx-chipw">${d.cards.length} cards</span>${d.best != null ? `<span class="fx-chipw">🏆 Best ${d.best}%</span>` : ''}</div><div class="fx-db"><div class="fx-dt">${E(d.title)}</div><div><div class="fx-bar"><i style="width:${pct(d)}%"></i></div><div class="fx-meta" style="margin-top:6px">${pct(d)}% mastered</div></div><div class="fx-row"><button class="fx-btn pri" onclick="fxStudy('${d.id}')">Study</button><button class="fx-btn" onclick="fxQuiz('${d.id}')" ${d.cards.length < 4 ? 'disabled' : ''}>Quiz</button><button class="fx-btn fx-x" aria-label="Delete deck" onclick="fxDel('${d.id}')">${IC.trash}</button></div></div></div>`).join('') + '</div>';
+    if (!S.decks.length) return `<div class="fx-empty fx-in"><div class="fx-ic">${IC.cards}</div><div class="fx-h">TURN YOUR NOTES INTO FLASHCARDS</div><p class="fx-sub" style="margin:10px 0 22px">&gt; Import a PDF, DOCX or text file and get a ready-made reviewer and practice quiz.</p><button class="fx-btn pri" onclick="fxOpenGen()">${IC.plus} CREATE YOUR FIRST DECK</button></div>`;
+    return `<div class="fx-head fx-in"><div><div class="fx-h">MY FLASHCARDS</div><div class="fx-sub">&gt; ${S.decks.length} deck${S.decks.length > 1 ? 's' : ''}</div></div><button class="fx-btn pri" onclick="fxOpenGen()">${IC.plus} NEW DECK</button></div><div class="fx-grid fx-in">` +
+      S.decks.map(d => `<div class="fx-deck"><div class="fx-dh" style="--ac:${['var(--moss)','var(--terracotta)','var(--indigo-light)','var(--adm-yellow)'][hue(d.title) % 4]}"><span class="fx-chipw">${d.cards.length} CARDS</span>${d.best != null ? `<span class="fx-chipw">BEST ${d.best}%</span>` : ''}</div><div class="fx-db"><div class="fx-dt">${E(d.title)}</div><div><div class="fx-bar"><i style="width:${pct(d)}%"></i></div><div class="fx-meta" style="margin-top:7px">${pct(d)}% MASTERED</div></div><div class="fx-row"><button class="fx-btn pri" onclick="fxStudy('${d.id}')">Study</button><button class="fx-btn" onclick="fxQuiz('${d.id}')" ${d.cards.length < 4 ? 'disabled' : ''}>Quiz</button><button class="fx-btn fx-x" aria-label="Delete deck" onclick="fxDel('${d.id}')">${IC.trash}</button></div></div></div>`).join('') + '</div>';
   }
   window.fxDel = async function (id) {
     const d = S.decks.find(x => x.id === id);
@@ -9685,7 +9691,7 @@ checkPasswordCriteria();
     S.decks = S.decks.filter(x => x.id !== id); save(); render();
   };
   window.fxHome = function () { S.v = 'decks'; render(); };
-  const top = m => `<div class="fx-top"><button class="fx-btn" onclick="fxHome()" aria-label="Back">${IC.back}</button><div class="fx-seg"><button class="${m === 's' ? 'on' : ''}" onclick="fxStudy('${S.d.id}')">Flashcards</button><button class="${m === 'q' ? 'on' : ''}" onclick="fxQuiz('${S.d.id}')" ${S.d.cards.length < 4 ? 'disabled' : ''}>Quiz</button></div>${m === 's' ? `<button class="fx-btn" onclick="fxStudy('${S.d.id}',true)" aria-label="Shuffle">${IC.shuf}</button>` : '<span class="fx-ghost"></span>'}</div>`;
+  const top = m => `<div class="fx-top"><button class="fx-btn" onclick="fxHome()" aria-label="Back">${IC.back}</button><div class="fx-seg"><button class="${m === 's' ? 'on' : ''}" onclick="fxStudy('${S.d.id}')">Cards</button><button class="${m === 'q' ? 'on' : ''}" onclick="fxQuiz('${S.d.id}')" ${S.d.cards.length < 4 ? 'disabled' : ''}>Quiz</button></div>${m === 's' ? `<button class="fx-btn" onclick="fxStudy('${S.d.id}',true)" aria-label="Shuffle">${IC.shuf}</button>` : '<span class="fx-ghost"></span>'}</div>`;
 
   /* ---------- study (flip cards) ---------- */
   window.fxStudy = function (id, shuffle) {
@@ -9698,8 +9704,8 @@ checkPasswordCriteria();
     return `<div class="fx-wrap fx-in">${top('s')}<div class="fx-bar"><i style="width:${known / S.total * 100}%"></i></div>
       <div class="fx-stats"><span class="l">Learning ${learn}</span><span>${Math.min(known + 1, S.total)} / ${S.total}</span><span class="k">Known ${known}</span></div>
       <div class="fx-card" id="fx-card" onclick="fxFlip()"><div class="fx-ci"><div class="fx-face"><span class="fx-lbl">QUESTION</span><div class="fx-txt">${E(c.q)}</div><span class="fx-hint">Tap to flip</span></div><div class="fx-face b"><span class="fx-lbl">ANSWER</span><div class="fx-txt">${E(c.a)}</div></div></div></div>
-      <div class="fx-acts"><button class="fx-btn no" onclick="fxMark(false)">✕ Still learning</button><button class="fx-btn ok" onclick="fxMark(true)">✓ Got it</button></div>
-      <div class="fx-keys">Space flips &nbsp;·&nbsp; ← still learning &nbsp;·&nbsp; → got it</div></div>`;
+      <div class="fx-acts"><button class="fx-btn no" onclick="fxMark(false)">STILL LEARNING</button><button class="fx-btn ok" onclick="fxMark(true)">GOT IT</button></div>
+      <div class="fx-keys">&gt; SPACE = flip &nbsp;|&nbsp; LEFT = still learning &nbsp;|&nbsp; RIGHT = got it</div></div>`;
   }
   window.fxFlip = function () { if (S._nc) return; const c = $('fx-card'); if (c) c.classList.toggle('flip'); };
   window.fxMark = function (ok) {
@@ -9710,7 +9716,7 @@ checkPasswordCriteria();
   };
   function vDone() {
     const d = S.d, m = Object.keys(S.miss).length;
-    return `<div class="fx-wrap fx-in"><div class="fx-res"><div class="fx-ring" style="--p:100"><span>🎉</span></div><div class="fx-h">Deck complete!</div><p class="fx-sub" style="margin-top:6px">You mastered all ${S.total} cards${m ? ` — ${m} needed extra practice` : ' on the first try'}.</p><div class="fx-row"><button class="fx-btn pri" onclick="fxStudy('${d.id}',true)">Study again</button>${d.cards.length >= 4 ? `<button class="fx-btn" onclick="fxQuiz('${d.id}')">Take the quiz · earn XP</button>` : ''}<button class="fx-btn" onclick="fxHome()">All decks</button></div></div></div>`;
+    return `<div class="fx-wrap fx-in"><div class="fx-res"><div class="fx-score">DONE</div><div class="fx-h">DECK COMPLETE</div><p class="fx-sub" style="margin-top:6px">You mastered all ${S.total} cards${m ? ` — ${m} needed extra practice` : ' on the first try'}.</p><div class="fx-row"><button class="fx-btn pri" onclick="fxStudy('${d.id}',true)">Study again</button>${d.cards.length >= 4 ? `<button class="fx-btn" onclick="fxQuiz('${d.id}')">Take the quiz &gt;&gt;</button>` : ''}<button class="fx-btn" onclick="fxHome()">All decks</button></div></div></div>`;
   }
 
   /* ---------- quiz (pick the answer; green = correct, red = wrong) ---------- */
@@ -9725,8 +9731,8 @@ checkPasswordCriteria();
   };
   function vQuiz() {
     const z = S.qz, q = z.qs[z.i];
-    return `<div class="fx-wrap fx-in">${top('q')}<div class="fx-bar"><i style="width:${z.i / z.qs.length * 100}%"></i></div><div class="fx-stats"><span>Question ${z.i + 1} of ${z.qs.length}</span><span>${z.streak > 1 ? '🔥 ' + z.streak + ' in a row' : ''}</span><span class="k">${z.score} correct</span></div>
-      <div class="fx-qcard"><small>CHOOSE THE CORRECT ANSWER</small><div class="fx-q">${E(q.q)}</div></div>
+    return `<div class="fx-wrap fx-in">${top('q')}<div class="fx-bar"><i style="width:${z.i / z.qs.length * 100}%"></i></div><div class="fx-stats"><span>Q ${z.i + 1} / ${z.qs.length}</span><span>${z.streak > 1 ? z.streak + ' IN A ROW' : ''}</span><span class="k">${z.score} correct</span></div>
+      <div class="fx-qcard"><small>&gt; CHOOSE THE CORRECT ANSWER</small><div class="fx-q">${E(q.q)}</div></div>
       <div class="fx-opts">${q.o.map((o, i) => `<button class="fx-opt" onclick="fxPick(${i})"><b>${'ABCD'[i]}</b><span>${E(o)}</span></button>`).join('')}</div><div class="fx-fb" id="fx-fb"></div></div>`;
   }
   window.fxPick = function (i) {
@@ -9735,7 +9741,7 @@ checkPasswordCriteria();
     document.querySelectorAll('.fx-opt').forEach((b, k) => { b.disabled = true; if (q.o[k] === q.a) b.classList.add('good'); else if (k === i) b.classList.add('bad'); });
     if (ok) { z.score++; z.streak++; } else z.streak = 0;
     const last = z.i + 1 === z.qs.length;
-    $('fx-fb').innerHTML = `<div class="fx-fbin ${ok ? 'good' : 'bad'}"><div><b>${ok ? 'Correct! 🎉' : 'Not quite'}</b>${ok ? 'Nice work, keep going.' : 'The correct answer is highlighted in green.'}</div><button class="fx-btn pri" onclick="fxNext()">${last ? 'Finish' : 'Continue'}</button></div>`;
+    $('fx-fb').innerHTML = `<div class="fx-fbin ${ok ? 'good' : 'bad'}"><div><b>${ok ? 'Correct!' : 'Not quite'}</b>${ok ? 'Nice work, keep going.' : 'The correct answer is highlighted in green.'}</div><button class="fx-btn pri" onclick="fxNext()">${last ? 'Finish' : 'Continue'} &gt;&gt;</button></div>`;
   };
   window.fxNext = function () {
     const z = S.qz; if (z.pick == null) return; z.i++; z.pick = null;
@@ -9760,9 +9766,9 @@ checkPasswordCriteria();
   }
   function vQres() {
     const z = S.qz, p = z.p;
-    const xp = z.xp === undefined ? '<span class="fx-pill">Saving XP…</span>' : z.xp > 0 ? `<span class="fx-pill xp">⚡ +${z.xp} XP</span>` : z.xp === 0 ? '<span class="fx-pill">Daily flashcard XP limit reached</span>' : '';
-    return `<div class="fx-wrap fx-in"><div class="fx-res"><div class="fx-ring" style="--p:${p}"><span>${p}%</span></div><div class="fx-h">${p >= 80 ? 'Great job!' : p >= 50 ? 'Getting there!' : 'Keep practicing!'}</div><p class="fx-sub" style="margin-top:6px">${z.score} of ${z.qs.length} correct</p>
-      <div class="fx-pills">${z.newBest ? '<span class="fx-pill best">🏆 New best score!</span>' : `<span class="fx-pill">🏆 Best ${S.d.best}%</span>`}${xp}</div>
+    const xp = z.xp === undefined ? '<span class="fx-pill">SAVING XP...</span>' : z.xp > 0 ? `<span class="fx-pill xp">+${z.xp} XP</span>` : z.xp === 0 ? '<span class="fx-pill">DAILY FLASHCARD XP LIMIT REACHED</span>' : '';
+    return `<div class="fx-wrap fx-in"><div class="fx-res"><div class="fx-score">${p}%</div><div class="fx-h">${p >= 80 ? 'GREAT JOB!' : p >= 50 ? 'GETTING THERE!' : 'KEEP PRACTICING!'}</div><p class="fx-sub" style="margin-top:10px">&gt; ${z.score} of ${z.qs.length} correct</p>
+      <div class="fx-pills">${z.newBest ? '<span class="fx-pill best">NEW BEST SCORE</span>' : `<span class="fx-pill">BEST ${S.d.best}%</span>`}${xp}</div>
       <div class="fx-row"><button class="fx-btn pri" onclick="fxQuiz('${S.d.id}')">Retake quiz</button><button class="fx-btn" onclick="fxStudy('${S.d.id}',true)">Review cards</button><button class="fx-btn" onclick="fxHome()">All decks</button></div></div></div>`;
   }
 
@@ -9792,7 +9798,7 @@ checkPasswordCriteria();
   window.fxCloseGen = function () { if (!S.busy) $('fx-gen-modal').classList.remove('open'); };
   function msg(t, type) { const m = $('fx-msg'); m.textContent = t; m.className = 'modal-msg ' + type; m.style.display = 'block'; }
   function chips() {
-    $('fx-chips').innerHTML = S.files.map((f, i) => `<div class="fx-chip"><span>${E(f.name)}</span><b onclick="fxRm(${i})" aria-label="Remove">✕</b></div>`).join('');
+    $('fx-chips').innerHTML = S.files.map((f, i) => `<div class="fx-chip"><span>${E(f.name)}</span><b onclick="fxRm(${i})" aria-label="Remove">X</b></div>`).join('');
   }
   window.fxRm = function (i) { S.files.splice(i, 1); chips(); };
   window.fxAddFiles = function (list) {
