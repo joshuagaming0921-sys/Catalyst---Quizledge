@@ -3971,6 +3971,12 @@ input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),
 /* notes viewer: one close control (compact X) */
 #note-view-modal .nv-close-top{min-width:40px!important;width:40px;height:40px;min-height:40px!important;padding:0!important;display:inline-flex;align-items:center;justify-content:center;font-size:16px!important;border-radius:10px!important;border:2px solid var(--indigo)!important;background:#fff!important;color:var(--indigo)!important;box-shadow:2px 2px 0 rgba(46,64,83,.2);transition:transform .12s,box-shadow .12s}
 #note-view-modal .nv-close-top:active{transform:translate(1px,1px);box-shadow:none}
+
+/* login / sign up: same glow + dot-grid background as the landing page */
+#page-login{background:var(--cr-bg,#F5F0E8)}
+#page-login .lp-crystal-bg{display:block}
+#page-login::before{background-image:radial-gradient(ellipse at 15% 20%,rgba(196,150,10,.06) 0%,transparent 55%),radial-gradient(ellipse at 85% 75%,rgba(58,107,74,.07) 0%,transparent 55%),radial-gradient(ellipse at 50% 50%,rgba(184,92,66,.04) 0%,transparent 70%),radial-gradient(var(--cr-ink,#2A2118) 1px,transparent 1px);background-size:auto,auto,auto,28px 28px}
+#page-login::after{opacity:.025}
 </style>
 <script>
 /* runs before first paint: if a saved Supabase session exists, don't show the landing page */
