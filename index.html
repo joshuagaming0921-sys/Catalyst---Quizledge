@@ -3524,7 +3524,9 @@ body.m-quiz .stu-main{padding-bottom:calc(84px + var(--m-safe-b))}
 .adm-input,.adm-select,.adm-textarea,.modal-select,.modal-input,.q-builder-input{min-height:46px}
 .q-toolbar{flex-wrap:wrap}.q-toolbar .adm-select{max-width:none;flex:1 1 100%}
 .mb-row{flex-wrap:wrap}
-.match-row{flex-direction:column;align-items:stretch}
+.match-row{flex-direction:column;align-items:stretch;gap:8px}
+.match-row .match-left,.match-row .modal-select{flex:0 0 auto;width:100%}
+.match-row .modal-select{min-height:44px;height:44px;padding:0 12px;font-size:16px}
 .attach-frame{height:60vh}
 .adm-action-btn{min-height:38px;padding:8px 12px;margin:3px 6px 3px 0}
 
@@ -7514,7 +7516,10 @@ async function removeStudentFromClasses(studentId, name) {
   if (!(await askConfirm({ title: 'Remove student?', message: `${name} will be removed from all of your classes.`, confirmText: 'Remove', tone: 'danger', icon: 'trash' }))) return;
   const { data: myClasses } = await _supabase.from('classrooms').select('id').eq('teacher_id', currentUser.id);
   const classIds = (myClasses || []).map(c => c.id);
-  await _supabase.from('enrollments').delete().eq('student_id', studentId).in('classroom_id', classIds);
+  if (!classIds.length) { showAdminToast('No classes found for this teacher.', 'danger'); return; }
+  const { data: deleted, error } = await _supabase.from('enrollments').delete().eq('student_id', studentId).in('classroom_id', classIds).select();
+  if (error) { console.error('Remove student failed:', error); showAdminToast('Could not remove student: ' + error.message, 'danger'); return; }
+  if (!deleted || deleted.length === 0) { showAdminToast('Nothing was removed. The database blocked the delete (missing teacher delete policy on enrollments - run fix_remove_student.sql in Supabase).', 'danger'); return; }
   showAdminToast(`${name} removed from all classes.`, 'warning');
   await renderAdminStudents();
   await loadAdminDashboard();
